@@ -114,6 +114,7 @@
 </template>
 
 <script>
+import 'element-theme-dark';
 import { mapGetters } from "vuex";
 export default {
   name: "IndexPage",
