@@ -24,7 +24,7 @@
           >
         </div>
 
-        <el-table :header-cell-style="{ background: '#545c64' }" :cell-style="{ background: '#545c64' }" :data="GET_ALL_PROJECTS" class="w-full break-words">
+        <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" :cell-style="{ background: '#282828' }" :data="GET_ALL_PROJECTS" class="w-full break-words text-white">
           <el-table-column label="Plans" width="180">
             <template slot-scope="scope">
               <el-popover
@@ -34,8 +34,8 @@
                 trigger="click"
               >
                 <el-table
-                   :header-cell-style="{ background: '#545c64' }" 
-                   :cell-style="{ background: '#545c64' }"
+                   :header-cell-style="{ background: '#545c64', text: 'white' }" 
+                   :cell-style="{ background: '#282828' }"
                   :data="GET_ALL_PLANS"
                   class="w-full"
                   @row-click="plotPlan"
@@ -114,7 +114,6 @@
 </template>
 
 <script>
-import 'element-theme-dark';
 import { mapGetters } from "vuex";
 export default {
   name: "IndexPage",

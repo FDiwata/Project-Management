@@ -10,10 +10,10 @@
     </div>
     <div class="mt-5">
         <el-table
-        :header-cell-style="{ background: '#545c64' }" 
-                   :cell-style="{ background: '#545c64' }"
+        :header-cell-style="{ background: '#545c64', text: 'white' }" 
+                   :cell-style="{ background: '#282828' }"
       :data="GET_ALL_PROJECTS"
-      class="w-full">
+      class="w-full text-white">
       <el-table-column
         prop="project_id"
         label="Project ID">

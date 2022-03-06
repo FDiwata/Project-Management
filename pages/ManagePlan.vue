@@ -3,17 +3,17 @@
     <div class="w-full py-5 flex flex-row items-center justify-between">
       <span v-if="!$route.query.redir" class="text-5xl font-bold text-white">Manage Plans</span>
       <span v-else class="text-5xl font-bold text-white">Create a Subtask from:</span>
-       <nuxt-link v-if="!$route.query.redir" class="pr-5 font-black" to="CreatePlan?redir=true"><el-button
+       <nuxt-link v-if="!$route.query.redir" class="pr-5 font-black text-white" to="CreatePlan?redir=true"><el-button
           icon="el-icon-edit" class="hover:font-bold"
           >Create a Plan</el-button
         ></nuxt-link>
     </div>
     <div class="mt-5">
         <el-table
-        :header-cell-style="{ background: '#545c64' }" 
-                   :cell-style="{ background: '#545c64' }"
-      :data="GET_ALL_PLANS"
-      class="w-full">
+        class="text-white w-full"
+        :header-cell-style="{ background: '#545c64', text: 'white' }" 
+                   :cell-style="{ background: '#282828', text: 'white' }"
+      :data="GET_ALL_PLANS">
       <el-table-column
         prop="plan_id"
         label="Plan ID">

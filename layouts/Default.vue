@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-screen flex flex-row items-center justify-start bg-gray-600">
+  <div class="w-full h-screen flex flex-row items-center justify-start bg-gray-400 text-white">
     <el-menu
       default-active="2"
       class="w-1/6 h-screen shadow-2xl bg-gray-800"

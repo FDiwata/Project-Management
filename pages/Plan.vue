@@ -23,8 +23,8 @@
         <span class="font-bold">Subtask list:</span>
          <nuxt-link :to="{name: 'CreateSubtask', query: {plan_id: GET_SELECTED_PLAN.plan_id}}"><el-button icon="el-icon-edit">Create a Subtask</el-button></nuxt-link>
       </div>
-      <el-table :header-cell-style="{ background: '#545c64' }" 
-                   :cell-style="{ background: '#545c64' }" :data="GET_SELECTED_SUBTASKS" class="w-full">
+      <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" 
+                   :cell-style="{ background: '#282828' }" :data="GET_SELECTED_SUBTASKS" class="w-full">
         <el-table-column prop="subtask_id" label="Subtask ID"> </el-table-column>
         <el-table-column prop="subtask_title" label="Subtask Title">
           <template slot-scope="scope">

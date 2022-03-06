@@ -38,8 +38,8 @@
           >Create a Plan</el-button
         ></nuxt-link>
       </div>
-      <el-table :header-cell-style="{ background: '#545c64' }" 
-                   :cell-style="{ background: '#545c64' }" :data="GET_SELECTED_PLANS" class="w-full">
+      <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" 
+                   :cell-style="{ background: '#282828' }" :data="GET_SELECTED_PLANS" class="w-full">
         <el-table-column prop="plan_id" label="Plan ID"> </el-table-column>
         <el-table-column prop="plan_title" label="Plan Title">
           <template slot-scope="scope">

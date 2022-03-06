@@ -67,8 +67,8 @@
           >Log a task</el-button
         >
       </div>
-      <el-table :header-cell-style="{ background: '#545c64' }" 
-                   :cell-style="{ background: '#545c64' }" :data="GET_SELECTED_TASK_LOGS" class="w-full">
+      <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" 
+                   :cell-style="{ background: '#282828' }" :data="GET_SELECTED_TASK_LOGS" class="w-full">
         <el-table-column prop="task_logs_id" label="Task Log ID">
         </el-table-column>
         <el-table-column prop="miscellaneous" label="Miscellaneous">

@@ -10,10 +10,10 @@
     </div>
     <div class="mt-5">
       <el-table
-        :header-cell-style="{ background: '#545c64' }"
-        :cell-style="{ background: '#545c64' }"
+        :header-cell-style="{ background: '#545c64', text: 'white' }"
+        :cell-style="{ background: '#282828' }"
         :data="GET_ALL_SUBTASKS"
-        class="w-full"
+        class="w-full text-white"
       >
         <el-table-column prop="subtask_id" label="Subtask ID">
         </el-table-column>
