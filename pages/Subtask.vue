@@ -1,12 +1,12 @@
 <template>
   <div class="p-5 w-3/4 m-auto h-screen">
     <div class="w-full p-3">
-      <span class="text-2xl font-bold text-gray-600 dark:text-white">{{
+      <span class="text-2xl font-bold text-white">{{
         GET_SELECTED_SUBTASK.subtask_id
       }}</span>
     </div>
     <div class="w-full p-3">
-      <span class="text-4xl font-bold text-gray-600 dark:text-white">{{
+      <span class="text-4xl font-bold text-white">{{
         GET_SELECTED_SUBTASK.subtask_title
       }}</span>
     </div>
@@ -67,7 +67,8 @@
           >Log a task</el-button
         >
       </div>
-      <el-table :data="GET_SELECTED_TASK_LOGS" class="w-full">
+      <el-table :header-cell-style="{ background: '#545c64' }" 
+                   :cell-style="{ background: '#545c64' }" :data="GET_SELECTED_TASK_LOGS" class="w-full">
         <el-table-column prop="task_logs_id" label="Task Log ID">
         </el-table-column>
         <el-table-column prop="miscellaneous" label="Miscellaneous">

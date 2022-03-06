@@ -1,7 +1,7 @@
 <template>
   <div class="p-5 w-3/4 m-auto h-screen">
     <div class="w-full py-5">
-      <span class="text-5xl font-bold text-gray-600 dark:text-white">Create a Plan</span>
+      <span class="text-5xl font-bold text-white">Create a Plan</span>
     </div>
     <div>
       <el-row
@@ -35,7 +35,7 @@
         class="w-full flex flex-row items-center justify-end space-x-3 py-3"
       >
          <el-button @click="createPlan" class="font-bold text-blue-500" icon="el-icon-edit">Create</el-button>
-         <el-button>Clear</el-button>
+         <el-button @click="clearData">Clear</el-button>
       </el-row>
     </div>
   </div>
@@ -65,6 +65,16 @@ layout: 'Default',
         })
       } else {
         alert('Please complete the fields above.')
+      }
+    },
+
+    clearData() {
+      this.formData = {
+        plan_id: '',
+        project_id: '',
+        assignee: '',
+        plan_title: '',
+        plan_desc: '',
       }
     }
   },

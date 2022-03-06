@@ -1,6 +1,9 @@
 export default {
     // Global page headers: https://go.nuxtjs.dev/config-head
     target: 'server',
+    server: {
+        host: '0' // default: localhost
+    },
     head: {
         title: 'project_master',
         meta: [

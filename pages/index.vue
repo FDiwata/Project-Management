@@ -1,7 +1,7 @@
 <template>
   <div class="p-5 w-3/4 m-auto h-screen">
     <div class="w-full py-5">
-      <span class="text-5xl font-bold text-gray-600 dark:text-white">
+      <span class="text-5xl font-bold text-white">
         Dashboard
       </span>
     </div>
@@ -24,7 +24,7 @@
           >
         </div>
 
-        <el-table :data="GET_ALL_PROJECTS" class="w-full break-words">
+        <el-table :header-cell-style="{ background: '#545c64' }" :cell-style="{ background: '#545c64' }" :data="GET_ALL_PROJECTS" class="w-full break-words">
           <el-table-column label="Plans" width="180">
             <template slot-scope="scope">
               <el-popover
@@ -34,6 +34,8 @@
                 trigger="click"
               >
                 <el-table
+                   :header-cell-style="{ background: '#545c64' }" 
+                   :cell-style="{ background: '#545c64' }"
                   :data="GET_ALL_PLANS"
                   class="w-full"
                   @row-click="plotPlan"
@@ -215,6 +217,7 @@ export default {
     GET_DASHBOARD_DATA(value) {
       this.series[0].data = value.actualData;
       this.series[1].data = value.plannedData;
+      try{
       this.$refs.realTimeChart.updateSeries([
         {
           name: "Actual",
@@ -225,6 +228,18 @@ export default {
           data: value.plannedData,
         },
       ]);
+      } catch (e) {
+        this.$refs.realTimeChart.updateSeries([
+        {
+          name: "Actual",
+          data: value.actualData,
+        },
+        {
+          name: "Planned",
+          data: value.plannedData,
+        },
+      ]);
+      }
     },
   },
   async mounted() {

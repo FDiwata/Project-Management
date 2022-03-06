@@ -1,7 +1,7 @@
 <template>
   <div class="p-5 w-3/4 m-auto h-screen">
     <div class="w-full py-5">
-      <span class="text-5xl font-bold text-gray-600 dark:text-white">Create Subtask</span>
+      <span class="text-5xl font-bold text-white">Create Subtask</span>
     </div>
     <div>
       <el-row
@@ -91,7 +91,7 @@
           icon="el-icon-edit"
           >Create</el-button
         >
-        <el-button>Clear</el-button>
+        <el-button @click="clearData">Clear</el-button>
       </el-row>
     </div>
   </div>
@@ -139,6 +139,19 @@ export default {
 
       return `${yyyy}-${mm}-${dd}`;
     },
+    clearData() {
+      this.formData = {
+        subtask_id: "",
+        plan_id: "",
+        subtask_title: "",
+        subtask_desc: "",
+        priority: "",
+        status: "",
+        start_date: new Date(),
+        end_date: new Date(),
+        due_date: new Date(),
+      }
+    }
   },
 
   async mounted() {

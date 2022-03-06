@@ -1,10 +1,10 @@
 <template>
   <div class="p-5 w-3/4 m-auto h-screen">
     <div class="w-full p-3">
-      <span class="text-2xl font-bold text-gray-600 dark:text-white">{{ GET_SELECTED_PROJECT.project_id }}</span>
+      <span class="text-2xl font-bold text-white">{{ GET_SELECTED_PROJECT.project_id }}</span>
     </div>
     <div class="w-full p-3">
-      <span class="text-4xl font-bold text-gray-600 dark:text-white">{{GET_SELECTED_PROJECT.project_title}}</span>
+      <span class="text-4xl font-bold text-white">{{GET_SELECTED_PROJECT.project_title}}</span>
     </div>
     <div
       class="w-full p-3 flex flex-row items-center justify-between space-x-3"
@@ -38,7 +38,8 @@
           >Create a Plan</el-button
         ></nuxt-link>
       </div>
-      <el-table :data="GET_SELECTED_PLANS" class="w-full">
+      <el-table :header-cell-style="{ background: '#545c64' }" 
+                   :cell-style="{ background: '#545c64' }" :data="GET_SELECTED_PLANS" class="w-full">
         <el-table-column prop="plan_id" label="Plan ID"> </el-table-column>
         <el-table-column prop="plan_title" label="Plan Title">
           <template slot-scope="scope">

@@ -1,8 +1,8 @@
 <template>
    <div class="p-5 w-3/4 m-auto h-screen">
     <div class="w-full py-5 flex flex-row items-center justify-between">
-      <span v-if="!$route.query.redir" class="text-5xl font-bold text-gray-600 dark:text-white">Manage Projects</span>
-      <span v-else class="text-5xl font-bold text-gray-600 dark:text-white">Create a Plan from:</span>
+      <span v-if="!$route.query.redir" class="text-5xl font-bold text-white">Manage Projects</span>
+      <span v-else class="text-5xl font-bold text-white">Create a Plan from:</span>
        <nuxt-link v-if="!$route.query.redir" class="pr-5 font-black" to="CreateProject"><el-button
           icon="el-icon-edit" class="hover:font-bold"
           >Create a Project</el-button
@@ -10,6 +10,8 @@
     </div>
     <div class="mt-5">
         <el-table
+        :header-cell-style="{ background: '#545c64' }" 
+                   :cell-style="{ background: '#545c64' }"
       :data="GET_ALL_PROJECTS"
       class="w-full">
       <el-table-column
