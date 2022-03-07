@@ -4,16 +4,16 @@
       <span v-if="!$route.query.redir" class="text-5xl font-bold text-white">Manage Projects</span>
       <span v-else class="text-5xl font-bold text-white">Create a Plan from:</span>
        <nuxt-link v-if="!$route.query.redir" class="pr-5 font-black" to="CreateProject"><el-button
-          icon="el-icon-edit" class="hover:font-bold"
+          icon="el-icon-edit" class="hover:font-bold bg-white text-white"
           >Create a Project</el-button
         ></nuxt-link>
     </div>
     <div class="mt-5">
         <el-table
         :header-cell-style="{ background: '#545c64', text: 'white' }" 
-                   :cell-style="{ background: '#282828' }"
+                   :cell-style="{ background: '#545c64' }"
       :data="GET_ALL_PROJECTS"
-      class="w-full text-white">
+      class="w-full text-white rounded-lg">
       <el-table-column
         prop="project_id"
         label="Project ID">

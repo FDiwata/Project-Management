@@ -3,7 +3,7 @@
     <div class="w-full py-5 flex flex-row items-center justify-between">
       <span class="text-5xl font-bold text-white">Manage Subtasks</span>
       <nuxt-link class="pr-5 font-black" to="CreateSubtask?redir=true"
-        ><el-button icon="el-icon-edit" class="hover:font-bold"
+        ><el-button icon="el-icon-edit" class="hover:font-bold bg-white text-white"
           >Create a Subtask</el-button
         ></nuxt-link
       >
@@ -11,9 +11,9 @@
     <div class="mt-5">
       <el-table
         :header-cell-style="{ background: '#545c64', text: 'white' }"
-        :cell-style="{ background: '#282828' }"
+        :cell-style="{ background: '#545c64' }"
         :data="GET_ALL_SUBTASKS"
-        class="w-full text-white"
+        class="w-full text-white rounded-lg"
       >
         <el-table-column prop="subtask_id" label="Subtask ID">
         </el-table-column>

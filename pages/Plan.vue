@@ -9,7 +9,7 @@
     <div class="flex flex-col items-start justify-start w-full p-3">
       <div class="flex flex-row items-center justify-center py-5 space-x-5">
         <span class="font-bold">Assigned to:</span>
-        <span class="text-blue-400 font-semibold">{{GET_SELECTED_PLAN.assignee}}</span>
+        <span class="text-blue-700 font-semibold">{{GET_SELECTED_PLAN.assignee}}</span>
       </div>
       <div class="flex flex-col items-start justify-center">
         <span class="font-bold">Project Description</span>
@@ -21,10 +21,10 @@
     <div class="p-3">
       <div class="w-full flex flex-row justify-between items-center py-5">
         <span class="font-bold">Subtask list:</span>
-         <nuxt-link :to="{name: 'CreateSubtask', query: {plan_id: GET_SELECTED_PLAN.plan_id}}"><el-button icon="el-icon-edit">Create a Subtask</el-button></nuxt-link>
+         <nuxt-link :to="{name: 'CreateSubtask', query: {plan_id: GET_SELECTED_PLAN.plan_id}}"><el-button icon="el-icon-edit" class="bg-white text-white">Create a Subtask</el-button></nuxt-link>
       </div>
       <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" 
-                   :cell-style="{ background: '#282828' }" :data="GET_SELECTED_SUBTASKS" class="w-full">
+                   :cell-style="{ background: '#545c64' }" :data="GET_SELECTED_SUBTASKS" class="w-full rounded-lg text-white">
         <el-table-column prop="subtask_id" label="Subtask ID"> </el-table-column>
         <el-table-column prop="subtask_title" label="Subtask Title">
           <template slot-scope="scope">

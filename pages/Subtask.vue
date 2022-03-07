@@ -63,12 +63,12 @@
     <div class="p-3">
       <div class="w-full flex flex-row justify-between items-center py-5">
         <span class="font-bold">Task Logs:</span>
-        <el-button @click="dialogFormVisible = true" icon="el-icon-edit"
+        <el-button class="bg-white text-white" @click="dialogFormVisible = true" icon="el-icon-edit"
           >Log a task</el-button
         >
       </div>
       <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" 
-                   :cell-style="{ background: '#282828' }" :data="GET_SELECTED_TASK_LOGS" class="w-full">
+                   :cell-style="{ background: '#545c64' }" :data="GET_SELECTED_TASK_LOGS" class="w-full rounded-lg text-white">
         <el-table-column prop="task_logs_id" label="Task Log ID">
         </el-table-column>
         <el-table-column prop="miscellaneous" label="Miscellaneous">
@@ -157,7 +157,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button class="text-blue-500 font-bold" @click="logTask"
+        <el-button class="text-blue-700 font-bold" @click="logTask"
           >Log Task</el-button
         >
       </span>

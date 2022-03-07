@@ -47,7 +47,7 @@
       <el-row
         class="w-full flex flex-row items-center justify-end space-x-3 py-3"
       >
-         <el-button @click="createProject" class="font-bold text-blue-500" icon="el-icon-edit">Create</el-button>
+         <el-button @click="createProject" class="font-bold text-blue-700" icon="el-icon-edit">Create</el-button>
          <el-button @click="clearData">Clear</el-button>
       </el-row>
     </div>

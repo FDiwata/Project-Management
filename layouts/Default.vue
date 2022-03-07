@@ -2,7 +2,7 @@
   <div class="w-full h-screen flex flex-row items-center justify-start bg-gray-400 text-white">
     <el-menu
       default-active="2"
-      class="w-1/6 h-screen shadow-2xl bg-gray-800"
+      class="w-1/6 h-screen shadow-2xl bg-gray-800 border border-gray-600"
       :collapse="false"
        background-color="#545c64"
       text-color="#fff"

@@ -10,7 +10,7 @@
         <component
           :is="apexchart"
           ref="realTimeChart"
-          class="w-full"
+          class="w-full text-black"
           :options="chartOptions"
           :series="series"
           height="300"
@@ -24,20 +24,21 @@
           >
         </div>
 
-        <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" :cell-style="{ background: '#282828' }" :data="GET_ALL_PROJECTS" class="w-full break-words text-white">
+        <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" :cell-style="{ background: '#545c64' }" :data="GET_ALL_PROJECTS" class="w-full break-words text-white rounded-lg">
           <el-table-column label="Plans" width="180">
             <template slot-scope="scope">
               <el-popover
                 @show="getProjectPlan(scope.row.project_id)"
+                class="rounded-lg"
                 placement="right"
                 width="800"
                 trigger="click"
               >
                 <el-table
                    :header-cell-style="{ background: '#545c64', text: 'white' }" 
-                   :cell-style="{ background: '#282828' }"
+                   :cell-style="{ background: '#545c64' }"
                   :data="GET_ALL_PLANS"
-                  class="w-full"
+                  class="w-full text-white rounded-lg"
                   @row-click="plotPlan"
                 >
                   <el-table-column prop="plan_id" label="Plan ID">
@@ -69,7 +70,7 @@
                     </template>
                   </el-table-column>
                 </el-table>
-                <el-button slot="reference">Click to see plans</el-button>
+                <el-button class="bg-white text-white" slot="reference">Click to see plans</el-button>
               </el-popover>
             </template>
           </el-table-column>
@@ -152,7 +153,7 @@ export default {
             fontSize: "14pt",
             fontWeight: "bold",
             fontFamily: undefined,
-            color: "#f59e0b",
+            color: "white",
           },
         },
         chart: {
@@ -167,7 +168,7 @@ export default {
         fill: {
           type: "gradient",
           gradient: {
-            shade: "light",
+            shade: "dark",
             type: "vertical",
             shadeIntensity: 0.25,
             gradientToColors: undefined,
@@ -200,7 +201,7 @@ export default {
             fontSize: "14pt",
             fontWeight: "bold",
             fontFamily: undefined,
-            color: "#f59e0b",
+            color: "white",
           },
         },
 }}

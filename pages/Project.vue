@@ -16,7 +16,7 @@
         </div>
         <div class="flex flex-row items-center justify-center py-3 space-x-5">
           <span class="font-bold">Created by:</span>
-          <span class="text-blue-400 font-semibold">@{{GET_SELECTED_PROJECT.in_charge}}</span>
+          <span class="text-blue-700 font-semibold">@{{GET_SELECTED_PROJECT.in_charge}}</span>
         </div>
         <div class="flex flex-row items-center justify-center py-3 space-x-5">
           <span class="font-bold">Percentage:</span>
@@ -35,11 +35,12 @@
         <span class="font-bold">Project plans list:</span>
         <nuxt-link :to="{name: 'CreatePlan', query: {project_id: GET_SELECTED_PROJECT.project_id}}"><el-button
           icon="el-icon-edit"
+          class="bg-white text-white"
           >Create a Plan</el-button
         ></nuxt-link>
       </div>
       <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" 
-                   :cell-style="{ background: '#282828' }" :data="GET_SELECTED_PLANS" class="w-full">
+                   :cell-style="{ background: '#545c64' }" :data="GET_SELECTED_PLANS" class="w-full rounded-lg text-white">
         <el-table-column prop="plan_id" label="Plan ID"> </el-table-column>
         <el-table-column prop="plan_title" label="Plan Title">
           <template slot-scope="scope">

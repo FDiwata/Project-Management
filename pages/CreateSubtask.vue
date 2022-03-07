@@ -87,7 +87,7 @@
       >
         <el-button
           @click="createSubtask"
-          class="bg-blue-500 text-blue-500"
+          class="bg-blue-500 text-blue-700"
           icon="el-icon-edit"
           >Create</el-button
         >
