@@ -66,67 +66,67 @@ export const actions = {
             return `${prefix}${count.toString().length === 1 ? `00${count }` : count.toString().length === 2 ? `0${count }` : count  }`
         },
 
-    async createProject({ commit }, payload) {
-        const result = await this.$axios.post('/api/createProject', payload)
-        commit('SET_SELECTED_PROJECT', result.data[0])
-    },
+        async createProject({ commit }, payload) {
+            const result = await this.$axios.post('/api/createProject', payload)
+            commit('SET_SELECTED_PROJECT', result.data[0])
+        },
 
-    async createPlan({ commit }, payload) {
-        const result = await this.$axios.post('/api/createPlan', payload)
-        commit('SET_SELECTED_PLAN', result.data[0])
-    },
+        async createPlan({ commit }, payload) {
+            const result = await this.$axios.post('/api/createPlan', payload)
+            commit('SET_SELECTED_PLAN', result.data[0])
+        },
 
-    async createSubtask({ commit }, payload) {
-        const result = await this.$axios.post('/api/createSubtask', payload)
-        commit('SET_SELECTED_SUBTASK', result.data.slice(-1).pop())
-    },
+        async createSubtask({ commit }, payload) {
+            const result = await this.$axios.post('/api/createSubtask', payload)
+            commit('SET_SELECTED_SUBTASK', result.data.slice(-1).pop())
+        },
 
-    async createTaskLog({ commit }, payload) {
-      await this.$axios.post('/api/createTaskLog', payload)
-    },
-    
-    async updateSubtask(_, payload) {
-        await this.$axios.put(`/api/updateSubtask/${payload.subtask_id}`, payload.data)
-    },
+        async createTaskLog({ commit }, payload) {
+        await this.$axios.post('/api/createTaskLog', payload)
+        },
+        
+        async updateSubtask(_, payload) {
+            await this.$axios.put(`/api/updateSubtask/${payload.subtask_id}`, payload.data)
+        },
 
-    async getPlanDashboard({ commit }, payload) {
-        const endpoint = payload === undefined ? 'api/getPlanDashboard' : `/api/getPlanDashboard/${payload}`
-        const result = await this.$axios.get(endpoint)
-        const actualData = result.data.map((item) => {
-            return {
-                x: item.subtask_title,
-                y:[
-                    new Date(item.start_date).getTime(),
-                    new Date(item.done_date).getTime()
-                ]
-            }
-        })
+        async getPlanDashboard({ commit }, payload) {
+            const endpoint = payload === undefined ? 'api/getPlanDashboard' : `/api/getPlanDashboard/${payload}`
+            const result = await this.$axios.get(endpoint)
+            const actualData = result.data.map((item) => {
+                return {
+                    x: item.subtask_title,
+                    y:[
+                        new Date(item.start_date).getTime(),
+                        new Date(item.done_date).getTime()
+                    ]
+                }
+            })
 
-        const plannedData = result.data.map((item) => {
-            return {
-                x: item.subtask_title,
-                y:[
-                    new Date(item.start_date).getTime(),
-                    new Date(item.end_date).getTime()
-                ]
-            }
-        })
-        commit('SET_DASHBOARD_DATA', {actualData, plannedData})
-    },
+            const plannedData = result.data.map((item) => {
+                return {
+                    x: item.subtask_title,
+                    y:[
+                        new Date(item.start_date).getTime(),
+                        new Date(item.end_date).getTime()
+                    ]
+                }
+            })
+            commit('SET_DASHBOARD_DATA', {actualData, plannedData})
+        },
 
-    async updateTableData (_, payload) {
-        const endpoint = `api/updateTableData/${payload.id}`
-        const result = await this.$axios.put(endpoint, payload)
-        return result.data[0]
-    },
+        async updateTableData (_, payload) {
+            const endpoint = `api/updateTableData/${payload.id}`
+            const result = await this.$axios.put(endpoint, payload)
+            return result.data[0]
+        },
 
-    async deleteTableData ({ commit }, payload) {
-        const endpoint = `api/delete/${payload.id}`
-        const result = await this.$axios.post(endpoint, payload)
-        const setDataPrecursor = payload.type === 'project' ? 'SET_ALL_PROJECTS' : payload.type === 'plan' ?  'SET_ALL_PLANS' :  'SET_ALL_SUBTASK'
-        commit(setDataPrecursor, result)
-        return result.data
-    }
+        async deleteTableData ({ commit }, payload) {
+            const endpoint = `api/delete/${payload.id}`
+            const result = await this.$axios.post(endpoint, payload)
+            const setDataPrecursor = payload.type === 'project' ? 'SET_ALL_PROJECTS' : payload.type === 'plan' ?  'SET_ALL_PLANS' :  'SET_ALL_SUBTASK'
+            commit(setDataPrecursor, result)
+            return result.data
+        }
 }
 
 export const mutations = {
