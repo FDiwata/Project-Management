@@ -1,10 +1,16 @@
 <template>
-  <div class="p-5 w-3/4 m-auto h-screen">
+  <div class="py-5 w-2/3 m-auto h-screen">
     <div class="w-full p-3">
       <span class="text-2xl font-bold text-white">{{GET_SELECTED_PLAN.plan_id}}</span>
     </div>
-    <div class="w-full p-3">
+   <div class="w-full p-3 flex flex-row items-center justify-between">
       <span class="text-4xl font-bold text-white">{{GET_SELECTED_PLAN.plan_title}}</span>
+
+      <nuxt-link :to="{name: 'CreatePlan', query: {plan_id: GET_SELECTED_PLAN.plan_id}}"><el-button
+          icon="el-icon-edit"
+          class="bg-white text-white"
+          >Update this plan</el-button
+        ></nuxt-link>
     </div>
     <div class="flex flex-col items-start justify-start w-full p-3">
       <div class="flex flex-row items-center justify-center py-5 space-x-5">
@@ -93,8 +99,17 @@ export default {
      ...mapGetters(['GET_SELECTED_PLAN', 'GET_SELECTED_SUBTASKS'])
   },
   async mounted () {
+    try {
     await this.$store.dispatch('getPlan', this.$route.query.plan_id)
-    await this.$store.dispatch('getSubtasks', this.GET_SELECTED_PLAN.plan_id)
+    await this.$store.dispatch('getSubtasks', this.GET_SELECTED_PLAN.plan_id || '')
+  } catch (_) {
+      this.$message({
+              type: "error",
+              message:
+                "Plan does not exist.",
+            });
+      this.$router.push("/ManagePlan");
+    }
   }
 };
 </script>

@@ -1,39 +1,60 @@
 <template>
-  <div class="p-5 w-3/4 m-auto h-screen">
+  <div class="py-5 w-2/3 m-auto h-screen">
     <div class="w-full py-5">
-      <span class="text-5xl font-bold text-white">Create Project</span>
+      <span v-if="!isUpdateMode" class="text-5xl font-bold text-white">Create Project</span>
+      <span v-else class="text-5xl font-bold text-white">Update Project</span>
     </div>
     <div>
       <el-row
         class="w-full flex flex-row items-center justify-start space-x-3 py-3"
       >
+       <div class="flex flex-col items-start justify-center w-full">
+        <span class="pb-3 text-sm">Project title</span>
         <el-input
           placeholder="Project title"
           class="transition-all hover:shadow-lg"
           v-model="formData.project_title"
         ></el-input>
+       </div>
       </el-row>
       <div
         class="w-full flex flex-row items-center justify-start space-x-3 py-3"
       >
-        <el-select class="w-1/2 transition-all hover:shadow-lg"  v-model="formData.project_type" placeholder="Project type">
-            <el-option label="Planned" value="planned"></el-option>
-            <el-option label="Unplanned" value="unplanned"></el-option>
-          </el-select>
+       <div class="flex flex-col items-start justify-center w-1/3">
+        <span class="pb-3 text-sm">Project type</span>
+        <el-select
+          class="w-full transition-all hover:shadow-lg"
+          v-model="formData.project_type"
+          placeholder="Project type"
+        >
+          <el-option label="Planned" value="planned"></el-option>
+          <el-option label="Unplanned" value="unplanned"></el-option>
+        </el-select>
+       </div>
+
+       <div class="flex flex-col items-start justify-center w-1/3">
+        <span class="pb-3 text-sm">Person in charge</span>
         <el-input
           placeholder="Person in charge"
-          class="transition-all hover:shadow-lg w-1/"
+          class="transition-all hover:shadow-lg w-full"
           v-model="formData.in_charge"
         ></el-input>
+       </div>
+
+       <div class="flex flex-col items-start justify-center w-1/3">
+        <span class="pb-3 text-sm">Percentage</span>
         <el-input
           placeholder="Percentage"
-          class="transition-all hover:shadow-lg w-1/4"
+          class="transition-all hover:shadow-lg w-full"
           v-model="formData.percentage"
         ></el-input>
+       </div>
       </div>
       <div
         class="w-full flex flex-row items-center justify-start space-x-3 py-3"
       >
+      <div class="flex flex-col items-start justify-center w-full">
+        <span class="pb-3 text-sm">Project Description</span>
         <el-input
           type="textarea"
           :rows="5"
@@ -44,59 +65,117 @@
         >
         </el-input>
       </div>
+      </div>
       <el-row
         class="w-full flex flex-row items-center justify-end space-x-3 py-3"
       >
-         <el-button @click="createProject" class="font-bold text-blue-700" icon="el-icon-edit">Create</el-button>
-         <el-button @click="clearData">Clear</el-button>
+        <el-button
+          v-if="!isUpdateMode"
+          @click="createProject"
+          class="font-bold text-blue-700"
+          icon="el-icon-edit"
+          >Create</el-button>
+         <el-button
+         v-else
+          @click="updateProject"
+          class="font-bold text-blue-700"
+          icon="el-icon-edit"
+          >Update Project</el-button
+        >
+        <el-button @click="clearData">Clear</el-button>
       </el-row>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-layout: 'Default',
+  layout: "Default",
   data() {
     return {
       formData: {
-        project_id: '',
-        project_title: '',
-        project_desc: '',
-        project_type: '',
-        in_charge: '',
-        percentage: '',
+        project_id: "",
+        project_title: "",
+        project_desc: "",
+        project_type: "",
+        in_charge: "",
+        percentage: "",
       },
+      isUpdateMode: false,
     };
   },
-
-  methods: {
-    createProject() {
-      if (!Object.values(this.formData).includes('')) {
-        this.$store.dispatch('createProject', this.formData).then(() => {
-          alert('successfully created a Project!')
-          this.$router.push(`Project?project_id=${this.formData.project_id}`)
-        })
-      } else {
-        alert('Please complete the fields above.')
-      }
-    },
-
-    clearData () {
-      this.formData = {
-        project_id: '',
-        project_title: '',
-        project_desc: '',
-        project_type: '',
-        in_charge: '',
-        percentage: '',
+  computed: {
+    ...mapGetters(["GET_SELECTED_PROJECT"]),
+    updatePayload() {
+      const updateData = { ...this.formData }
+      delete updateData.project_id
+      return {
+        id: this.formData.project_id,
+        type: 'project',
+        updateData: updateData
       }
     }
   },
+  methods: {
+    createProject() {
+      if (!Object.values(this.formData).includes("")) {
+        this.$store.dispatch("createProject", this.formData).then(() => {
+          this.$message({
+          type: "success",
+          message: "Succesfully created a Project!",
+        });
+          this.$router.push(`Project?project_id=${this.formData.project_id}`);
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: "Please complete the fields above.",
+        });
+      }
+    },
 
-  async mounted () {
-    this.formData.project_id = await this.$store.dispatch('generateID', 't_projects')
-  }
+    updateProject() {
+      if (!Object.values(this.formData).includes("")) {
+        this.$store.dispatch("updateTableData", this.updatePayload).then(() => {
+         this.$message({
+          type: "success",
+          message: "Successfully updated a Project!",
+        });
+          this.$router.push(`Project?project_id=${this.formData.project_id}`);
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: "Please complete the fields above.",
+        });
+      }
+    },
+
+    clearData() {
+      this.formData = {
+        project_id: "",
+        project_title: "",
+        project_desc: "",
+        project_type: "",
+        in_charge: "",
+        percentage: "",
+      };
+    },
+  },
+
+  async mounted() {
+    if (this.$route.query.project_id === undefined) {
+      this.formData.project_id = await this.$store.dispatch(
+        "generateID",
+        "t_projects"
+      );
+    } else {
+      this.isUpdateMode = true;
+      await this.$store.dispatch("getProject", this.$route.query.project_id);
+      this.formData = { ...this.GET_SELECTED_PROJECT }
+    }
+  },
 };
 </script>
 

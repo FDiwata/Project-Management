@@ -12,6 +12,7 @@ export const state = () => ({
     },
     selectedSubtasks: [],
     selectedTaskLogs: [],
+    selectedTaskLogs: {},
     dashboardData: {}
 })
 
@@ -53,12 +54,17 @@ export const actions = {
             commit('SET_SELECTED_TASK_LOGS', result.data)
         },
 
+        async getTaskLog({ commit }, payload) {
+            const result = await this.$axios.get(`/api/taskLog/${payload}`)
+            commit('SET_SELECTED_TASK_LOGS', result.data)
+        },
+
         async generateID(_, payload) {
             const result = await this.$axios.get(`/api/generateID/${payload}`)
             const prefix = payload === 't_projects' ? 'project-' : payload === 't_plans' ? 'plan-' : payload === 't_subtasks' ? 'subtask-' : 'task_log-'
             const count = result.data[0].count + 1
             return `${prefix}${count.toString().length === 1 ? `00${count }` : count.toString().length === 2 ? `0${count }` : count  }`
-    },
+        },
 
     async createProject({ commit }, payload) {
         const result = await this.$axios.post('/api/createProject', payload)
@@ -106,6 +112,20 @@ export const actions = {
             }
         })
         commit('SET_DASHBOARD_DATA', {actualData, plannedData})
+    },
+
+    async updateTableData (_, payload) {
+        const endpoint = `api/updateTableData/${payload.id}`
+        const result = await this.$axios.put(endpoint, payload)
+        return result.data[0]
+    },
+
+    async deleteTableData ({ commit }, payload) {
+        const endpoint = `api/delete/${payload.id}`
+        const result = await this.$axios.post(endpoint, payload)
+        const setDataPrecursor = payload.type === 'project' ? 'SET_ALL_PROJECTS' : payload.type === 'plan' ?  'SET_ALL_PLANS' :  'SET_ALL_SUBTASK'
+        commit(setDataPrecursor, result)
+        return result.data
     }
 }
 
@@ -143,6 +163,10 @@ export const mutations = {
 
     SET_SELECTED_TASK_LOGS(state, payload) {
         state.selectedTaskLogs = payload
+    },
+
+    SET_SELECTED_TASK_LOG(state, payload) {
+        state.selectedTaskLog = payload
     },
 
     SET_DASHBOARD_DATA(state, payload) {
@@ -184,6 +208,10 @@ export const getters = {
     },
 
     GET_SELECTED_TASK_LOGS(state) {
+        return state.selectedTaskLogs
+    },
+
+    GET_SELECTED_TASK_LOG(state) {
         return state.selectedTaskLogs
     },
 

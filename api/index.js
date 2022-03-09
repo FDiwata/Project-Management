@@ -65,6 +65,11 @@ app.get('/taskLogs/:id', async function(req, res) {
     res.send(result)
 })
 
+app.get('/taskLog/:id', async function(req, res) {
+    const result = await knex.select('*').from('t_task_logs').where({ task_logs_id: req.params.id })
+    res.send(result)
+})
+
 app.get('/generateID/:table', async function(req, res) {
     const field = req.params.table === 't_projects' ? 'project_id' : req.params.table === 't_plans' ? 'plan_id' : req.params.table === 't_subtasks' ? 'subtask_id' : 'task_logs_id'
     const result = await knex(req.params.table).count(`${field} as count`)
@@ -113,6 +118,38 @@ app.get('/getPlanDashboard', async function(req, res) {
     GROUP BY t_subtasks.subtask_id, t_subtasks.subtask_desc, t_subtasks.start_date, end_date`)
     res.send(result[0])
 
+})
+
+app.put('/updateTableData/:id', async function(req, res) {
+    const table = `t_${req.body.type}s`
+    console.log(req.body.updateData)
+    const whereObject = {
+        [`${req.body.type}_id`]: req.params.id
+    }
+    const whereObject2 = {
+        [`${req.body.parent_key}_id`]: req.params.id
+    }
+
+    const whereObject3 = {
+        [`${req.body.foreign_key}_id`]: req.body.foreign_id
+    }
+    await knex(table).update(req.body.updateData).where(req.body.parent_key ? whereObject2 : whereObject)
+    const result = await knex.select('*').from(table).where(req.body.parent_key ? whereObject3 : whereObject)
+    res.send(result)
+})
+
+app.post('/delete/:id', async function(req, res) {
+    const table = `t_${req.body.type}s`
+    const delRes = await knex(table).where(req.body.column, req.params.id).del().catch(() => {
+        res.send(false)
+    })
+    console.log(delRes)
+    if (delRes === 1) {
+        const result = await knex.select('*').from(table)
+        res.send(result)
+    } else {
+        res.send(false)
+    }
 })
 
 export default {

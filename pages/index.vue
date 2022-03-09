@@ -1,5 +1,5 @@
 <template>
-  <div class="p-5 w-3/4 m-auto h-screen">
+  <div class="w-2/3 m-auto h-full">
     <div class="w-full py-5">
       <span class="text-5xl font-bold text-white">
         Dashboard
@@ -37,7 +37,7 @@
                 <el-table
                    :header-cell-style="{ background: '#545c64', text: 'white' }" 
                    :cell-style="{ background: '#545c64' }"
-                  :data="GET_ALL_PLANS"
+                  :data="GET_SELECTED_PLANS"
                   class="w-full text-white rounded-lg"
                   @row-click="plotPlan"
                 >
@@ -127,7 +127,7 @@ export default {
         }
       };
     },
-    ...mapGetters(["GET_DASHBOARD_DATA", "GET_ALL_PLANS", "GET_ALL_PROJECTS"]),
+    ...mapGetters(["GET_DASHBOARD_DATA", "GET_SELECTED_PLANS", "GET_ALL_PROJECTS"]),
   },
   data() {
     return {
