@@ -1,5 +1,5 @@
 <template>
-  <div class="py-5 w-2/3 m-auto h-screen">
+  <div class="py-5 w-5/6 m-auto h-screen">
     <div class="w-full py-5 flex flex-row items-center justify-between">
       <span class="text-5xl font-bold text-white">Manage Subtasks</span>
       <nuxt-link class="pr-5 font-black" to="CreateSubtask?redir=true"

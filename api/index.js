@@ -1,5 +1,3 @@
-import res from 'express/lib/response';
-
 // api/index.js
 const express = require('express')
 const knexConfig = require('./knexfile.js');
@@ -122,7 +120,6 @@ app.get('/getPlanDashboard', async function(req, res) {
 
 app.put('/updateTableData/:id', async function(req, res) {
     const table = `t_${req.body.type}s`
-    console.log(req.body.updateData)
     const whereObject = {
         [`${req.body.type}_id`]: req.params.id
     }
@@ -143,7 +140,6 @@ app.post('/delete/:id', async function(req, res) {
     const delRes = await knex(table).where(req.body.column, req.params.id).del().catch(() => {
         res.send(false)
     })
-    console.log(delRes)
     if (delRes === 1) {
         const result = await knex.select('*').from(table)
         res.send(result)

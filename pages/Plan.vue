@@ -1,5 +1,5 @@
 <template>
-  <div class="py-5 w-2/3 m-auto h-screen">
+  <div class="py-5 w-5/6 m-auto h-screen">
     <div class="w-full p-3">
       <span class="text-2xl font-bold text-white">{{GET_SELECTED_PLAN.plan_id}}</span>
     </div>

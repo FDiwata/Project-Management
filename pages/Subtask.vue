@@ -1,5 +1,5 @@
 <template>
-  <div class="py-5 w-2/3 m-auto h-screen">
+  <div class="py-5 w-5/6 m-auto h-screen">
     <div class="w-full p-3">
       <span class="text-2xl font-bold text-white">{{
         GET_SELECTED_SUBTASK.subtask_id
@@ -402,7 +402,6 @@ export default {
       const result = { ...this.GET_SELECTED_TASK_LOG[0] };
       result.log_date = new Date(result.log_date);
       result.miscellaneous = result.miscellaneous === 0 ? false : true;
-      console.log(result);
       this.taskDialogForm = result;
       this.dialogFormVisible = true;
     },

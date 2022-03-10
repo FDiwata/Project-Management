@@ -1,5 +1,5 @@
 <template>
-  <div class="py-5 w-2/3 m-auto h-screen">
+  <div class="py-5 w-5/6 m-auto h-screen">
     <div class="w-full py-5">
       <span v-if="!isUpdateMode" class="text-5xl font-bold text-white">Create Project</span>
       <span v-else class="text-5xl font-bold text-white">Update Project</span>

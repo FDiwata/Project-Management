@@ -1,5 +1,5 @@
 <template>
-  <div class="w-2/3 m-auto h-full">
+  <div class="w-5/6 m-auto h-full">
     <div class="w-full py-5">
       <span class="text-5xl font-bold text-white">
         Dashboard
@@ -205,7 +205,6 @@ export default {
           },
         },
 }}
-      console.log(this.chartOptions.title.text)
       await this.$store.dispatch("getPlanDashboard", row.plan_id);
     },
 
