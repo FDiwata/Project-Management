@@ -1,5 +1,5 @@
 <template>
-  <div class="py-5 w-5/6 m-auto h-screen">
+  <div class="p-5 w-5/6 m-auto h-screen">
     <div class="w-full p-3">
       <span class="text-2xl font-bold text-white">{{
         GET_SELECTED_PROJECT.project_id
@@ -45,6 +45,11 @@
         <div class="flex flex-row items-center justify-center py-3 space-x-5">
           <span class="font-bold">Percentage:</span>
           <span class="font-bold">{{ GET_SELECTED_PROJECT.percentage }}</span>
+        </div>
+
+         <div class="flex flex-row items-center justify-center py-3 space-x-5">
+          <span class="font-bold">Target Month:</span>
+          <span class="font-bold">{{ GET_SELECTED_PROJECT.TargetMonth }}</span>
         </div>
       </div>
       <div class="flex flex-col items-start justify-center w-1/2">

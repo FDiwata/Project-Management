@@ -49,6 +49,28 @@
           v-model="formData.percentage"
         ></el-input>
        </div>
+
+        <div class="flex flex-col items-start justify-center w-1/3">
+        <span class="pb-3 text-sm">Target Month</span>
+         <el-select
+          class="w-full transition-all hover:shadow-lg"
+          v-model="formData.TargetMonth"
+          placeholder="Pick a month"
+        >
+          <el-option label="January" value="Jan"></el-option>
+          <el-option label="February" value="Feb"></el-option>
+          <el-option label="March" value="Mar"></el-option>
+          <el-option label="April" value="Apr"></el-option>
+          <el-option label="May" value="May"></el-option>
+          <el-option label="June" value="Jun"></el-option>
+          <el-option label="July" value="Jul"></el-option>
+          <el-option label="August" value="Aug"></el-option>
+          <el-option label="September" value="Sep"></el-option>
+          <el-option label="October" value="Oct"></el-option>
+          <el-option label="November" value="Nov"></el-option>
+          <el-option label="December" value="Dec"></el-option>
+        </el-select>
+       </div>
       </div>
       <div
         class="w-full flex flex-row items-center justify-start space-x-3 py-3"
@@ -101,6 +123,7 @@ export default {
         project_type: "",
         in_charge: "",
         percentage: "",
+        TargetMonth: ""
       },
       isUpdateMode: false,
     };

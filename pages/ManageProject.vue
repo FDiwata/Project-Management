@@ -60,6 +60,8 @@
         <el-table-column prop="in_charge" label="in Charge"> </el-table-column>
         <el-table-column prop="percentage" label="Percentage">
         </el-table-column>
+        <el-table-column prop="TargetMonth" label="Target Month">
+        </el-table-column>
 
         <el-table-column align="right" width="180">
           <template slot="header">
