@@ -1,12 +1,12 @@
 <template>
   <div class="py-5 w-5/6 m-auto h-screen">
     <div class="w-full p-3">
-      <span class="text-2xl font-bold text-white">{{
+      <span class="text-xl font-light font-mono text-gray-300">{{
         GET_SELECTED_SUBTASK.subtask_id
       }}</span>
     </div>
-    <div class="w-full p-3 flex flex-row items-center justify-between">
-      <span class="text-4xl font-bold text-white">{{
+    <div class="w-full p-3 py-5 flex flex-row items-center justify-between">
+      <span class="text-6xl font-black text-white">{{
         GET_SELECTED_SUBTASK.subtask_title
       }}</span>
 
@@ -23,14 +23,14 @@
     <div
       class="w-full p-3 flex flex-row items-center justify-between space-x-3"
     >
-      <div class="flex flex-col items-start justify-between w-1/2">
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
+      <div class="flex flex-col items-start justify-between w-1/6">
+        <div class="flex flex-row items-center justify-center py-2 space-x-5">
           <span class="font-bold">Priority type:</span>
           <el-tag type="danger" disable-transitions>{{
             GET_SELECTED_SUBTASK.priority
           }}</el-tag>
         </div>
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
+        <div class="flex flex-row items-center justify-center py-2 space-x-5">
           <span class="font-bold">Status:</span>
           <el-tag
             :type="
@@ -45,25 +45,25 @@
           >
         </div>
       </div>
-      <div class="flex flex-col items-start justify-between w-1/2">
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">Start Date:</span>
+      <div class="flex flex-col items-start justify-between w-3/4">
+        <div class="flex flex-row items-center justify-center py-1 space-x-5">
+          <span class="font-semibold">Start Date:</span>
           <span>{{
             new Date(GET_SELECTED_SUBTASK.start_date)
               .toLocaleString()
               .split(",")[0]
           }}</span>
         </div>
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">End Date:</span>
+        <div class="flex flex-row items-center justify-center py-1 space-x-5">
+          <span class="font-semibold">End Date:</span>
           <span>{{
             new Date(GET_SELECTED_SUBTASK.end_date)
               .toLocaleString()
               .split(",")[0]
           }}</span>
         </div>
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">Due Date:</span>
+        <div class="flex flex-row items-center justify-center py-1 space-x-5">
+          <span class="font-semibold">Due Date:</span>
           <span>{{
             new Date(GET_SELECTED_SUBTASK.due_date)
               .toLocaleString()
@@ -72,9 +72,9 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col items-start justify-center p-3">
+    <div class="flex flex-col items-start justify-center p-3 py-10">
       <span class="font-bold">Project Description</span>
-      <p class="font-italic mt-3">
+      <p class="font-italic font-normal mt-3">
         {{ GET_SELECTED_SUBTASK.subtask_desc }}
       </p>
     </div>

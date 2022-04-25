@@ -2,6 +2,7 @@
   <div class="py-5 w-5/6 m-auto h-screen">
     <div class="w-full p-3">
       <span class="text-2xl font-bold text-white">{{GET_SELECTED_PLAN.plan_id}}</span>
+      <!-- <bread-crumb :path-data="this.currentPathData()"/> -->
     </div>
    <div class="w-full p-3 flex flex-row items-center justify-between">
       <span class="text-4xl font-bold text-white">{{GET_SELECTED_PLAN.plan_title}}</span>
@@ -88,7 +89,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import BreadCrumb from '../components/Elements/BreadCrumb.vue';
 export default {
+  components: { BreadCrumb },
   layout: "Default",
   data() {
     return {
@@ -101,6 +104,7 @@ export default {
   async mounted () {
     try {
     await this.$store.dispatch('getPlan', this.$route.query.plan_id)
+    // await this.$store.dispatch('getPath', this.GET_SELECTED_PLAN.plan_id)
     await this.$store.dispatch('getSubtasks', this.GET_SELECTED_PLAN.plan_id || '')
   } catch (_) {
       this.$message({
@@ -110,6 +114,26 @@ export default {
             });
       this.$router.push("/ManagePlan");
     }
+  },
+  methods: {
+    // currentPathData () {
+    //   const sortObj = {
+    //     project: {
+    //     },
+    //     plan: {
+    //     },
+    //     subtask: {
+    //     }
+    //   }
+    //   Object.keys(this.GET_CURRENT_PATH[0]).forEach((item) => {
+    //     if (item.split('_')[1] === 'id') {
+    //       sortObj[item.split('_')[0]].path = this.GET_CURRENT_PATH[0][item]
+    //     } else if (item.split('_')[1] === 'title') {
+    //       sortObj[item.split('_')[0]].title = this.GET_CURRENT_PATH[0][item]
+    //     }
+    //   })
+    //   return Object.values(sortObj)
+    // }
   }
 };
 </script>

@@ -19,109 +19,25 @@
       >
     </div>
     <div class="mt-5">
-      <el-table
-        :header-cell-style="{ background: '#545c64', text: 'white' }"
-        :cell-style="{ background: '#545c64' }"
-        :data="
-          [...GET_ALL_PROJECTS].filter(
+      <div class="w-full grid grid-flow-row gap-5 grid-cols-3">
+      <project-doc class="col-span-1 w-full" v-for="project in [...GET_ALL_PROJECTS].filter(
             (data) =>
               !filterValue ||
               data[filterColumn]
                 .toLowerCase()
                 .includes(filterValue.toLowerCase())
-          )
-        "
-        class="w-full text-white rounded-lg"
-      >
-        <el-table-column prop="project_id" label="Project ID">
-        </el-table-column>
-        <el-table-column prop="project_title" label="Project Title" width="180">
-          <template slot-scope="scope">
-            <nuxt-link
-              class="font-bold text-md hover:underline"
-              :to="{
-                name: $route.query.redir ? 'CreatePlan' : 'Project',
-                query: { project_id: scope.row.project_id },
-              }"
-            >
-              {{ scope.row.project_title }}
-            </nuxt-link>
-          </template>
-        </el-table-column>
-        <el-table-column prop="project_type" label="Type">
-          <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.project_type === 'planned' ? 'success' : 'info'"
-              disable-transitions
-              >{{ scope.row.project_type }}</el-tag
-            >
-          </template>
-        </el-table-column>
-        <el-table-column prop="in_charge" label="in Charge"> </el-table-column>
-        <el-table-column prop="percentage" label="Percentage">
-        </el-table-column>
-        <el-table-column prop="TargetMonth" label="Target Month">
-        </el-table-column>
-
-        <el-table-column align="right" width="180">
-          <template slot="header">
-            <el-input
-              size="mini"
-              v-model="filterValue"
-              placeholder="Type to search by:"
-            />
-          </template>
-          <template slot-scope="scope">
-            <div>
-              <nuxt-link
-                :to="{
-                  name: 'CreateProject',
-                  query: { project_id: scope.row.project_id },
-                }"
-              >
-                <el-button
-                  class="font-bold text-white bg-white"
-                  icon="el-icon-edit"
-                  >Edit</el-button
-                >
-              </nuxt-link>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="right" width="180">
-          <template slot="header">
-            <el-select
-              class="w-full transition-all hover:shadow-lg"
-              v-model="filterColumn"
-              placeholder="Filter type"
-            >
-              <el-option
-                v-for="filter in filterObject"
-                :key="filter"
-                :label="filter"
-                :value="filter"
-              ></el-option>
-            </el-select>
-          </template>
-          <template slot-scope="scope">
-            <div>
-              <el-button
-                @click="deleteAction(scope.row.project_id)"
-                class="font-bold text-white bg-white"
-                icon="el-icon-delete"
-                >Delete</el-button
-              >
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
+          )" :key="project.key" :projData="project"  @delAction="deleteAction(project.project_id)"
+          @editAction="$router.push(`CreateProject?project_id=${project.project_id}`)"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import ProjectDoc from '../components/Elements/ProjectDoc.vue';
 export default {
+  components: { ProjectDoc },
   layout: "Default",
   data() {
     return {

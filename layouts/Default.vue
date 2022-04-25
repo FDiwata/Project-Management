@@ -1,11 +1,11 @@
 <template>
-  <div class="w-full h-screen flex flex-row justify-start bg-gray-400 text-white">
+  <div class="w-full h-fit flex flex-row justify-start bg-slate-600 text-white">
     <el-menu
       default-active="3"
-      class="el-menu-demo top-0 shadow-2xl bg-gray-800 border border-gray-600"
+      class="el-menu-demo top-0 shadow-2xl h-screen"
       mode="horizontal"
       :collapse="false"
-      background-color="#545c64"
+      background-color="rgb(71 85 105)"
       text-color="#fff"
       active-text-color="#ffd04b"
     >
@@ -29,23 +29,7 @@
         <el-menu-item index="4" class="bg-gray-800 hover:bg-slate-800">
           <i class="el-icon-document"></i>
           <span class="text-white hover:font-bold hover:underline" slot="title"
-            >Manage Projects</span
-          >
-        </el-menu-item>
-      </nuxt-link>
-      <nuxt-link to="/ManagePlan">
-        <el-menu-item index="5" class="bg-gray-800 hover:bg-slate-800">
-          <i class="el-icon-date"></i>
-          <span class="text-white hover:font-bold hover:underline" slot="title"
-            >Manage Plans</span
-          >
-        </el-menu-item>
-      </nuxt-link>
-      <nuxt-link to="/ManageSubtask">
-        <el-menu-item index="6" class="bg-gray-800 hover:bg-slate-800">
-          <i class="el-icon-document"></i>
-          <span class="text-white hover:font-bold hover:underline" slot="title"
-            >Manage Subtasks</span
+            >Projects</span
           >
         </el-menu-item>
       </nuxt-link>

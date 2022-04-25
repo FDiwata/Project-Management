@@ -13,103 +13,44 @@
         to="CreatePlan?redir=true"
         ><el-button
           icon="el-icon-edit"
-          class="hover:font-bold text-white bg-white"
+          class="hover:font-bold bg-gray-500 text-white"
           >Create a Plan</el-button
         ></nuxt-link
       >
     </div>
     <div class="mt-5">
-      <el-table
-        class="text-white w-full rounded-lg"
-        :header-cell-style="{ background: '#545c64', text: 'white' }"
-        :cell-style="{ background: '#545c64', text: 'white' }"
-        :data="
-          [...GET_ALL_PLANS].filter(
+      <div class="w-full grid grid-flow-row gap-3 grid-cols-4">
+        <plan-card
+          class="col-span-1 w-full"
+          v-for="item in [...GET_ALL_PLANS].filter(
             (data) =>
               !filterValue ||
               data[filterColumn]
                 .toLowerCase()
                 .includes(filterValue.toLowerCase())
-          )
-        "
-      >
-        <el-table-column prop="plan_id" label="Plan ID"> </el-table-column>
-        <el-table-column prop="plan_title" label="Plan Title">
-          <template slot-scope="scope">
-            <nuxt-link
-              class="font-bold text-md hover:underline"
-              :to="{
-                name: $route.query.redir ? 'CreateSubtask' : 'Plan',
-                query: { plan_id: scope.row.plan_id },
-              }"
-            >
-              {{ scope.row.plan_title }}
-            </nuxt-link>
-          </template>
-        </el-table-column>
-        <el-table-column prop="assignee" label="Assignee"> </el-table-column>
-        <el-table-column prop="plan_desc" label="Description">
-        </el-table-column>
-        <el-table-column align="right">
-          <template slot="header">
-            <el-input
-              size="mini"
-              v-model="filterValue"
-              placeholder="Type to search by:"
-            />
-          </template>
-          <template slot-scope="scope">
-            <div>
-              <nuxt-link
-                :to="{
-                  name: 'CreatePlan',
-                  query: { plan_id: scope.row.plan_id },
-                }"
-              >
-                <el-button
-                  class="font-bold text-white bg-white"
-                  icon="el-icon-edit"
-                  >Edit</el-button
-                >
-              </nuxt-link>
-            </div>
-          </template>
-        </el-table-column>
-
-        <el-table-column align="right">
-          <template slot="header">
-            <el-select
-              class="w-full transition-all hover:shadow-lg"
-              v-model="filterColumn"
-              placeholder="Filter type"
-            >
-              <el-option
-                v-for="filter in filterObject"
-                :key="filter"
-                :label="filter"
-                :value="filter"
-              ></el-option>
-            </el-select>
-          </template>
-          <template slot-scope="scope">
-            <div>
-              <el-button
-                @click="deleteAction(scope.row.plan_id)"
-                class="font-bold text-white bg-white"
-                icon="el-icon-delete"
-                >Delete</el-button
-              >
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
+          )"
+          :key="item.key"
+          :planData="{
+            assignee: item.assignee,
+            plan_desc: item.plan_desc,
+            plan_id: item.plan_id,
+            plan_title: item.plan_title,
+          }"
+          @delAction="deleteAction(item.plan_id)"
+          @editAction="$router.push(`CreatePlan?plan_id=${item.plan_id}`)"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import PlanCard from "../components/Elements/PlanCard.vue";
 export default {
+  components: {
+    PlanCard,
+  },
   layout: "Default",
   data() {
     return {
@@ -122,7 +63,7 @@ export default {
     filterObject() {
       const returnObject = Object.keys(this.GET_ALL_PLANS[0] || []);
       returnObject.splice(1, 1);
-      this.filterColumn = returnObject[0]
+      this.filterColumn = returnObject[0];
       return returnObject;
     },
   },

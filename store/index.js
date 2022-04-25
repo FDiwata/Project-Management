@@ -13,7 +13,8 @@ export const state = () => ({
     selectedSubtasks: [],
     selectedTaskLogs: [],
     selectedTaskLogs: {},
-    dashboardData: {}
+    dashboardData: {},
+    currentPath: {}
 })
 
 export const actions = {
@@ -57,6 +58,11 @@ export const actions = {
         async getTaskLog({ commit }, payload) {
             const result = await this.$axios.get(`/api/taskLog/${payload}`)
             commit('SET_SELECTED_TASK_LOGS', result.data)
+        },
+
+        async getPath({ commit }, payload) {
+            const result = await this.$axios.get(`/api/getPath/${payload}`)
+            commit('SET_CURRENT_PATH', result.data)
         },
 
         async generateID(_, payload) {
@@ -171,6 +177,10 @@ export const mutations = {
 
     SET_DASHBOARD_DATA(state, payload) {
         state.dashboardData = payload
+    },
+
+    SET_CURRENT_PATH(state, payload) {
+        state.currentPath = payload
     }
 }
 
@@ -217,6 +227,10 @@ export const getters = {
 
     GET_DASHBOARD_DATA(state) {
         return state.dashboardData
+    },
+
+    GET_CURRENT_PATH(state) {
+        return state.currentPath
     }
 
 }

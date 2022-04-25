@@ -6,16 +6,7 @@
       </span>
     </div>
     <div class="flex flex-col items-center justify-between">
-      <client-only>
-        <component
-          :is="apexchart"
-          ref="realTimeChart"
-          class="w-full text-black"
-          :options="chartOptions"
-          :series="series"
-          height="300"
-        />
-      </client-only>
+      <chart-widget :chart-options="chartOptions" :series="series" />
       <div class="mt-10 w-full">
         <div class="w-full m-auto pb-5">
           <span class="font-bold">Project list</span
@@ -23,8 +14,7 @@
             >(click plans row in popover to see it in the graph)</span
           >
         </div>
-
-        <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" :cell-style="{ background: '#545c64' }" :data="GET_ALL_PROJECTS" class="w-full break-words text-white rounded-lg">
+        <el-table :header-cell-style="{ background: 'rgb(71 85 105)', text: 'white' }" :cell-style="{ background: 'rgb(71 85 105)' }" :data="GET_ALL_PROJECTS" class="w-full break-words text-white rounded-lg">
           <el-table-column label="Plans" width="180">
             <template slot-scope="scope">
               <el-popover
@@ -34,6 +24,7 @@
                 width="800"
                 trigger="click"
               >
+                <h1 class="font-bold text-2xl">{{scope.row.project_title}} Plans</h1>
                 <el-table
                    :header-cell-style="{ background: '#545c64', text: 'white' }" 
                    :cell-style="{ background: '#545c64' }"
@@ -118,18 +109,13 @@
 
 <script>
 import { mapGetters } from "vuex";
+import ChartWidget from '../components/Widgets/ChartWidget.vue';
 export default {
+  components: { ChartWidget },
   name: "IndexPage",
   layout: "Default",
   computed: {
-    apexchart() {
-      return () => {
-        if (process.client) {
-          return import("vue-apexcharts");
-        }
-      };
-    },
-    ...mapGetters(["GET_DASHBOARD_DATA", "GET_SELECTED_PLANS", "GET_ALL_PROJECTS"]),
+    ...mapGetters(["GET_SELECTED_PLANS", "GET_ALL_PROJECTS"]),
   },
   data() {
     return {
@@ -212,36 +198,6 @@ export default {
 
     async getProjectPlan(project_id) {
       await this.$store.dispatch("getPlans", project_id);
-    },
-  },
-
-  watch: {
-    GET_DASHBOARD_DATA(value) {
-      this.series[0].data = value.actualData;
-      this.series[1].data = value.plannedData;
-      try{
-      this.$refs.realTimeChart.updateSeries([
-        {
-          name: "Actual",
-          data: value.actualData,
-        },
-        {
-          name: "Planned",
-          data: value.plannedData,
-        },
-      ]);
-      } catch (e) {
-        this.$refs.realTimeChart.updateSeries([
-        {
-          name: "Actual",
-          data: value.actualData,
-        },
-        {
-          name: "Planned",
-          data: value.plannedData,
-        },
-      ]);
-      }
     },
   },
   async mounted() {
