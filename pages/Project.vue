@@ -1,11 +1,11 @@
 <template>
   <div class="p-5 w-5/6 m-auto h-screen">
     <div class="w-full p-3">
-      <span class="text-2xl font-bold text-white">{{
+      <span class="text-lg font-thin text-white">{{
         GET_SELECTED_PROJECT.project_id
       }}</span>
     </div>
-    <div class="w-full p-3 flex flex-row items-center justify-between">
+    <div class="w-full p-3 py-1 flex flex-row items-center justify-between">
       <span class="text-4xl font-bold text-white">{{
         GET_SELECTED_PROJECT.project_title
       }}</span>
@@ -24,8 +24,8 @@
       class="w-full p-3 flex flex-row items-center justify-between space-x-3"
     >
       <div class="flex flex-col items-start justify-between w-1/2">
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">Project type:</span>
+        <div class="flex flex-row items-center justify-center py-1 space-x-5">
+          <span>Project type:</span>
           <el-tag
             :type="
               GET_SELECTED_PROJECT.project_type === 'planned'
@@ -36,31 +36,32 @@
             >{{ GET_SELECTED_PROJECT.project_type }}</el-tag
           >
         </div>
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">Created by:</span>
-          <span class="text-blue-700 font-semibold"
+        <div class="flex flex-row items-center justify-center py-1 space-x-5">
+          <span>Created by:</span>
+          <span class="text-cyan-500 font-semibold"
             >@{{ GET_SELECTED_PROJECT.in_charge }}</span
           >
         </div>
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">Percentage:</span>
-          <span class="font-bold">{{ GET_SELECTED_PROJECT.percentage }}</span>
+        <div class="flex flex-row items-center justify-center py-1 space-x-5">
+          <span>Percentage:</span>
+          <span class="font-bold">{{ projectPercentage }}</span>
         </div>
 
-         <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">Target Month:</span>
+         <div class="flex flex-row items-center justify-center py-1 space-x-5">
+          <span>Target Month:</span>
           <span class="font-bold">{{ GET_SELECTED_PROJECT.TargetMonth }}</span>
         </div>
       </div>
       <div class="flex flex-col items-start justify-center w-1/2">
-        <span class="font-bold">Project Description</span>
-        <p class="font-italic mt-3">
+        <span>Project Description</span>
+        <p class="font-italic font-light mt-3">
           {{ GET_SELECTED_PROJECT.project_desc }}
         </p>
       </div>
     </div>
+    <hr />
     <div class="p-3">
-      <div class="w-full flex flex-row justify-between items-center py-5">
+      <div class="w-full flex flex-row justify-between items-center py-2">
         <span class="font-bold">Project plans list:</span>
         <nuxt-link
           :to="{
@@ -73,11 +74,18 @@
         >
       </div>
       <el-table
-        :header-cell-style="{ background: '#545c64', text: 'white' }"
-        :cell-style="{ background: '#545c64' }"
         :data="GET_SELECTED_PLANS"
-        class="w-full rounded-lg text-white"
+        class="w-full rounded-lg"
       >
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <div v-if="scope.row.subtasks.length < 1" class="w-full text-center py-10"><span>This needs to be planned out. 🤔</span></div>
+            <div v-else class="w-full px-3 pt-3 bg-gray-300"><span class="text-lg text-gray-800">List of subtasks for <span class="font-bold">{{scope.row.plan_title}}</span></span></div>
+            <div v-if="scope.row.subtasks.length > 1" class="w-full p-3 bg-gray-300 grid grid-flow-row gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              <subtask-doc v-for="item in scope.row.subtasks" :key="item.key" :subtask="item"/>
+            </div>
+          </template>  
+        </el-table-column> 
         <el-table-column prop="plan_id" label="Plan ID"> </el-table-column>
         <el-table-column prop="plan_title" label="Plan Title">
           <template slot-scope="scope">
@@ -92,6 +100,11 @@
         <el-table-column prop="assignee" label="Assignee"> </el-table-column>
         <el-table-column prop="plan_desc" label="Description">
         </el-table-column>
+        <el-table-column :key="rowKey" prop="percentage" label="percentage">
+           <template slot-scope="scope">
+            <el-progress :text-inside="true" :show-text="scope.row.percentage !== null" :stroke-width="26" :percentage="scope.row.percentage"></el-progress>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -99,21 +112,35 @@
 
 <script>
 import { mapGetters } from "vuex";
+import SubtaskDoc from '../components/Elements/SubtaskDoc.vue';
 export default {
+  components: { SubtaskDoc },
   layout: "Default",
   data() {
-    return {};
+    return {
+      rowKey: 0
+    };
   },
   computed: {
     ...mapGetters(["GET_SELECTED_PROJECT", "GET_SELECTED_PLANS"]),
+    projectPercentage () {
+       return this.GET_SELECTED_PLANS.map((item) => {
+         return item.percentage
+       })
+    }
   },
-  async mounted() {
+  async beforeCreate() {
     try {
       await this.$store.dispatch("getProject", this.$route.query.project_id);
       await this.$store.dispatch(
         "getPlans",
         this.GET_SELECTED_PROJECT.project_id || ""
-      );
+      ).then(() => {
+        this.rowKey = 1
+      })
+      this.GET_SELECTED_PLANS.forEach(async (plan, index) => {
+        this.GET_SELECTED_PLANS[index].subtasks = await this.getSpecificSubtasks(plan.plan_id)
+      })
     } catch (_) {
       this.$message({
               type: "error",
@@ -123,5 +150,12 @@ export default {
       this.$router.push("/ManageProject");
     }
   },
+
+  methods: {
+    async getSpecificSubtasks (plan_id) {
+      return await this.$store.dispatch('getSubtasks', plan_id)
+    },
+    
+  }
 };
 </script>

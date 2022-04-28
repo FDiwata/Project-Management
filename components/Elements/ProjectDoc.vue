@@ -1,6 +1,6 @@
 <template>
 <nuxt-link @click.self.stop :to="`Project?project_id=${projData.project_id}`">
-   <div class="w-full flex flex-col space-y-3 p-5 rounded-lg hover:shadow-lg bg-gray-300 text-gray-500">
+   <div class="w-full flex flex-col space-y-3 p-5 rounded-lg hover:shadow-lg bg-white text-gray-500">
     <div class="w-full flex flex-col items-start justify-center">
       <span class="text-xs">{{ projData.project_id }}</span>
       <h1 class="text-xl font-black text-gray-800">{{ projData.project_title }}</h1>

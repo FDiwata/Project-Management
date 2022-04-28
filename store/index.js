@@ -28,10 +28,16 @@ export const actions = {
             commit('SET_SELECTED_PROJECT', result.data[0])
         },
 
-        async getPlans({ commit }, payload = null) {
+        async getPlans({ commit, dispatch }, payload = null) {
             const getAll = payload === null
             const result = await this.$axios.get(getAll ? '/api/plans' : `/api/plans/${payload}`)
-            commit(getAll ? 'SET_ALL_PLANS' : 'SET_SELECTED_PLANS', result.data)
+
+            let newArray = result.data
+            newArray.forEach(async(item, index) => {
+                newArray[index].percentage = await dispatch('getPlanPercentage', item.plan_id)
+            })
+
+            commit(getAll ? 'SET_ALL_PLANS' : 'SET_SELECTED_PLANS', newArray)
         },
 
         async getPlan({ commit }, payload) {
@@ -43,6 +49,7 @@ export const actions = {
             const getAll = payload === null
             const result = await this.$axios.get(getAll ? '/api/subtasks' : `/api/subtasks/${payload}`)
             commit(getAll ? 'SET_ALL_SUBTASKS' : 'SET_SELECTED_SUBTASKS', result.data)
+            return result.data
         },
 
         async getSubtask({ commit }, payload) {
@@ -63,6 +70,11 @@ export const actions = {
         async getPath({ commit }, payload) {
             const result = await this.$axios.get(`/api/getPath/${payload}`)
             commit('SET_CURRENT_PATH', result.data)
+        },
+
+        async getPlanPercentage(_, payload) {
+            const result = await this.$axios.get(`/api/getPlanPercentage/${payload}`)
+            return result.data[0][0].plan_percentage
         },
 
         async generateID(_, payload) {

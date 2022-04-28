@@ -91,24 +91,22 @@
       <el-table
         :header-cell-style="{ background: '#545c64', text: 'white' }"
         :cell-style="{ background: '#545c64' }"
-        :data="
-          [...GET_SELECTED_TASK_LOGS]
-        "
+        :data="[...GET_SELECTED_TASK_LOGS]"
         class="w-full rounded-lg text-white break-words"
       >
         <el-table-column prop="task_logs_id" label="Task Log ID">
           <template slot-scope="scope">
-          <el-popover
-                class="rounded-lg break-words"
-                placement="right"
-                width="250"
-                height="300"
-                trigger="hover"
-              >
-                <span class="break-words">{{ scope.row.task_desc }}</span>
+            <el-popover
+              class="rounded-lg break-words"
+              placement="right"
+              width="250"
+              height="300"
+              trigger="hover"
+            >
+              <span class="break-words">{{ scope.row.task_desc }}</span>
 
-                <span slot="reference">{{ scope.row.task_logs_id }}</span>
-              </el-popover>
+              <span slot="reference">{{ scope.row.task_logs_id }}</span>
+            </el-popover>
           </template>
         </el-table-column>
         <el-table-column prop="miscellaneous" label="Miscellaneous">
@@ -142,7 +140,7 @@
         </el-table-column>
         <el-table-column prop="work_hours" label="Work Hours">
         </el-table-column>
-        <el-table-column  width="240">
+        <el-table-column width="240">
           <template slot-scope="scope">
             <div class="flex flex-row">
               <el-button
@@ -416,7 +414,7 @@ export default {
                 data: { status: this.taskDialogForm.status },
                 subtask_id: this.taskDialogForm.subtask_id,
               })
-              .then( async () => {
+              .then(async () => {
                 this.$message({
                   type: "success",
                   message: "Successfully updated a task log!",

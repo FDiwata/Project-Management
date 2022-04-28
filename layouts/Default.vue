@@ -1,10 +1,11 @@
 <template>
-  <div class="w-full h-fit flex flex-row justify-start bg-slate-600 text-white">
+  <div class="w-full max-h-screen overflow-auto h-screen flex flex-row justify-start bg-slate-600 text-white">
+    <div class="h-screen">
     <el-menu
       default-active="3"
-      class="el-menu-demo top-0 shadow-2xl h-screen"
+      class="el-menu-demo top-0 shadow-2xl h-full fixed"
       mode="horizontal"
-      :collapse="false"
+      :collapse="true"
       background-color="rgb(71 85 105)"
       text-color="#fff"
       active-text-color="#ffd04b"
@@ -34,6 +35,7 @@
         </el-menu-item>
       </nuxt-link>
     </el-menu>
+    </div>
     <Nuxt />
   </div>
 </template>

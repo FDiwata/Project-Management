@@ -74,6 +74,12 @@ app.get('/generateID/:table', async function(req, res) {
     res.send(result)
 })
 
+app.get('/getPlanPercentage/:id', async function(req, res) {
+    const result = await knex.raw(`select count(*) * 100.0 / (select count(*) from t_subtasks WHERE t_subtasks.plan_id = '${req.params.id}') as plan_percentage
+    from t_subtasks WHERE t_subtasks.status = 'done' AND t_subtasks.plan_id = '${req.params.id}'`)
+    res.send(result)
+})
+
 app.post('/createProject', async function(req, res) {
     const result = await knex('t_projects').insert(req.body)
     res.send(result)
