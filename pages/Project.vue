@@ -44,7 +44,7 @@
         </div>
         <div class="flex flex-row items-center justify-center py-1 space-x-5">
           <span>Percentage:</span>
-          <span class="font-bold">{{ projectPercentage }}</span>
+          <span class="font-bold text-cyan-500">{{ getProjectPercentage }} % <span class="font-light text-white">complete</span></span>
         </div>
 
          <div class="flex flex-row items-center justify-center py-1 space-x-5">
@@ -81,7 +81,7 @@
           <template slot-scope="scope">
             <div v-if="scope.row.subtasks.length < 1" class="w-full text-center py-10"><span>This needs to be planned out. 🤔</span></div>
             <div v-else class="w-full px-3 pt-3 bg-gray-300"><span class="text-lg text-gray-800">List of subtasks for <span class="font-bold">{{scope.row.plan_title}}</span></span></div>
-            <div v-if="scope.row.subtasks.length > 1" class="w-full p-3 bg-gray-300 grid grid-flow-row gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div v-if="scope.row.subtasks.length >= 1" class="w-full p-3 bg-gray-300 grid grid-flow-row gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               <subtask-doc v-for="item in scope.row.subtasks" :key="item.key" :subtask="item"/>
             </div>
           </template>  
@@ -100,7 +100,7 @@
         <el-table-column prop="assignee" label="Assignee"> </el-table-column>
         <el-table-column prop="plan_desc" label="Description">
         </el-table-column>
-        <el-table-column :key="rowKey" prop="percentage" label="percentage">
+        <el-table-column prop="percentage" label="percentage">
            <template slot-scope="scope">
             <el-progress :text-inside="true" :show-text="scope.row.percentage !== null" :stroke-width="26" :percentage="scope.row.percentage"></el-progress>
           </template>
@@ -118,26 +118,24 @@ export default {
   layout: "Default",
   data() {
     return {
-      rowKey: 0
     };
   },
   computed: {
     ...mapGetters(["GET_SELECTED_PROJECT", "GET_SELECTED_PLANS"]),
-    projectPercentage () {
-       return this.GET_SELECTED_PLANS.map((item) => {
-         return item.percentage
-       })
+    getProjectPercentage () {
+      let projTotalPercentage = 0
+      this.GET_SELECTED_PLANS.forEach((plan) => {
+        projTotalPercentage+=plan.percentage
+      })
+      return 100/this.GET_SELECTED_PLANS.length * projTotalPercentage/100
     }
   },
-  async beforeCreate() {
+  async created() {
     try {
       await this.$store.dispatch("getProject", this.$route.query.project_id);
-      await this.$store.dispatch(
-        "getPlans",
+      await this.$store.dispatch("getPlans",
         this.GET_SELECTED_PROJECT.project_id || ""
-      ).then(() => {
-        this.rowKey = 1
-      })
+      )
       this.GET_SELECTED_PLANS.forEach(async (plan, index) => {
         this.GET_SELECTED_PLANS[index].subtasks = await this.getSpecificSubtasks(plan.plan_id)
       })
@@ -150,7 +148,6 @@ export default {
       this.$router.push("/ManageProject");
     }
   },
-
   methods: {
     async getSpecificSubtasks (plan_id) {
       return await this.$store.dispatch('getSubtasks', plan_id)
