@@ -223,11 +223,11 @@
         >
         <el-button
           v-if="!isUpdateMode"
-          class="text-blue-700 font-bold"
+          class="text-cyan-500 font-bold"
           @click="logTask"
           >Log Task</el-button
         >
-        <el-button v-else class="text-blue-700 font-bold" @click="updateTaskLog"
+        <el-button v-else class="text-cyan-500 font-bold" @click="updateTaskLog"
           >Update Task Log</el-button
         >
       </span>

@@ -29,7 +29,9 @@ app.get('/plans/:id', async function(req, res) {
 })
 
 app.get('/plans', async function(req, res) {
-    const result = await knex.select('*').from('t_plans')
+    const result = await knex.raw(`SELECT *,
+    (100/(SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id) * (SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id AND t_subtasks.status = 'done')) as percentage
+    FROM t_plans`)
     res.send(result)
 })
 
@@ -81,6 +83,33 @@ app.get('/generateID/:table', async function(req, res) {
 app.get('/getPlanPercentage/:id', async function(req, res) {
     const result = await knex.raw(`select count(*) * 100.0 / (select count(*) from t_subtasks WHERE t_subtasks.plan_id = '${req.params.id}') as plan_percentage
     from t_subtasks WHERE t_subtasks.status = 'done' AND t_subtasks.plan_id = '${req.params.id}'`)
+    res.send(result)
+})
+
+app.get('/getProjectPercentages', async function(req, res) {
+    const result = await knex.raw(`SELECT (SELECT t_projects.project_id FROM t_projects WHERE t_projects.project_id = t_plans.project_id) as project_id, (SELECT t_projects.project_title FROM t_projects WHERE t_projects.project_id = t_plans.project_id) as project_title,
+    SUM(100/(SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id) * (SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id AND t_subtasks.status = 'done')) as percentage,
+    COUNT(100/(SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id) * (SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id AND t_subtasks.status = 'done')) as plan_count
+    FROM t_plans GROUP BY t_plans.project_id`)
+    res.send(result)
+})
+
+
+app.get('/getTodoSubtaskPercentage', async function(req, res) {
+    const result = await knex.raw(`select count(*) * 100.0 / (select count(*) from t_subtasks) as percentage
+    from t_subtasks WHERE t_subtasks.status = 'todo'`)
+    res.send(result)
+})
+
+app.get('/getDoingSubtaskPercentage', async function(req, res) {
+    const result = await knex.raw(`select count(*) * 100.0 / (select count(*) from t_subtasks) as percentage
+    from t_subtasks WHERE t_subtasks.status = 'doing'`)
+    res.send(result)
+})
+
+app.get('/getDoneSubtaskPercentage', async function(req, res) {
+    const result = await knex.raw(`select count(*) * 100.0 / (select count(*) from t_subtasks) as percentage
+    from t_subtasks WHERE t_subtasks.status = 'done'`)
     res.send(result)
 })
 

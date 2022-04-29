@@ -49,7 +49,7 @@
         <el-button
           v-if="!isUpdateMode"
           @click="createPlan"
-          class="font-bold text-blue-700"
+          class="font-bold text-cyan-500"
           icon="el-icon-edit"
           >Create</el-button
         >
@@ -57,11 +57,11 @@
         <el-button
           v-else
           @click="updatePlan"
-          class="font-bold text-blue-700"
+          class="font-bold text-cyan-500"
           icon="el-icon-edit"
           >Update Plan</el-button
         >
-        <el-button @click="clearData">Clear</el-button>
+        <el-button class="text-white bg-white" @click="$router.go(-1)">Back</el-button>
       </el-row>
     </div>
   </div>

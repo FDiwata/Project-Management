@@ -1,5 +1,5 @@
 <template>
-  <div class="p-5 w-5/6 m-auto h-screen">
+  <div class="p-1 lg:p-5 w-fit lg:w-5/6 m-auto h-screen">
     <div class="w-full p-3">
       <span class="text-lg font-thin text-white">{{
         GET_SELECTED_PROJECT.project_id
@@ -44,7 +44,7 @@
         </div>
         <div class="flex flex-row items-center justify-center py-1 space-x-5">
           <span>Percentage:</span>
-          <span class="font-bold text-cyan-500">{{ getProjectPercentage }} % <span class="font-light text-white">complete</span></span>
+          <span class="font-bold text-cyan-500">{{ Math.round(getProjectPercentage) }} % <span class="font-light text-white">complete</span></span>
         </div>
 
          <div class="flex flex-row items-center justify-center py-1 space-x-5">
@@ -80,14 +80,14 @@
         <el-table-column type="expand">
           <template slot-scope="scope">
             <div v-if="scope.row.subtasks.length < 1" class="w-full text-center py-10"><span>This needs to be planned out. 🤔</span></div>
-            <div v-else class="w-full px-3 pt-3 bg-gray-300"><span class="text-lg text-gray-800">List of subtasks for <span class="font-bold">{{scope.row.plan_title}}</span></span></div>
+            <div v-else class="w-full px-3 pt-3 bg-gray-300"><span class="text-lg text-gray-800">Subtasks for <span class="font-bold">{{scope.row.plan_title}}</span></span></div>
             <div v-if="scope.row.subtasks.length >= 1" class="w-full p-3 bg-gray-300 grid grid-flow-row gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               <subtask-doc v-for="item in scope.row.subtasks" :key="item.key" :subtask="item"/>
             </div>
           </template>  
         </el-table-column> 
-        <el-table-column prop="plan_id" label="Plan ID"> </el-table-column>
-        <el-table-column prop="plan_title" label="Plan Title">
+        <el-table-column prop="plan_id" label="Plan ID" width="90"> </el-table-column>
+        <el-table-column prop="plan_title" label="Plan Title" width="190">
           <template slot-scope="scope">
             <nuxt-link
               class="font-bold hover:underline"
@@ -97,12 +97,12 @@
             </nuxt-link>
           </template>
         </el-table-column>
-        <el-table-column prop="assignee" label="Assignee"> </el-table-column>
+        <el-table-column prop="assignee" label="Assignee" width="190"> </el-table-column>
         <el-table-column prop="plan_desc" label="Description">
         </el-table-column>
-        <el-table-column prop="percentage" label="percentage">
+        <el-table-column prop="percentage" label="percentage" width="180">
            <template slot-scope="scope">
-            <el-progress :text-inside="true" :show-text="scope.row.percentage !== null" :stroke-width="26" :percentage="scope.row.percentage"></el-progress>
+            <el-progress  type="circle" :stroke-width="12" :percentage="Math.round(scope.row.percentage)"></el-progress>
           </template>
         </el-table-column>
       </el-table>
@@ -151,8 +151,7 @@ export default {
   methods: {
     async getSpecificSubtasks (plan_id) {
       return await this.$store.dispatch('getSubtasks', plan_id)
-    },
-    
+    }
   }
 };
 </script>

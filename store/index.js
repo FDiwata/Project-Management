@@ -71,6 +71,24 @@ export const actions = {
             return result.data[0][0].plan_percentage
         },
 
+        async getProjectPercentage() {
+            const result = await this.$axios.get('/api/getProjectPercentages')
+            return result.data[0]
+        },
+
+        async getTodoPercentage() {
+            const result = await this.$axios.get('/api/getTodoSubtaskPercentage')
+            return result.data[0][0]
+        },
+        async getDoingPercentage() {
+            const result = await this.$axios.get('/api/getDoingSubtaskPercentage')
+            return result.data[0][0]
+        },
+        async getDonePercentage() {
+            const result = await this.$axios.get('/api/getDoneSubtaskPercentage')
+            return result.data[0][0]
+        },
+
         async generateID(_, payload) {
             const result = await this.$axios.get(`/api/generateID/${payload}`)
             const prefix = payload === 't_projects' ? 'project-' : payload === 't_plans' ? 'plan-' : payload === 't_subtasks' ? 'subtask-' : 'task_log-'

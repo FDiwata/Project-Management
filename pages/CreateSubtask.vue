@@ -102,7 +102,7 @@
         <el-button
           v-if="!isUpdateMode"
           @click="createSubtask"
-          class="bg-blue-500 text-blue-700"
+          class="bg-blue-500 text-cyan-500"
           icon="el-icon-edit"
           >Create</el-button
         >
@@ -110,11 +110,11 @@
         <el-button
           v-else
           @click="updateSubtask"
-          class="bg-blue-500 text-blue-700"
+          class="bg-blue-500 text-cyan-500"
           icon="el-icon-edit"
           >Update Subtask</el-button
         >
-        <el-button @click="clearData">Clear</el-button>
+        <el-button class="text-white bg-white" @click="$router.go(-1)">Back</el-button>
       </el-row>
     </div>
   </div>

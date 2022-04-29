@@ -16,7 +16,7 @@
     <div class="flex flex-col items-start justify-start w-full p-3">
       <div class="flex flex-row items-center justify-center py-5 space-x-5">
         <span class="font-bold">Assigned to:</span>
-        <span class="text-blue-700 font-semibold">{{GET_SELECTED_PLAN.assignee}}</span>
+        <span class="text-cyan-500 font-semibold">{{GET_SELECTED_PLAN.assignee}}</span>
       </div>
       <div class="flex flex-col items-start justify-center">
         <span class="font-bold">Project Description</span>
