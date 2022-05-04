@@ -76,16 +76,16 @@ export const actions = {
             return result.data[0]
         },
 
-        async getTodoPercentage() {
-            const result = await this.$axios.get('/api/getTodoSubtaskPercentage')
+        async getTodoPercentage(_, payload) {
+            const result = await this.$axios.get(`/api/getTodoSubtaskPercentage/${payload.project_id}/${payload.plan_id}`)
             return result.data[0][0]
         },
-        async getDoingPercentage() {
-            const result = await this.$axios.get('/api/getDoingSubtaskPercentage')
+        async getDoingPercentage(_, payload) {
+            const result = await this.$axios.get(`/api/getDoingSubtaskPercentage/${payload.project_id}/${payload.plan_id}`)
             return result.data[0][0]
         },
-        async getDonePercentage() {
-            const result = await this.$axios.get('/api/getDoneSubtaskPercentage')
+        async getDonePercentage(_, payload) {
+            const result = await this.$axios.get(`/api/getDoneSubtaskPercentage/${payload.project_id}/${payload.plan_id}`)
             return result.data[0][0]
         },
 
