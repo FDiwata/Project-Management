@@ -7,7 +7,7 @@
       <!-- -->
       <percentages />
       <div class="mt-10 w-full">
-        <project-percentage :plan-data="GET_ALL_PLANS" />
+        <project-percentage  :plan-data="GET_ALL_PLANS" />
       </div>
     </div>
   </div>
@@ -35,6 +35,11 @@ export default {
     await this.$store.dispatch("getPlans");
     await this.$store.dispatch("getPlanDashboard");
   },
+  data () {
+    return {
+      drawer: false
+    }
+  }
 };
 </script>
 <style>

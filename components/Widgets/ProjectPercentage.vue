@@ -81,8 +81,6 @@
     <el-drawer
       :title="`List of plans for ${GET_SELECTED_PROJECT.project_title}`"
       :visible.sync="drawer"
-      :direction="direction"
-      :before-close="handleClose"
       size="50%"
     >
       <div class="h-full w-full p-5">

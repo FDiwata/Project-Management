@@ -28,50 +28,25 @@ export default {
     return {
       series: [],
       chartOptions: {
-          title: {
-            text: "All Subtasks",
-            align: "left",
-            margin: 10,
-            offsetX: 0,
-            offsetY: 0,
-            floating: false,
-            style: {
-              fontSize: "14pt",
-              fontWeight: "bold",
-              fontFamily: undefined,
-              color: "white",
-            },
-          },
-          labels: ['Todo', 'Doing', 'Done'],
-          chart: {
-            height: 350,
-            type: "rangeBar",
-          },
-          plotOptions: {
-            bar: {
-              horizontal: true,
-            },
-          },
-          fill: {
-            type: "gradient",
-            gradient: {
-              shade: "dark",
-              type: "vertical",
-              shadeIntensity: 0.25,
-              gradientToColors: undefined,
-              inverseColors: true,
-              opacityFrom: 1,
-              opacityTo: 1,
-              stops: [50, 0, 100, 100],
-            },
-          },
-          xaxis: {
-            type: "datetime",
-          },
-          legend: {
-            position: "top",
-          },
+        chart: {
+          width: 380,
+          type: "pie",
         },
+        labels: ["Todo", "Doing", "Done"],
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      },
       widgetData: [],
       subStatus: ["todo", "doing", "done"],
       subColor: ["#FAA43A", "#5DA5DA", "#9ACD32"],
