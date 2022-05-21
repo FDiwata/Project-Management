@@ -1,6 +1,7 @@
 // api/index.js
 const express = require('express')
 const knexConfig = require('./knexfile.js');
+var SHA256 = require("crypto-js/sha256");
 const knex = require('knex')(knexConfig[process.env.NODE_ENV])
 const app = express()
 app.use(express.json())
@@ -200,6 +201,25 @@ app.post('/delete/:id', async function(req, res) {
         res.send(false)
     }
 })
+
+
+
+app.post('/register', async function (req, res) {
+    let param = req.body
+    param.user_pass = SHA256(req.body.user_pass).toString()
+    const result = await knex('t_users').insert(param)
+    res.send(result)
+})
+
+
+app.post('/login', async function (req, res) {
+    const encPass = SHA256(req.body.user_pass).toString()
+    const result = await knex.select('*').from('t_users').where({ user_name: req.body.user_name, user_pass: encPass })
+    console.log(result)
+    res.send(result)
+})
+
+
 
 export default {
     path: '/api',

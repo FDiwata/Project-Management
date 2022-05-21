@@ -156,6 +156,12 @@ export const actions = {
             const setDataPrecursor = payload.type === 'project' ? 'SET_ALL_PROJECTS' : payload.type === 'plan' ?  'SET_ALL_PLANS' :  'SET_ALL_SUBTASK'
             commit(setDataPrecursor, result)
             return result.data
+        },
+
+        async userLogin () {
+            // const endpoint = `api/updateTableData/${payload.id}`
+            // const result = await this.$axios.put(endpoint, payload)
+            // return result.data[0]
         }
 }
 
