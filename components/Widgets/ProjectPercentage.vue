@@ -81,7 +81,7 @@
     <el-drawer
       :title="`List of plans for ${GET_SELECTED_PROJECT.project_title}`"
       :visible.sync="drawer"
-      size="50%"
+      size="75%"
     >
       <div class="h-full w-full p-5">
         <el-table

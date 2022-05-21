@@ -1,5 +1,5 @@
 <template>
-  <div class="py-5 w-5/6 m-auto h-screen">
+  <div class="p-5 w-5/6 m-auto h-screen">
     <div class="w-full py-5 flex flex-row items-center justify-between">
       <span v-if="!$route.query.redir" class="text-5xl font-bold text-white"
         >Manage Projects</span
@@ -19,7 +19,7 @@
       >
     </div>
     <div class="mt-5">
-      <div class="w-full grid grid-flow-row gap-5 grid-cols-3">
+      <div class="w-full grid grid-flow-row gap-5 grid-cols-2 lg:grid-cols-3">
       <project-doc class="col-span-1 w-full" v-for="project in [...GET_ALL_PROJECTS].filter(
             (data) =>
               !filterValue ||

@@ -1,6 +1,6 @@
 <template>
-  <div class="w-3/4 p-5 rounded bg-white shadow-lg text-gray-800">
-    <div class="w-full flex flex-row items-center justify-between">
+  <div class="w-full lg:w-2/3 p-5 rounded bg-white shadow-lg text-gray-800">
+    <div class="w-full flex flex-row items-center justify-start space-x-5">
       <span class="text-2xl font-bold">Subtask composition</span>
        <div class="flex flex-col items-start justify-center w-1/3">
         <span class="pb-3 text-sm">Select Project</span>
