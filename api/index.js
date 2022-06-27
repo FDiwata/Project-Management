@@ -215,7 +215,6 @@ app.post('/register', async function (req, res) {
 app.post('/login', async function (req, res) {
     const encPass = SHA256(req.body.user_pass).toString()
     const result = await knex.select('*').from('t_users').where({ user_name: req.body.user_name, user_pass: encPass })
-    console.log(result)
     res.send(result)
 })
 

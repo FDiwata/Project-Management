@@ -1,5 +1,5 @@
 <template>
-  <div class="p-5 w-5/6 m-auto h-screen">
+  <div class="p-5 w-2/3 m-auto h-screen">
     <div class="w-full py-5 flex flex-row items-center justify-between">
       <span v-if="!$route.query.redir" class="text-5xl font-bold text-white"
         >Manage Projects</span

@@ -9,7 +9,7 @@
         flex flex-col
         lg:flex-row
         items-center
-        justify-between
+        justify-start
         space-x-0
         md:space-x-3
       "
@@ -18,7 +18,7 @@
       <percentages />
     </div>
     <div class="mt-10 w-full m-auto">
-      <project-percentage :plan-data="GET_ALL_PLANS" />
+      <project-percentage :perc-data="GET_ALL_PLANS" />
     </div>
   </div>
 </template>

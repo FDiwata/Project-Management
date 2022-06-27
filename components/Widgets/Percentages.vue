@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full lg:w-2/3 p-5 rounded bg-white shadow-lg text-gray-800">
-    <div class="w-full flex flex-row items-center justify-start space-x-5">
-      <span class="text-2xl font-bold">Subtask composition</span>
+  <div class="w-full lg:w-1/3 p-5 rounded bg-white shadow-lg text-gray-800">
+    <div class="w-full flex flex-row items-start justify-start space-x-5">
+      <span class="text-xl font-bold">Subtask composition</span>
        <div class="flex flex-col items-start justify-center w-1/3">
         <span class="pb-3 text-sm">Select Project</span>
          <el-select
@@ -9,6 +9,7 @@
           v-model="selectedProjectID"
           placeholder="Pick a project"
         >
+          <el-option  label="All projects" :value="null" />
           <el-option v-for="project in GET_ALL_PROJECTS" :key="project.key" :label="project.project_title" :value="project.project_id" />
         </el-select>
        </div>
@@ -19,6 +20,7 @@
           v-model="selectedPlanID"
           placeholder="Pick a plan"
         >
+        <el-option  label="All plans" :value="null" />
           <el-option v-for="plan in GET_SELECTED_PLANS" :key="plan.key" :label="plan.plan_title" :value="plan.plan_id" />
         </el-select>
        </div>
@@ -41,33 +43,36 @@ export default {
       widgetData : [],
       subStatus: ['todo', 'doing', 'done'],
       subColor: ['#FAA43A', '#5DA5DA', '#9ACD32'],
-      selectedProjectID: '',
+      selectedProjectID: null,
       selectedPlanID: null
+    }
+  },
+  methods: {
+    async getPercentages(project_id, plan_id) {
+      const categories = ['getTodoPercentage', 'getDoingPercentage', 'getDonePercentage']
+      categories.forEach(async (categ) => {
+        this.widgetData.push(await this.$store.dispatch(categ, {project_id: project_id, plan_id: plan_id}))
+      })
     }
   },
   watch: {
     async selectedProjectID (value) {
+       value === null && this.$store.commit('SET_SELECTED_PLANS', [])
        await this.$store.dispatch('getPlans', value)
        this.widgetData = []
-       this.widgetData.push(await this.$store.dispatch('getTodoPercentage', { project_id: value, plan_id: this.selectedPlanID}))
-      this.widgetData.push(await this.$store.dispatch('getDoingPercentage', { project_id: value, plan_id: this.selectedPlanID}))
-      this.widgetData.push(await this.$store.dispatch('getDonePercentage', { project_id: value, plan_id: this.selectedPlanID}))
+       await this.getPercentages(value, this.selectedPlanID)
        this.selectedPlanID = null
 
     },
 
     async selectedPlanID (value) {
       this.widgetData = []
-      this.widgetData.push(await this.$store.dispatch('getTodoPercentage', { project_id: this.selectedProjectID, plan_id: value}))
-      this.widgetData.push(await this.$store.dispatch('getDoingPercentage', { project_id: this.selectedProjectID, plan_id: value}))
-      this.widgetData.push(await this.$store.dispatch('getDonePercentage', { project_id: this.selectedProjectID, plan_id: value}))
+      await this.getPercentages(this.selectedProjectID, value)
     }
   },
  async mounted () {
    this.$store.dispatch('getProjects')
-   this.widgetData.push(await this.$store.dispatch('getTodoPercentage', { project_id: null, plan_id: null }))
-   this.widgetData.push(await this.$store.dispatch('getDoingPercentage', { project_id: null, plan_id: null }))
-   this.widgetData.push(await this.$store.dispatch('getDonePercentage', { project_id: null, plan_id: null }))
+   await this.getPercentages(null, null)
  }
 }
 </script>

@@ -35,6 +35,7 @@
           :stroke-width="18"
           color="#9ACD32"
           :percentage="Math.round(overAllProgress)"
+          v-if="!isNaN(Math.round(overAllProgress))"
         />
         <span class="py-5 text-lg font-semibold hover:underline"
           >Overall progress</span
@@ -66,6 +67,9 @@
               (100 / percentage.plan_count) * (percentage.percentage / 100)
             )
           "
+          v-if="!isNaN(Math.round(
+              (100 / percentage.plan_count) * (percentage.percentage / 100)
+            ))"
         />
         <span class="py-5 text-lg font-semibold hover:underline">{{
           percentage.project_title
@@ -77,11 +81,10 @@
         >See Plans</el-button>
       </nuxt-link>
     </div>
-
     <el-drawer
       :title="`List of plans for ${GET_SELECTED_PROJECT.project_title}`"
       :visible.sync="drawer"
-      size="75%"
+      :size="widthCheck() < 768 ? '100%' : '50%'"
     >
       <div class="h-full w-full p-5">
         <el-table
@@ -149,6 +152,9 @@ export default {
       await this.$store.dispatch('getProject', project_id)
       await this.getProjectPlan(project_id);
     },
+    widthCheck () {
+      return process.client ? window.outerWidth : 0
+    }
   },
 };
 </script>

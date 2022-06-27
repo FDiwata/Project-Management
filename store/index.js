@@ -158,10 +158,10 @@ export const actions = {
             return result.data
         },
 
-        async userLogin () {
-            // const endpoint = `api/updateTableData/${payload.id}`
-            // const result = await this.$axios.put(endpoint, payload)
-            // return result.data[0]
+        async userLogin (_, payload) {
+            const endpoint = `api/login`
+            const result = await this.$axios.post(endpoint, payload)
+            return result.data[0]
         }
 }
 

@@ -1,11 +1,11 @@
 <template>
-  <div class="p-1 lg:p-5 w-fit lg:w-5/6 m-auto h-screen">
-    <div class="w-full p-3">
+  <div class="p-1 lg:p-5 w-fit lg:w-2/3 m-auto h-screen">
+    <div class="w-full m-auto p-3">
       <span class="text-lg font-thin text-white">{{
         GET_SELECTED_PROJECT.project_id
       }}</span>
     </div>
-    <div class="w-full p-3 py-1 flex flex-row items-center justify-between">
+    <div class="w-full m-auto p-3 py-1 flex flex-row items-center justify-between">
       <span class="text-4xl font-bold text-white">{{
         GET_SELECTED_PROJECT.project_title
       }}</span>
@@ -21,7 +21,7 @@
       >
     </div>
     <div
-      class="w-full p-3 flex flex-row items-center justify-between space-x-3"
+      class="w-full p-3 m-auto flex flex-row items-center justify-between space-x-3"
     >
       <div class="flex flex-col items-start justify-between w-1/2">
         <div class="flex flex-row items-center justify-center py-1 space-x-5">
