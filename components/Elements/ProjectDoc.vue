@@ -1,18 +1,18 @@
 <template>
 <nuxt-link @click.self.stop :to="`Project?project_id=${projData.project_id}`">
-   <div class="w-full flex flex-col space-y-3 p-5 rounded-lg hover:shadow-lg bg-white text-gray-500">
+   <div class="w-full flex flex-col justify-between space-y-3 p-5 h-60 max-h-60 min-h-60 rounded-lg hover:shadow-lg text-gray-500 bg-slate-200">
     <div class="w-full flex flex-col items-start justify-center">
       <span class="text-xs">{{ projData.project_id }}</span>
       <h1 class="text-xl font-black text-gray-800">{{ projData.project_title }}</h1>
-      <span class="text-xs">Percentage: {{ projData.percentage }}</span>
+      <span class="text-xs mt-2">Percentage: {{ projData.percentage }}</span>
       <span class="text-xs">Target Month: {{ projData.TargetMonth }}</span>
-      <p class="italic text-gray-400">Description: "{{ projData.project_desc }}"</p>
+      <p class="italic text-gray-800 text-xs w-full text-ellipsis mt-3">Description: "{{ projData.project_desc }}"</p>
     </div>
     <div class="w-full flex flex-row items-center justify-end space-x-2">
-      <el-button @click.prevent.stop="updatePlan" class="font-bold" icon="el-icon-edit"
+      <el-button @click.prevent.stop="updatePlan" class="font-bold" icon="el-icon-edit text-black"
         ></el-button
       >
-      <el-button @click.prevent.stop="deletePlan" class="font-bold" icon="el-icon-delete"
+      <el-button @click.prevent.stop="deletePlan" class="font-bold" icon="el-icon-delete text-black"
         ></el-button
       >
     </div>

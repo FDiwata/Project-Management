@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-lg w-full xl:w-1/3">
+  <div class="rounded-lg w-full lg:w-1/2 xl:w-1/3">
     <GChart
       class="w-full h-full"
       :resizeDebounce="200"

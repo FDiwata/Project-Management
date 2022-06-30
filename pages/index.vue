@@ -17,7 +17,7 @@
       <pie-subtask-widget />
       <percentages />
     </div>
-    <div class="mt-10 w-full m-auto">
+    <div class="py-10 w-full m-auto">
       <project-percentage :perc-data="GET_ALL_PLANS" />
     </div>
   </div>

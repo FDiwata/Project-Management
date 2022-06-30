@@ -1,12 +1,12 @@
 <template>
-  <div class="py-5 w-5/6 m-auto h-screen">
+  <div class="p-1 m-auto md:ml-20 lg:m-auto lg:p-5 w-full lg:w-2/3 h-screen">
     <div class="w-full p-3">
-      <span class="text-xl font-light font-mono text-gray-300">{{
+      <span class="text-lg font-thin text-white">{{
         GET_SELECTED_SUBTASK.subtask_id
       }}</span>
     </div>
-    <div class="w-full p-3 py-5 flex flex-row items-center justify-between">
-      <span class="text-6xl font-black text-white">{{
+    <div class="w-full p-3 py-5 flex flex-col md:flex-row items-start space-y-3 md:space-y-0 md:items-center justify-start md:justify-between">
+      <span class="text-4xl font-bold text-blue-300">{{
         GET_SELECTED_SUBTASK.subtask_title
       }}</span>
 
@@ -15,23 +15,24 @@
           name: 'CreateSubtask',
           query: { subtask_id: GET_SELECTED_SUBTASK.subtask_id },
         }"
-        ><el-button icon="el-icon-edit" class="bg-white text-white"
-          >Update this subtask</el-button
+        class="w-full md:w-fit"
+        ><el-button icon="el-icon-edit" class="text-white"
+          ></el-button
         ></nuxt-link
       >
     </div>
     <div
       class="w-full p-3 flex flex-row items-center justify-between space-x-3"
     >
-      <div class="flex flex-col items-start justify-between w-1/6">
+      <div class="flex flex-col items-start justify-between w-1/2 md:w-1/6">
         <div class="flex flex-row items-center justify-center py-2 space-x-5">
-          <span class="font-bold">Priority type:</span>
+          <span class="font-thin text-sm">Priority type:</span>
           <el-tag type="danger" disable-transitions>{{
             GET_SELECTED_SUBTASK.priority
           }}</el-tag>
         </div>
         <div class="flex flex-row items-center justify-center py-2 space-x-5">
-          <span class="font-bold">Status:</span>
+          <span class="font-thin text-sm">Status:</span>
           <el-tag
             :type="
               GET_SELECTED_SUBTASK.status === 'Done'
@@ -45,9 +46,9 @@
           >
         </div>
       </div>
-      <div class="flex flex-col items-start justify-between w-3/4">
+      <div class="flex flex-col items-start justify-between w-1/2 md:w-3/4">
         <div class="flex flex-row items-center justify-center py-1 space-x-5">
-          <span class="font-semibold">Start Date:</span>
+          <span class="font-thin text-sm">Start Date:</span>
           <span>{{
             new Date(GET_SELECTED_SUBTASK.start_date)
               .toLocaleString()
@@ -55,7 +56,7 @@
           }}</span>
         </div>
         <div class="flex flex-row items-center justify-center py-1 space-x-5">
-          <span class="font-semibold">End Date:</span>
+          <span class="font-thin text-sm">End Date:</span>
           <span>{{
             new Date(GET_SELECTED_SUBTASK.end_date)
               .toLocaleString()
@@ -63,7 +64,7 @@
           }}</span>
         </div>
         <div class="flex flex-row items-center justify-center py-1 space-x-5">
-          <span class="font-semibold">Due Date:</span>
+          <span class="font-thin text-sm">Due Date:</span>
           <span>{{
             new Date(GET_SELECTED_SUBTASK.due_date)
               .toLocaleString()
@@ -73,16 +74,16 @@
       </div>
     </div>
     <div class="flex flex-col items-start justify-center p-3 py-10">
-      <span class="font-bold">Project Description</span>
+      <span class="font-thin text-sm">Project Description:</span>
       <p class="font-italic font-normal mt-3">
         {{ GET_SELECTED_SUBTASK.subtask_desc }}
       </p>
     </div>
-    <div class="p-3">
+    <div class="p-3 pb-20">
       <div class="w-full flex flex-row justify-between items-center py-5">
         <span class="font-bold">Task Logs:</span>
         <el-button
-          class="bg-white text-white"
+          class="text-white"
           @click="dialogFormVisible = true"
           icon="el-icon-edit"
           >Log a task</el-button

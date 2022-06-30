@@ -1,7 +1,7 @@
 <template>
-  <div class="p-5 w-2/3 m-auto h-screen">
+  <div class="p-5 w-full md:w-2/3 m-auto h-screen">
     <div class="w-full py-5 flex flex-row items-center justify-between">
-      <span v-if="!$route.query.redir" class="text-5xl font-bold text-white"
+      <span v-if="!$route.query.redir" class="text-3xl md:text-5xl font-bold text-white"
         >Manage Projects</span
       >
       <span v-else class="text-5xl font-bold text-white"
@@ -9,17 +9,21 @@
       >
       <nuxt-link
         v-if="!$route.query.redir"
-        class="pr-5 font-black"
+        class="font-black"
         to="CreateProject"
         ><el-button
           icon="el-icon-edit"
-          class="hover:font-bold bg-white text-white"
+          class="hover:font-bold bg-white text-white hidden md:block"
           >Create a Project</el-button
+        ><el-button
+          icon="el-icon-edit"
+          class="hover:font-bold bg-white text-white block md:hidden"
+          ></el-button
         ></nuxt-link
       >
     </div>
     <div class="mt-5">
-      <div class="w-full grid grid-flow-row gap-5 grid-cols-2 lg:grid-cols-3">
+      <div class="w-full flex flex-col space-y-5 md:space-y-0 md:grid grid-flow-row gap:2 md:gap-5 grid-cols-2 lg:grid-cols-3">
       <project-doc class="col-span-1 w-full" v-for="project in [...GET_ALL_PROJECTS].filter(
             (data) =>
               !filterValue ||

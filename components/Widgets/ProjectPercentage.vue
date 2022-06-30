@@ -1,8 +1,15 @@
 <template>
   <div class="w-full">
-    <span class="text-xl font-light text-white py-5"
-      >These are your projects, and their progress</span
+    <div class="w-full flex flex-col md:flex-row items-center justify-start md:justify-between space-x-0 md:space-x-5">
+    <span class="text-xl w-full md:w-fit md:text-5xl font-black text-white py-5"
+      >Current Projects</span
     >
+     <nuxt-link to="CreateProject" class="w-full md:w-fit"><el-button
+          icon="el-icon-edit"
+          class="bg-white text-white w-full md:w-fit"
+          >Create a project</el-button
+        ></nuxt-link>
+    </div>  
     <div
       class="
         w-full
@@ -12,6 +19,7 @@
         grid-cols-1
         md:grid-cols-2
         lg:grid-cols-3
+        xl:grid-cols-4
         my-5
       "
     >
@@ -26,6 +34,7 @@
           flex flex-col
           items-center
           justify-center
+          text-center
         "
         slot="reference"
       >
@@ -54,6 +63,7 @@
           flex flex-col
           items-center
           justify-center
+          text-center
         "
         v-for="percentage in percData"
         :key="percentage.key"

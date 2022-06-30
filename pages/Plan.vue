@@ -1,34 +1,45 @@
 <template>
-  <div class="py-5 w-5/6 m-auto h-screen">
+  <div class="p-1 m-auto md:ml-20 lg:m-auto md:p-5 w-full lg:w-2/3 h-screen">
     <div class="w-full p-3">
-      <span class="text-2xl font-bold text-white">{{GET_SELECTED_PLAN.plan_id}}</span>
+      <span class="text-lg font-thin text-white">{{GET_SELECTED_PLAN.plan_id}}</span>
       <!-- <bread-crumb :path-data="this.currentPathData()"/> -->
     </div>
-   <div class="w-full p-3 flex flex-row items-center justify-between">
-      <span class="text-4xl font-bold text-white">{{GET_SELECTED_PLAN.plan_title}}</span>
+   <div class="w-full m-auto p-3 py-1 flex flex-row items-center justify-between">
+      <span class="text-2xl md:text-4xl font-bold text-blue-400">{{GET_SELECTED_PLAN.plan_title}}</span>
 
-      <nuxt-link :to="{name: 'CreatePlan', query: {plan_id: GET_SELECTED_PLAN.plan_id}}"><el-button
-          icon="el-icon-edit"
-          class="bg-white text-white"
-          >Update this plan</el-button
-        ></nuxt-link>
+      <div class="w-1/3 flex flex-row items-center justify-end space-x-2 text-white">
+
+      <nuxt-link
+        :to="{
+          name: 'CreateProject',
+          query: { project_id: GET_SELECTED_PLAN.plan_id },
+        }"
+        ><el-button class="font-bold text-white" icon="el-icon-edit"
+        ></el-button
+      ></nuxt-link
+      >
+
+      <el-button @click="deleteAction(GET_SELECTED_PLAN.plan_id)" class="font-bold text-white" icon="el-icon-delete"
+        ></el-button
+      >
+</div>
     </div>
     <div class="flex flex-col items-start justify-start w-full p-3">
       <div class="flex flex-row items-center justify-center py-5 space-x-5">
-        <span class="font-bold">Assigned to:</span>
+        <span class="font-thin text-sm">Assigned to:</span>
         <span class="text-cyan-500 font-semibold">{{GET_SELECTED_PLAN.assignee}}</span>
       </div>
       <div class="flex flex-col items-start justify-center">
-        <span class="font-bold">Project Description</span>
+        <span class="font-thin text-sm">Project Description:</span>
         <p class="font-italic mt-3">
           {{GET_SELECTED_PLAN.plan_desc}}
         </p>
       </div>
     </div>
-    <div class="p-3">
+    <div class="p-3 pb-20">
       <div class="w-full flex flex-row justify-between items-center py-5">
         <span class="font-bold">Subtask list:</span>
-         <nuxt-link :to="{name: 'CreateSubtask', query: {plan_id: GET_SELECTED_PLAN.plan_id}}"><el-button icon="el-icon-edit" class="bg-white text-white">Create a Subtask</el-button></nuxt-link>
+         <nuxt-link :to="{name: 'CreateSubtask', query: {plan_id: GET_SELECTED_PLAN.plan_id}}"><el-button icon="el-icon-edit" class="text-white">Create a Subtask</el-button></nuxt-link>
       </div>
       <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" 
                    :cell-style="{ background: '#545c64' }" :data="GET_SELECTED_SUBTASKS" class="w-full rounded-lg text-white">
@@ -134,6 +145,53 @@ export default {
     //   })
     //   return Object.values(sortObj)
     // }
+
+      async deleteTableData(planID) {
+      const requestObject = {
+        id: planID,
+        type: "plan",
+        column: "plan_id",
+      };
+      await this.$store
+        .dispatch("deleteTableData", requestObject)
+        .then(async (data) => {
+          if (data) {
+            await this.$store.dispatch("getPlans");
+            this.$message({
+              type: "success",
+              message: "Plan Deleted.",
+            });
+          } else {
+            await this.$store.dispatch("getPlans");
+            this.$message({
+              type: "error",
+              message:
+                "Failed to delete because there are existing subtasks under this plan",
+            });
+          }
+        });
+    },
+
+    deleteAction(planID) {
+      this.$confirm(
+        "This will permanently delete this Plan. Continue?",
+        "Warning",
+        {
+          confirmButtonText: "Delete",
+          cancelButtonText: "Cancel",
+          type: "warning",
+        }
+      )
+        .then(() => {
+          this.deleteTableData(planID);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "Delete canceled",
+          });
+        });
+    },
   }
 };
 </script>

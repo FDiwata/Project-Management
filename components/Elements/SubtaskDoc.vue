@@ -6,8 +6,11 @@
         flex flex-col
         space-y-3
         p-5
+        h-64 max-h-64 min-h-64
         rounded-lg
         hover:shadow-lg
+        justify-between
+        items-center
         bg-white
         text-gray-500
       "
