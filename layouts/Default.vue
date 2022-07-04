@@ -1,55 +1,64 @@
 <template>
-  <div class="w-full h-screen flex flex-row justify-start bg-gray-400 text-white">
-    <el-menu
-      default-active="3"
-      class="el-menu-demo top-0 shadow-2xl bg-gray-800 border border-gray-600"
-      mode="horizontal"
-      :collapse="false"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b"
-    >
-      <nuxt-link to="/">
-        <el-menu-item index="1">
-          <i class="el-icon-user"></i>
-          <span slot="title" class="text-white font-bold"
-            >Welcome User.</span
-          >
+  <div
+    class="
+      w-full
+      pt-0
+      lg:pt-10
+      max-h-screen
+      overflow-auto
+      h-screen
+      flex flex-row
+      justify-start
+      bg-slate-800
+      text-white
+    "
+  >
+    <div class="h-screen">
+      <el-menu
+        default-active="1"
+        class="
+          el-menu-demo
+          z-50
+          h-fit
+          bottom-0
+          w-full
+          flex flex-row
+          items-center
+          justify-center
+          md:flex-col md:items-start md:justify-start md:w-16
+          shadow-2xl
+          md:h-full
+          fixed
+        "
+        mode="horizontal"
+        :collapse="true"
+        background-color="rgb(71 85 105)"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+      >
+        <el-menu-item index="1" class="w-1/3 md:w-full flex flex-row items-center justify-center">
+          <nuxt-link class="w-1/3 md:w-full m-auto md:my-0" to="/">
+            <i class="el-icon-pie-chart"></i>
+          </nuxt-link>
         </el-menu-item>
-      </nuxt-link>
-      <nuxt-link to="/">
-        <el-menu-item index="3" class="bg-gray-800 hover:bg-slate-800">
-          <i class="el-icon-menu"></i>
-          <span slot="title" class="text-white hover:font-bold hover:underline"
-            >Dashboard</span
-          >
+
+          <el-menu-item index="2"  class="w-1/3 md:w-full flex flex-row items-center justify-center">
+
+        <nuxt-link class="w-1/3 md:w-full m-auto md:my-0" to="/ManageProject">
+            <i class="el-icon-document"></i>
+
+        </nuxt-link>
+          </el-menu-item>
+
+        <el-menu-item
+          @click="logOut"
+           class="w-1/3 md:w-full flex flex-row items-center justify-center"
+          index="3"
+        >
+          <i class="el-icon-switch-button"></i>
         </el-menu-item>
-      </nuxt-link>
-      <nuxt-link to="/ManageProject">
-        <el-menu-item index="4" class="bg-gray-800 hover:bg-slate-800">
-          <i class="el-icon-document"></i>
-          <span class="text-white hover:font-bold hover:underline" slot="title"
-            >Manage Projects</span
-          >
-        </el-menu-item>
-      </nuxt-link>
-      <nuxt-link to="/ManagePlan">
-        <el-menu-item index="5" class="bg-gray-800 hover:bg-slate-800">
-          <i class="el-icon-date"></i>
-          <span class="text-white hover:font-bold hover:underline" slot="title"
-            >Manage Plans</span
-          >
-        </el-menu-item>
-      </nuxt-link>
-      <nuxt-link to="/ManageSubtask">
-        <el-menu-item index="6" class="bg-gray-800 hover:bg-slate-800">
-          <i class="el-icon-document"></i>
-          <span class="text-white hover:font-bold hover:underline" slot="title"
-            >Manage Subtasks</span
-          >
-        </el-menu-item>
-      </nuxt-link>
-    </el-menu>
+      </el-menu>
+    </div>
     <Nuxt />
   </div>
 </template>
@@ -57,6 +66,19 @@
 <script>
 export default {
   name: "Default",
+
+  methods: {
+    logOut() {
+      this.$confirm("Are you sure you want to log out?", "Log out?", {
+        confirmButtonText: "Log out",
+        cancelButtonText: "Cancel",
+        type: "danger",
+      }).then(() => {
+        this.$cookies.set("user_id", null);
+        this.$router.push("/logout");
+      });
+    },
+  },
 };
 </script>
 

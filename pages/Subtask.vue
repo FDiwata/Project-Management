@@ -1,12 +1,12 @@
 <template>
-  <div class="py-5 w-5/6 m-auto h-screen">
+  <div class="p-1 m-auto md:ml-20 lg:m-auto lg:p-5 w-full lg:w-2/3 h-screen">
     <div class="w-full p-3">
-      <span class="text-2xl font-bold text-white">{{
+      <span class="text-lg font-thin text-white">{{
         GET_SELECTED_SUBTASK.subtask_id
       }}</span>
     </div>
-    <div class="w-full p-3 flex flex-row items-center justify-between">
-      <span class="text-4xl font-bold text-white">{{
+    <div class="w-full p-3 py-5 flex flex-col md:flex-row items-start space-y-3 md:space-y-0 md:items-center justify-start md:justify-between">
+      <span class="text-4xl font-bold text-blue-300">{{
         GET_SELECTED_SUBTASK.subtask_title
       }}</span>
 
@@ -15,23 +15,24 @@
           name: 'CreateSubtask',
           query: { subtask_id: GET_SELECTED_SUBTASK.subtask_id },
         }"
-        ><el-button icon="el-icon-edit" class="bg-white text-white"
-          >Update this subtask</el-button
+        class="w-full md:w-fit"
+        ><el-button icon="el-icon-edit" class="text-white"
+          ></el-button
         ></nuxt-link
       >
     </div>
     <div
       class="w-full p-3 flex flex-row items-center justify-between space-x-3"
     >
-      <div class="flex flex-col items-start justify-between w-1/2">
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">Priority type:</span>
+      <div class="flex flex-col items-start justify-between w-1/2 md:w-1/6">
+        <div class="flex flex-row items-center justify-center py-2 space-x-5">
+          <span class="font-thin text-sm">Priority type:</span>
           <el-tag type="danger" disable-transitions>{{
             GET_SELECTED_SUBTASK.priority
           }}</el-tag>
         </div>
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">Status:</span>
+        <div class="flex flex-row items-center justify-center py-2 space-x-5">
+          <span class="font-thin text-sm">Status:</span>
           <el-tag
             :type="
               GET_SELECTED_SUBTASK.status === 'Done'
@@ -45,25 +46,25 @@
           >
         </div>
       </div>
-      <div class="flex flex-col items-start justify-between w-1/2">
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">Start Date:</span>
+      <div class="flex flex-col items-start justify-between w-1/2 md:w-3/4">
+        <div class="flex flex-row items-center justify-center py-1 space-x-5">
+          <span class="font-thin text-sm">Start Date:</span>
           <span>{{
             new Date(GET_SELECTED_SUBTASK.start_date)
               .toLocaleString()
               .split(",")[0]
           }}</span>
         </div>
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">End Date:</span>
+        <div class="flex flex-row items-center justify-center py-1 space-x-5">
+          <span class="font-thin text-sm">End Date:</span>
           <span>{{
             new Date(GET_SELECTED_SUBTASK.end_date)
               .toLocaleString()
               .split(",")[0]
           }}</span>
         </div>
-        <div class="flex flex-row items-center justify-center py-3 space-x-5">
-          <span class="font-bold">Due Date:</span>
+        <div class="flex flex-row items-center justify-center py-1 space-x-5">
+          <span class="font-thin text-sm">Due Date:</span>
           <span>{{
             new Date(GET_SELECTED_SUBTASK.due_date)
               .toLocaleString()
@@ -72,17 +73,17 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col items-start justify-center p-3">
-      <span class="font-bold">Project Description</span>
-      <p class="font-italic mt-3">
+    <div class="flex flex-col items-start justify-center p-3 py-10">
+      <span class="font-thin text-sm">Project Description:</span>
+      <p class="font-italic font-normal mt-3">
         {{ GET_SELECTED_SUBTASK.subtask_desc }}
       </p>
     </div>
-    <div class="p-3">
+    <div class="p-3 pb-20">
       <div class="w-full flex flex-row justify-between items-center py-5">
         <span class="font-bold">Task Logs:</span>
         <el-button
-          class="bg-white text-white"
+          class="text-white"
           @click="dialogFormVisible = true"
           icon="el-icon-edit"
           >Log a task</el-button
@@ -91,24 +92,22 @@
       <el-table
         :header-cell-style="{ background: '#545c64', text: 'white' }"
         :cell-style="{ background: '#545c64' }"
-        :data="
-          [...GET_SELECTED_TASK_LOGS]
-        "
+        :data="[...GET_SELECTED_TASK_LOGS]"
         class="w-full rounded-lg text-white break-words"
       >
         <el-table-column prop="task_logs_id" label="Task Log ID">
           <template slot-scope="scope">
-          <el-popover
-                class="rounded-lg break-words"
-                placement="right"
-                width="250"
-                height="300"
-                trigger="hover"
-              >
-                <span class="break-words">{{ scope.row.task_desc }}</span>
+            <el-popover
+              class="rounded-lg break-words"
+              placement="right"
+              width="250"
+              height="300"
+              trigger="hover"
+            >
+              <span class="break-words">{{ scope.row.task_desc }}</span>
 
-                <span slot="reference">{{ scope.row.task_logs_id }}</span>
-              </el-popover>
+              <span slot="reference">{{ scope.row.task_logs_id }}</span>
+            </el-popover>
           </template>
         </el-table-column>
         <el-table-column prop="miscellaneous" label="Miscellaneous">
@@ -142,7 +141,7 @@
         </el-table-column>
         <el-table-column prop="work_hours" label="Work Hours">
         </el-table-column>
-        <el-table-column  width="240">
+        <el-table-column width="240">
           <template slot-scope="scope">
             <div class="flex flex-row">
               <el-button
@@ -225,11 +224,11 @@
         >
         <el-button
           v-if="!isUpdateMode"
-          class="text-blue-700 font-bold"
+          class="text-cyan-500 font-bold"
           @click="logTask"
           >Log Task</el-button
         >
-        <el-button v-else class="text-blue-700 font-bold" @click="updateTaskLog"
+        <el-button v-else class="text-cyan-500 font-bold" @click="updateTaskLog"
           >Update Task Log</el-button
         >
       </span>
@@ -416,7 +415,7 @@ export default {
                 data: { status: this.taskDialogForm.status },
                 subtask_id: this.taskDialogForm.subtask_id,
               })
-              .then( async () => {
+              .then(async () => {
                 this.$message({
                   type: "success",
                   message: "Successfully updated a task log!",

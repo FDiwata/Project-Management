@@ -1,5 +1,5 @@
 <template>
-  <div class="py-5 w-5/6 m-auto h-screen">
+  <div class="py-5 w-full md:w-2/3 m-auto h-screen">
     <div class="w-full py-5">
       <span v-if="!isUpdateMode" class="text-5xl font-bold text-white"
         >Create a Plan</span
@@ -49,7 +49,7 @@
         <el-button
           v-if="!isUpdateMode"
           @click="createPlan"
-          class="font-bold text-blue-700"
+          class="font-bold text-cyan-500"
           icon="el-icon-edit"
           >Create</el-button
         >
@@ -57,11 +57,11 @@
         <el-button
           v-else
           @click="updatePlan"
-          class="font-bold text-blue-700"
+          class="font-bold text-cyan-500"
           icon="el-icon-edit"
           >Update Plan</el-button
         >
-        <el-button @click="clearData">Clear</el-button>
+        <el-button class="text-white bg-white" @click="$router.go(-1)">Back</el-button>
       </el-row>
     </div>
   </div>
