@@ -1,12 +1,12 @@
 <template>
   <div class="py-5 w-full md:w-2/3 m-auto h-screen">
-    <div class="w-full py-5">
+    <div class="w-full py-2 md:py-5 px-3 md:px-0">
       <span v-if="!isUpdateMode" class="text-5xl font-bold text-white">Create Project</span>
       <span v-else class="text-5xl font-bold text-white">Update Project</span>
     </div>
     <div>
       <el-row
-        class="w-full flex flex-row items-center justify-start space-x-3 py-3"
+        class="w-full flex flex-row items-center justify-start space-x-3 py-0 md:py-3 px-3 md:px-0"
       >
        <div class="flex flex-col items-start justify-center w-full">
         <span class="pb-3 text-sm">Project title</span>
@@ -18,9 +18,9 @@
        </div>
       </el-row>
       <div
-        class="w-full flex flex-row items-center justify-start space-x-3 py-3"
+        class="w-full flex flex-col md:flex-row items-center justify-start space-x-0 space-y-3 md:space-y-0 md:space-x-3 py-3"
       >
-       <div class="flex flex-col items-start justify-center w-1/3">
+       <div class="flex flex-col items-start justify-center w-full md:w-1/3 px-3 md:px-0">
         <span class="pb-3 text-sm">Project type</span>
         <el-select
           class="w-full transition-all hover:shadow-lg"
@@ -32,7 +32,7 @@
         </el-select>
        </div>
 
-       <div class="flex flex-col items-start justify-center w-1/3">
+       <div class="flex flex-col items-start justify-center w-full md:w-1/3 px-3 md:px-0">
         <span class="pb-3 text-sm">Person in charge</span>
         <el-input
           placeholder="Person in charge"
@@ -41,7 +41,7 @@
         ></el-input>
        </div>
 
-       <div class="flex flex-col items-start justify-center w-1/3">
+       <div class="flex flex-col items-start justify-center w-full md:w-1/3 px-3 md:px-0">
         <span class="pb-3 text-sm">Percentage</span>
         <el-input
           placeholder="Percentage"
@@ -50,7 +50,7 @@
         ></el-input>
        </div>
 
-        <div class="flex flex-col items-start justify-center w-1/3">
+        <div class="flex flex-col items-start justify-center w-full md:w-1/3 px-3 md:px-0">
         <span class="pb-3 text-sm">Target Month</span>
          <el-select
           class="w-full transition-all hover:shadow-lg"
@@ -73,7 +73,7 @@
        </div>
       </div>
       <div
-        class="w-full flex flex-row items-center justify-start space-x-3 py-3"
+        class="w-full flex flex-row items-center justify-start space-x-3 py-3 px-3 md:px-0"
       >
       <div class="flex flex-col items-start justify-center w-full">
         <span class="pb-3 text-sm">Project Description</span>
@@ -89,7 +89,7 @@
       </div>
       </div>
       <el-row
-        class="w-full flex flex-row items-center justify-end space-x-3 py-3"
+        class="w-full flex flex-row items-center justify-end space-x-3 py-3 pb-20"
       >
         <el-button
           v-if="!isUpdateMode"

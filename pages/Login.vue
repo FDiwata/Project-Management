@@ -20,7 +20,7 @@
     <h1
       class="
         text-4xl
-        md:text-5xl
+        md:text-3xl
         font-black
         w-full
         px-1
@@ -35,25 +35,25 @@
     </h1>
     <div class="px-2 w-full m-auto flex flex-col items-center justify-start">
       <div
-        class="p-1 md:space-x-2 w-full flex flex-col md:flex-row items-start md:items-center justify-center md:justify-start"
+        class="p-1 w-full flex flex-col items-start md:justify-start"
       >
-        <span class="font-semibold w-1/3 md:w-1/8 text-white md:text-xl"
+        <span class="font-semibold w-32 md:w-1/8 text-white md:text-xl"
           >Username</span
         >
         <el-input
-          class="w-full md:w-5/6 text-lg text-black"
+          class="w-full md:w-5/6 text-md text-black"
           v-model="loginForm.user_name"
           type="text"
         />
       </div>
       <div
-        class="p-1 md:space-x-2 w-full flex flex-col md:flex-row items-start md:items-center justify-center md:justify-start"
+        class="p-1 w-full flex flex-col items-start md:justify-start"
       >
-        <span class="font-semibold w-1/3 md:w-1/8 text-white md:text-xl"
+        <span class="font-semibold w-32 md:w-1/8 text-white md:text-xl"
           >Password</span
         >
         <el-input
-          class="w-full md:w-5/6 text-lg text-black"
+          class="w-full md:w-5/6 text-md text-black"
           v-model="loginForm.user_pass"
           type="password"
         />
@@ -114,6 +114,8 @@ export default {
           this.$router.push("/login");
           return;
         }
+        //alert(JSON.stringify(data))
+        this.$cookies.set('user_id', data.user_id)
         this.$router.push("/");
       });
     },

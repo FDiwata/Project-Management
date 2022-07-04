@@ -1,5 +1,5 @@
 <template>
-  <div class="w-5/6 m-auto h-full p-1 md:p-10 lg:p-0">
+  <div class="w-11/12 md:w-5/6 m-auto h-full p-1 md:p-10 lg:p-0">
     <div class="w-full py-5">
       <span class="text-5xl font-bold text-white"> Dashboard </span>
     </div>

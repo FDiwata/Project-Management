@@ -1,8 +1,9 @@
 <template>
-  <div class="w-full lg:w-1/2 p-5 mt-5 lg:mt-0 rounded bg-slate-200 shadow-lg text-gray-800">
-    <div class="w-full flex flex-col lg:flex-row items-start justify-start space-x-0 space-y-2 lg:space-y-0 lg:space-x-5">
-      <span class="text-xl font-bold w-full lg:w-1/3">Subtask composition</span>
-      <div class="flex flex-col items-start justify-center w-full lg:w-1/3">
+  <div class="w-full lg:w-1/3 p-5 mt-5 lg:mt-0 rounded bg-slate-200 shadow-lg text-gray-800">
+    <div class="w-full flex flex-col items-start justify-start space-x-0 space-y-2 lg:space-y-0">
+      <span class="text-2xl font-bold w-full mb-3">Subtask composition</span>
+      <div class="w-full flex flex-col md:flex-row items-center justify-center space-y-3 space-x-0 md:space-y-0 md:space-x-3">
+         <div class="flex flex-col items-start justify-center w-full lg:w-1/2">
         <span class="pb-1 text-sm">Select Project</span>
         <el-select
           class="w-full transition-all hover:shadow-lg"
@@ -18,7 +19,7 @@
           />
         </el-select>
       </div>
-      <div class="flex flex-col items-start justify-center w-full lg:w-1/3">
+      <div class="flex flex-col items-start justify-center w-full lg:w-1/2">
         <span class="pb-1 text-sm">Select Plan</span>
         <el-select
           class="w-full transition-all hover:shadow-lg"
@@ -34,6 +35,8 @@
           />
         </el-select>
       </div>
+      </div>
+     
     </div>
     <hr class="my-3" />
     <div
@@ -45,7 +48,7 @@
         >Percentage of subtasks {{ subStatus[index] }}</span
       >
       <el-progress
-        :stroke-width="40"
+        :stroke-width="25"
         :color="subColor[index] || '#808080'"
         class="w-full"
         :text-inside="true"
