@@ -206,14 +206,12 @@ app.post('/delete/:id', async function(req, res) {
 
 app.post('/register', async function (req, res) {
     let param = req.body
-    param.user_pass = SHA256(req.body.user_pass).toString()
     const result = await knex('t_users').insert(param)
     res.send(result)
 })
 
 
 app.post('/login', async function (req, res) {
-    const encPass = SHA256(req.body.user_pass).toString()
     const result = await knex.select('*').from('t_users').where({ user_name: req.body.user_name, user_pass: encPass })
     res.send(result)
 })
