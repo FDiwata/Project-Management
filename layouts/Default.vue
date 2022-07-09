@@ -9,7 +9,7 @@
       h-screen
       flex flex-row
       justify-start
-      bg-slate-800
+      bg-slate-900
       text-white
     "
   >

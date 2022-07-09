@@ -89,6 +89,11 @@ export const actions = {
             return result.data[0][0]
         },
 
+        async getLinks(_, payload) {
+            const result = await this.$axios.get(`/api/getPath/${payload}`)
+            return result.data[0]
+        },
+
         async generateID(_, payload) {
             const result = await this.$axios.get(`/api/generateID/${payload}`)
             const prefix = payload === 't_projects' ? 'project-' : payload === 't_plans' ? 'plan-' : payload === 't_subtasks' ? 'subtask-' : 'task_log-'

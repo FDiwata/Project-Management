@@ -1,10 +1,12 @@
 <template>
   <div class="p-1 m-auto md:ml-20 lg:m-auto md:p-5 w-full lg:w-2/3 h-screen">
-    <div class="w-full p-3">
-      <span class="text-lg font-thin text-white">{{GET_SELECTED_PLAN.plan_id}}</span>
-      <!-- <bread-crumb :path-data="this.currentPathData()"/> -->
+       <div class="w-full">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: `/Project?project_id=${breadCrumbObj.project_id}`  }"><span class="text-white font-thin hover:underline hover:cursor-pointer">{{breadCrumbObj.project_title}}</span></el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: `/Plan?plan_id=${breadCrumbObj.plan_id}`  }"><span class="text-white font-bold hover:underline hover:cursor-pointer">{{breadCrumbObj.plan_id}}</span></el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
-   <div class="w-full m-auto p-3 py-1 flex flex-row items-center justify-between">
+   <div class="w-full m-auto py-3 flex flex-row items-center justify-between">
       <span class="text-2xl md:text-4xl font-bold text-blue-400">{{GET_SELECTED_PLAN.plan_title}}</span>
 
       <div class="w-1/3 flex flex-row items-center justify-end space-x-2 text-white">
@@ -43,7 +45,6 @@
       </div>
       <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" 
                    :cell-style="{ background: '#545c64' }" :data="GET_SELECTED_SUBTASKS" class="w-full rounded-lg text-white">
-        <el-table-column prop="subtask_id" label="Subtask ID"> </el-table-column>
         <el-table-column prop="subtask_title" label="Subtask Title">
           <template slot-scope="scope">
           <nuxt-link class="font-bold hover:underline" :to="{name: 'Subtask', query: {subtask_id: scope.row.subtask_id}}">
@@ -95,18 +96,20 @@
              {{new Date(scope.row.start_date).toLocaleString().split(',')[0]}}</template> </el-table-column>
       </el-table>
     </div>
+    <KanbanView :subtaskArray="GET_SELECTED_SUBTASKS" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import BreadCrumb from '../components/Elements/BreadCrumb.vue';
+import KanbanView from '../components/Elements/KanbanView.vue';
 export default {
-  components: { BreadCrumb },
+  components: { BreadCrumb, KanbanView },
   layout: "Default",
   data() {
     return {
-      
+       breadCrumbObj : {}
     };
   },
   computed: {
@@ -125,6 +128,7 @@ export default {
             });
       this.$router.push("/ManagePlan");
     }
+    this.fetchLinks()
   },
   methods: {
     // currentPathData () {
@@ -145,6 +149,10 @@ export default {
     //   })
     //   return Object.values(sortObj)
     // }
+
+      async fetchLinks () {
+       this.breadCrumbObj = await this.$store.dispatch('getLinks', this.GET_SELECTED_PLAN.plan_id)
+    },
 
       async deleteTableData(planID) {
       const requestObject = {

@@ -1,11 +1,25 @@
 <template>
-  <div class="p-1 m-auto md:ml-20 lg:m-auto lg:p-5 w-full lg:w-2/3 h-screen">
-    <div class="w-full p-3">
-      <span class="text-lg font-thin text-white">{{
-        GET_SELECTED_SUBTASK.subtask_id
-      }}</span>
+  <div class="p-5 m-auto md:ml-20 lg:m-auto lg:p-5 w-full lg:w-2/3 h-screen">
+    <div class="w-full">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: `/Project?project_id=${breadCrumbObj.project_id}`  }"><span class="text-white font-thin hover:underline hover:cursor-pointer">{{breadCrumbObj.project_title}}</span></el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: `/Plan?plan_id=${breadCrumbObj.plan_id}`  }"><span class="text-white font-thin hover:underline hover:cursor-pointer">{{breadCrumbObj.plan_id}}</span></el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: `/Subtask?subtask_id=${breadCrumbObj.subtask_id}` }"><span class="text-white font-bold hover:underline hover:cursor-pointer">{{breadCrumbObj.subtask_id}}</span></el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
-    <div class="w-full p-3 py-5 flex flex-col md:flex-row items-start space-y-3 md:space-y-0 md:items-center justify-start md:justify-between">
+    <div
+      class="
+        w-full
+        py-5
+        flex flex-col
+        md:flex-row
+        items-start
+        space-y-3
+        md:space-y-0 md:items-center
+        justify-start
+        md:justify-between
+      "
+    >
       <span class="text-4xl font-bold text-blue-300">{{
         GET_SELECTED_SUBTASK.subtask_title
       }}</span>
@@ -16,13 +30,20 @@
           query: { subtask_id: GET_SELECTED_SUBTASK.subtask_id },
         }"
         class="w-full md:w-fit"
-        ><el-button icon="el-icon-edit" class="text-white"
-          ></el-button
-        ></nuxt-link
-      >
+        ><el-button icon="el-icon-edit" class="text-white"></el-button
+      ></nuxt-link>
     </div>
+      <el-steps class="bg-slate-900 m-auto"  :space="500" :active=" GET_SELECTED_SUBTASK.status === 'Done'
+                ? 3
+                : GET_SELECTED_SUBTASK.status === 'Todo'
+                ? 1
+                : 2">
+        <el-step title="Todo" icon="el-icon-edit bg-slate-900 w-full"></el-step>
+        <el-step title="Doing" icon="el-icon-setting bg-slate-900 w-full"></el-step>
+        <el-step title="Done" icon="el-icon-circle-check bg-slate-900 w-full"></el-step>
+      </el-steps>
     <div
-      class="w-full p-3 flex flex-row items-center justify-between space-x-3"
+      class="w-full py-3 flex flex-row items-center justify-between space-x-3"
     >
       <div class="flex flex-col items-start justify-between w-1/2 md:w-1/6">
         <div class="flex flex-row items-center justify-center py-2 space-x-5">
@@ -30,20 +51,6 @@
           <el-tag type="danger" disable-transitions>{{
             GET_SELECTED_SUBTASK.priority
           }}</el-tag>
-        </div>
-        <div class="flex flex-row items-center justify-center py-2 space-x-5">
-          <span class="font-thin text-sm">Status:</span>
-          <el-tag
-            :type="
-              GET_SELECTED_SUBTASK.status === 'Done'
-                ? 'success'
-                : GET_SELECTED_SUBTASK.status === 'Todo'
-                ? 'warning'
-                : 'danger'
-            "
-            disable-transitions
-            >{{ GET_SELECTED_SUBTASK.status }}</el-tag
-          >
         </div>
       </div>
       <div class="flex flex-col items-start justify-between w-1/2 md:w-3/4">
@@ -73,13 +80,13 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col items-start justify-center p-3 py-10">
+    <div class="flex flex-col items-start justify-center py-10">
       <span class="font-thin text-sm">Project Description:</span>
       <p class="font-italic font-normal mt-3">
         {{ GET_SELECTED_SUBTASK.subtask_desc }}
       </p>
     </div>
-    <div class="p-3 pb-20">
+    <div class="py-3 pb-20">
       <div class="w-full flex flex-row justify-between items-center py-5">
         <span class="font-bold">Task Logs:</span>
         <el-button
@@ -255,6 +262,7 @@ export default {
       },
       filterColumn: "",
       filterValue: "",
+      breadCrumbObj : {}
     };
   },
   computed: {
@@ -457,6 +465,10 @@ export default {
         });
       }
     },
+
+    async fetchLinks () {
+       this.breadCrumbObj = await this.$store.dispatch('getLinks', this.GET_SELECTED_SUBTASK.subtask_id)
+    }
   },
   created() {
     this.$store
@@ -483,6 +495,7 @@ export default {
       });
       this.$router.push("/ManageSubtask");
     }
+    this.fetchLinks()
   },
 };
 </script>

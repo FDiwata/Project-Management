@@ -117,6 +117,14 @@ app.get('/getDoneSubtaskPercentage/:project_id/:plan_id', async function(req, re
     res.send(result)
 })
 
+app.get('/getLinks/:type/:id', async function(req, res) {
+    const fields = `${req.params.type = 'subtask' ? 't_subtasks.subtask_id,' : ''} ${req.params.type = 'plan' ? 't_plans.plan_id,' : ''}${req.params.type = 'project' ? 't_projects.project_id,' : ''}`
+    const tables = `FROM ${req.params.type = 'subtask' ? 't_subtasks' : ''}${req.params.type = 'plan' ? ',t_plans,' : ''}${req.params.type = 'subtask' ? ',t_subtasks,' : ''}`
+    const condition = ''
+    const result = await knex.raw(`SELECT ${fields} FROM t_subtasks, t_plans, t_projects WHERE t_subtasks.subtask_id = 'subtask-001' AND t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id`)
+    res.send(result)
+})
+
 app.post('/createProject', async function(req, res) {
     const result = await knex('t_projects').insert(req.body)
     res.send(result)
@@ -150,7 +158,6 @@ app.get('/getPlanDashboard/:plan_id', async function(req, res) {
     WHERE t_subtasks.subtask_id = t_task_logs.subtask_id AND t_subtasks.plan_id = '${req.params.plan_id}'
     GROUP BY t_subtasks.subtask_id, t_subtasks.subtask_desc, t_subtasks.start_date, end_date`)
     res.send(result[0])
-
 })
 
 app.get('/getPlanDashboard', async function(req, res) {
@@ -159,7 +166,6 @@ app.get('/getPlanDashboard', async function(req, res) {
     WHERE t_subtasks.subtask_id = t_task_logs.subtask_id
     GROUP BY t_subtasks.subtask_id, t_subtasks.subtask_desc, t_subtasks.start_date, end_date`)
     res.send(result[0])
-
 })
 
 app.get('/getPath/:key', async function(req, res) {
@@ -167,6 +173,7 @@ app.get('/getPath/:key', async function(req, res) {
     const conditions = {
         subtask: `SELECT t_projects.project_id, t_projects.project_title, t_subtasks.subtask_id, t_subtasks.subtask_title, t_plans.plan_id, t_plans.plan_title FROM t_subtasks, t_plans, t_projects WHERE t_subtasks.subtask_id = '${key}' AND t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id;`,
         plan: `SELECT t_projects.project_id, t_projects.project_title, t_plans.plan_id, t_plans.plan_title FROM t_plans, t_projects WHERE t_plans.plan_id = '${key}' AND t_plans.project_id = t_projects.project_id;`,
+        project: `SELECT t_projects.project_id FROM t_projects WHERE t_projects.project_id = '${key}'`
     }
     const result = await knex.raw(`${conditions[key.split('-')[0]]}`)
     res.send(result[0])
@@ -202,21 +209,16 @@ app.post('/delete/:id', async function(req, res) {
     }
 })
 
-
-
 app.post('/register', async function (req, res) {
     let param = req.body
     const result = await knex('t_users').insert(param)
     res.send(result)
 })
 
-
 app.post('/login', async function (req, res) {
-    const result = await knex.select('*').from('t_users').where({ user_name: req.body.user_name, user_pass: encPass })
+    const result = await knex.select('*').from('t_users').where({ user_name: req.body.user_name, user_pass: req.body.user_pass })
     res.send(result)
 })
-
-
 
 export default {
     path: '/api',
