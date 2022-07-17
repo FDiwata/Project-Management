@@ -196,6 +196,7 @@ app.put('/updateTableData/:id', async function(req, res) {
     res.send(result)
 })
 
+
 app.post('/delete/:id', async function(req, res) {
     const table = `t_${req.body.type}s`
     const delRes = await knex(table).where(req.body.column, req.params.id).del().catch(() => {

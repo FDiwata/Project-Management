@@ -38,65 +38,7 @@
         </p>
       </div>
     </div>
-    <div class="p-3 pb-20">
-      <div class="w-full flex flex-row justify-between items-center py-5">
-        <span class="font-bold">Subtask list:</span>
-         <nuxt-link :to="{name: 'CreateSubtask', query: {plan_id: GET_SELECTED_PLAN.plan_id}}"><el-button icon="el-icon-edit" class="text-white">Create a Subtask</el-button></nuxt-link>
-      </div>
-      <el-table :header-cell-style="{ background: '#545c64', text: 'white' }" 
-                   :cell-style="{ background: '#545c64' }" :data="GET_SELECTED_SUBTASKS" class="w-full rounded-lg text-white">
-        <el-table-column prop="subtask_title" label="Subtask Title">
-          <template slot-scope="scope">
-          <nuxt-link class="font-bold hover:underline" :to="{name: 'Subtask', query: {subtask_id: scope.row.subtask_id}}">
-            {{scope.row.subtask_title}}
-          </nuxt-link>
-        </template>
-        </el-table-column>
-        <el-table-column prop="priority" label="Subtask Type">
-          <template slot-scope="scope">
-            <el-tag
-              :type="
-                scope.row.priority === 'critical'
-                  ? 'danger'
-                  : scope.row.priority === 'major'
-                  ? 'warning'
-                  : 'success'
-              "
-              disable-transitions
-              >{{ scope.row.priority }}</el-tag
-            >
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="status" label="Status">
-          <template slot-scope="scope">
-            <el-tag
-              :type="
-                scope.row.status === 'Todo'
-                  ? 'warning'
-                  : scope.row.status === 'Doing'
-                  ? 'success'
-                  : ''
-              "
-              disable-transitions
-              >{{ scope.row.status }}</el-tag
-            >
-          </template>
-        </el-table-column>
-        <el-table-column prop="start_date" label="Start Date">
-           <template slot-scope="scope">
-             {{new Date(scope.row.start_date).toLocaleString().split(',')[0]}}
-           </template>
-        </el-table-column>
-        <el-table-column prop="end_date" label="End Date">
-           <template slot-scope="scope">
-             {{new Date(scope.row.start_date).toLocaleString().split(',')[0]}}</template> </el-table-column>
-        <el-table-column prop="due_date" label="Due Date">
-           <template slot-scope="scope">
-             {{new Date(scope.row.start_date).toLocaleString().split(',')[0]}}</template> </el-table-column>
-      </el-table>
-    </div>
-    <KanbanView :subtaskArray="GET_SELECTED_SUBTASKS" />
+    <KanbanView @change-state="repaint" :key="KanbanRepaintKey" :subtaskArray="GET_SELECTED_SUBTASKS" />
   </div>
 </template>
 
@@ -109,8 +51,10 @@ export default {
   layout: "Default",
   data() {
     return {
-       breadCrumbObj : {}
+       breadCrumbObj : {},
+       KanbanRepaintKey: 0
     };
+
   },
   computed: {
      ...mapGetters(['GET_SELECTED_PLAN', 'GET_SELECTED_SUBTASKS'])
@@ -131,6 +75,10 @@ export default {
     this.fetchLinks()
   },
   methods: {
+    repaint () {
+      this.$store.dispatch('getSubtasks', this.GET_SELECTED_PLAN.plan_id)
+      this.KanbanRepaintKey += 1
+    },
     // currentPathData () {
     //   const sortObj = {
     //     project: {
