@@ -12,7 +12,7 @@
         <span class="pb-3 text-sm">Project title</span>
         <el-input
           placeholder="Project title"
-          class="transition-all hover:shadow-lg"
+          class="transition-all hover:shadow-lg text-black"
           v-model="formData.project_title"
         ></el-input>
        </div>
@@ -45,7 +45,7 @@
         <span class="pb-3 text-sm">Percentage</span>
         <el-input
           placeholder="Percentage"
-          class="transition-all hover:shadow-lg w-full"
+          class="transition-all hover:shadow-lg w-full text-black"
           v-model="formData.percentage"
         ></el-input>
        </div>
@@ -80,7 +80,7 @@
         <el-input
           type="textarea"
           :rows="5"
-          class="w-full hover:shadow-lg transition-all"
+          class="w-full hover:shadow-lg transition-all text-black"
           placeholder="Project description here..."
           resize="none"
           v-model="formData.project_desc"

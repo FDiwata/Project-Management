@@ -12,7 +12,7 @@
         <span class="pb-3 text-sm">Subtask Title</span>
         <el-input
           placeholder="Subtask title"
-          class="transition-all hover:shadow-lg"
+          class="transition-all hover:shadow-lg text-black"
           v-model="formData.subtask_title"
         >
         </el-input>
@@ -88,7 +88,7 @@
         <el-input
           type="textarea"
           :rows="5"
-          class="w-full hover:shadow-lg transition-all"
+          class="w-full hover:shadow-lg transition-all text-black"
           placeholder="Subtask description here..."
           resize="none"
           v-model="formData.subtask_desc"

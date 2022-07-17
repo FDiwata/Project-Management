@@ -14,7 +14,7 @@
           <span class="pb-3 text-sm">Plan title</span>
           <el-input
             placeholder="Plan title"
-            class="transition-all hover:shadow-lg"
+            class="transition-all hover:shadow-lg text-black"
             v-model="formData.plan_title"
           ></el-input>
         </div>
@@ -22,7 +22,7 @@
           <span class="pb-3 text-sm">Assignee</span>
           <el-input
             placeholder="Person in charge"
-            class="transition-all hover:shadow-lg"
+            class="transition-all hover:shadow-lg text-black"
             v-model="formData.assignee"
           ></el-input>
         </div>
@@ -35,7 +35,7 @@
           <el-input
             type="textarea"
             :rows="5"
-            class="w-full hover:shadow-lg transition-all"
+            class="w-full hover:shadow-lg transition-all text-black"
             placeholder="Plan description here..."
             resize="none"
             v-model="formData.plan_desc"
