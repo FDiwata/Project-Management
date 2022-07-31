@@ -38,6 +38,10 @@
         </p>
       </div>
     </div>
+     <div class="w-full flex flex-row justify-between items-center py-5">
+        <span class="font-bold">Subtask list:</span>
+         <nuxt-link :to="{name: 'CreateSubtask', query: {plan_id: GET_SELECTED_PLAN.plan_id}}"><el-button icon="el-icon-edit" class="text-white">Create a Subtask</el-button></nuxt-link>
+      </div>
     <KanbanView @change-state="repaint" :key="KanbanRepaintKey" :subtaskArray="GET_SELECTED_SUBTASKS" />
   </div>
 </template>
