@@ -7,6 +7,9 @@
       <pie-subtask-widget />
       <percentages />
     </div>
+    <div class="py-10 m-auto w-full">
+      <calendar-widget />
+    </div>
     <div class="py-10 w-full m-auto">
       <project-percentage :perc-data="GET_ALL_PLANS" />
     </div>
@@ -19,8 +22,9 @@ import ChartWidget from "../components/Widgets/ChartWidget.vue";
 import ProjectPercentage from "../components/Widgets/ProjectPercentage.vue";
 import Percentages from "../components/Widgets/Percentages.vue";
 import PieSubtaskWidget from "../components/Widgets/PieSubtaskWidget.vue";
+import CalendarWidget from "../components/Widgets/CalendarWidget.vue";
 export default {
-  components: { ChartWidget, ProjectPercentage, Percentages, PieSubtaskWidget },
+  components: { ChartWidget, ProjectPercentage, Percentages, PieSubtaskWidget, CalendarWidget },
   name: "IndexPage",
   layout: "Default",
   computed: {

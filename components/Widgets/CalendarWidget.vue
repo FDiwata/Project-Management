@@ -1,6 +1,8 @@
 
 <template>
+<div class="p-5 rounded-lg bg-gray-500">
   <FullCalendar :options="calendarOptions" />
+  </div>
 </template>
 <script>
 import FullCalendar from "@fullcalendar/vue";
@@ -15,9 +17,35 @@ export default {
     return {
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin],
-        initialView: "dayGridMonth"
-      }
+        initialView: "dayGridMonth",
+        dayMaxEventRows: true,
+        events: [
+          {
+            id: 'a',
+            title: 'my event',
+            start: '2022-08-03',
+            end: '2022-08-05',
+            allDay: false,
+            backgroundColor: '#69fcdb'
+          }
+        ]
+      },
     };
+  },
+  async mounted () {
+    const events = await this.$store.dispatch('getSchedules')
+    events.forEach((item, index, arr) => { 
+          const condition = (status) => item.backgroundColor === status
+          events[index].backgroundColor = condition('Todo') ? '#FAA43A' :  condition('Doing') ? '#5DA5DA' : '#9ACD32'
+    })
+    this.calendarOptions.events = events
+    
   }
 };
 </script>
+
+<style scoped>
+.fc-popover {
+  color: #303030
+}
+</style>
