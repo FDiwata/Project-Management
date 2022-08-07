@@ -484,10 +484,17 @@ export default {
   async mounted() {
     try {
       this.taskDialogForm.subtask_id = this.$route.query.subtask_id;
+      try {
       this.taskDialogForm.task_logs_id = await this.$store.dispatch(
         "generateID",
         "t_task_logs"
       );
+      } catch (_) {
+        this.$message({
+        type: "warning",
+        message: "No logs yet",
+      });
+      }
     } catch (_) {
       this.$message({
         type: "error",
