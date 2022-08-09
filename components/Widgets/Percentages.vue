@@ -68,7 +68,7 @@ export default {
     return {
       widgetData: [],
       subStatus: ["todo", "doing", "done"],
-      subColor: ["#FAA43A", "#5DA5DA", "#9ACD32"],
+      subColor: ["#FF6242", "#FAA43A", "#9ACD32"],
       selectedProjectID: null,
       selectedPlanID: null
     };
