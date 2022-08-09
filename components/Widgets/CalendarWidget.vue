@@ -36,7 +36,7 @@ export default {
     const events = await this.$store.dispatch('getSchedules')
     events.forEach((item, index, arr) => { 
           const condition = (status) => item.backgroundColor === status
-          events[index].backgroundColor = condition('Todo') ? '#FAA43A' :  condition('Doing') ? '#5DA5DA' : '#9ACD32'
+          events[index].backgroundColor = condition('Todo') ? '#FF6242' :  condition('Doing') ? '#FAA43A' : '#9ACD32'
     })
     this.calendarOptions.events = events
     

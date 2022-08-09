@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       // Array will be automatically processed with visualization.arrayToDataTable function
-      chartData: [["Year", "Sales", "Expenses", "Profit"]],
+      chartData: [[]],
       chartOptions: {
         height: 320,
         width: "100%",
@@ -34,14 +34,14 @@ export default {
         },
         title: "Overall subtask composition",
         slices: {
-          0: { color: '#FAA43A' },
-          1: { color: '#5DA5DA' },
+          0: { color: '#FF6242' },
+          1: { color: '#FAA43A' },
           2: { color: '#9ACD32' }
         }
       },
       widgetData: [],
       subStatus: ["todo", "doing", "done"],
-      subColor: ["#FAA43A", "#5DA5DA", "#9ACD32"],
+      subColor: ["#FF6242", "#FAA43A", "#9ACD32"],
       selectedProjectID: "",
       selectedPlanID: null,
     };
