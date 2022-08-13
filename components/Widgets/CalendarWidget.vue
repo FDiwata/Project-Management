@@ -1,7 +1,7 @@
 
 <template>
 <div class="p-5 rounded-lg bg-gray-500">
-  <FullCalendar :options="calendarOptions" />
+  <FullCalendar @eventClick="select" :options="calendarOptions" />
   </div>
 </template>
 <script>
@@ -28,7 +28,8 @@ export default {
             allDay: false,
             backgroundColor: '#69fcdb'
           }
-        ]
+        ],
+        eventClick: this.select
       },
     };
   },
@@ -40,6 +41,11 @@ export default {
     })
     this.calendarOptions.events = events
     
+  },
+  methods: {
+    select(e) {
+      this.$router.push(`/Subtask?subtask_id=${e.event._def.publicId}`)
+    }
   }
 };
 </script>

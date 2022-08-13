@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-lg w-full lg:w-1/3">
+  <div class="rounded-lg w-full">
     <GChart
       class="w-full h-full"
       :resizeDebounce="400"
@@ -17,11 +17,25 @@ export default {
   components: {
     GChart,
   },
+  props: {
+    isProjectMode: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       // Array will be automatically processed with visualization.arrayToDataTable function
       chartData: [[]],
-      chartOptions: {
+      widgetData: [],
+      selectedProjectID: "",
+      selectedPlanID: null,
+    };
+  },
+  computed: {
+    ...mapGetters(["GET_ALL_PROJECTS", "GET_SELECTED_PLANS"]),
+    chartOptions() {
+      return {
         height: 320,
         width: "100%",
         titleTextStyle: {color: '#FFFFFF'},
@@ -32,22 +46,20 @@ export default {
           fill: "#46596f",
           opacity: 100,
         },
-        title: "Overall subtask composition",
+        title: !this.isProjectMode ? "Overall subtask composition" : "Overall project percentage",
         slices: {
           0: { color: '#FF6242' },
-          1: { color: '#FAA43A' },
-          2: { color: '#9ACD32' }
+          ...(!this.isProjectMode && { 1: { color: '#FAA43A' }}),
+          [this.isProjectMode ?1 :2]: { color: '#9ACD32' },
         }
-      },
-      widgetData: [],
-      subStatus: ["todo", "doing", "done"],
-      subColor: ["#FF6242", "#FAA43A", "#9ACD32"],
-      selectedProjectID: "",
-      selectedPlanID: null,
-    };
-  },
-  computed: {
-    ...mapGetters(["GET_ALL_PROJECTS", "GET_SELECTED_PLANS"]),
+      }
+    },
+    subStatus() {
+      return !this.isProjectMode? ["todo", "doing", "done"] : ['Ongoing', 'Done']
+    },
+    subColor() {
+      return !this.isProjectMode?  ["#FF6242", "#FAA43A", "#9ACD32"] : ["#FF6242", "#9ACD32"]
+    }
   },
   watch: {
     async selectedProjectID(value) {
@@ -104,6 +116,7 @@ export default {
     },
   },
   async mounted() {
+    if (!this.isProjectMode) {
     this.$store.dispatch("getProjects");
     this.widgetData.push(
       await this.$store.dispatch("getTodoPercentage", {
@@ -123,6 +136,26 @@ export default {
         plan_id: null,
       })
     );
+    } else {
+      const projObj = await this.$store.dispatch("getOverallProjPerc")
+      const perProjPercent = 100/projObj.length
+      const percDone = projObj.filter((proj) => {
+          return proj.is_done === 1
+      }).length * perProjPercent
+
+      const percOngoing = projObj.filter((proj) => {
+          return proj.is_done === 0
+      }).length * perProjPercent
+
+      console.log(typeof percDone, typeof percOngoing)
+ 
+      this.widgetData.push({
+          percentage: percOngoing
+      })
+      this.widgetData.push({
+          percentage: percDone
+      })
+    }
   },
 };
 </script>

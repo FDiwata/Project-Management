@@ -180,6 +180,12 @@ export const actions = {
         const endpoint = `api/getSchedules`
         const result = await this.$axios.get(endpoint)
         return result.data
+    },
+
+    async getOverallProjPerc(_, __) {
+        const endpoint = `api/getOverallProjPerc`
+        const result = await this.$axios.get(endpoint)
+        return result.data
     }
 }
 

@@ -6,7 +6,7 @@
       <h1 class="text-xl font-black text-gray-800">{{ projData.project_title }}</h1>
       <span class="text-xs mt-2">Percentage: {{ projData.percentage }}</span>
       <span class="text-xs">Target Month: {{ projData.TargetMonth }}</span>
-      <p class="italic text-gray-800 text-xs w-full text-ellipsis mt-3">Description: "{{ projData.project_desc }}"</p>
+      <p class="italic text-gray-800 text-xs w-full text-ellipsis mt-3 max-h-20 truncate">Description: "{{ projData.project_desc }}"</p>
     </div>
     <div class="w-full flex flex-row items-center justify-end space-x-2">
       <el-button @click.prevent.stop="updatePlan" class="font-bold" icon="el-icon-edit text-black"

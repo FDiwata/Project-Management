@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full lg:w-1/3 p-5 mt-5 lg:mt-0 rounded bg-slate-200 shadow-lg text-gray-800">
+  <div class="w-full p-5 mt-5 lg:mt-0 rounded bg-slate-200 shadow-lg text-gray-800">
     <div class="w-full flex flex-col items-start justify-start space-x-0 space-y-2 lg:space-y-0">
       <span class="text-2xl font-bold w-full mb-3">Subtask composition</span>
       <div class="w-full flex flex-col md:flex-row items-center justify-center space-y-3 space-x-0 md:space-y-0 md:space-x-3">
