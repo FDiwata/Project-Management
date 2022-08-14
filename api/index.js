@@ -77,7 +77,7 @@ app.get('/taskLog/:id', async function(req, res) {
 
 app.get('/generateID/:table', async function(req, res) {
     const field = req.params.table === 't_projects' ? 'project_id' : req.params.table === 't_plans' ? 'plan_id' : req.params.table === 't_subtasks' ? 'subtask_id' : 'task_logs_id'
-    const result = await knex.raw(`SELECT MAX(${req.params.table}.${field}) as count from ${req.params.table};`)
+    const result = await knex.raw(`SELECT COUNT(${req.params.table}.${field}) as count from ${req.params.table};`)
     res.send(result)
 })
 

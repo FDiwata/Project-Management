@@ -2,7 +2,7 @@
   <div class="rounded-lg w-full">
     <GChart
       class="w-full h-full"
-      :resizeDebounce="400"
+      :resizeDebounce="500"
       :data="chartData"
       type="PieChart"
       :options="chartOptions"

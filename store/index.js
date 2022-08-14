@@ -104,7 +104,7 @@ export const actions = {
         async generateID(_, payload) {
             const result = await this.$axios.get(`/api/generateID/${payload}`)
             const prefix = payload === 't_projects' ? 'project-' : payload === 't_plans' ? 'plan-' : payload === 't_subtasks' ? 'subtask-' : 'task_log-'
-            const count = parseInt(result.data[0][0].count.split('-')[1]) + 1
+            const count = parseInt(result.data[0][0].count) + 1
             return `${prefix}${count.toString().length === 1 ? `0${count}` : `${count}`}`
     },
 
