@@ -193,7 +193,7 @@ app.get('/getPath/:key', async function (req, res) {
 })
 
 app.get('/getOverallProjPerc', async function (req, res) {
-    const result = await knex.raw(`SELECT IF(t_subtasks.status = 'Done', true, false) as is_done, t_projects.project_id FROM t_subtasks, t_plans, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id GROUP BY t_projects.project_id`)
+    const result = await knex.raw(`SELECT IF(t_subtasks.status = 'Done', true, false) as is_done, t_projects.project_id FROM t_subtasks, t_plans, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id OR t_projects.project_id NOT IN (SELECT t_plans.project_id FROM t_plans) GROUP BY t_projects.project_id`)
     res.send(result[0])
 })
 
