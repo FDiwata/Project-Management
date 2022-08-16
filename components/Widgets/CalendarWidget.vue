@@ -1,8 +1,8 @@
 
 <template>
-  <div class="p-5 rounded-lg bg-gray-500 w-full h-screen">
+  <div class="p-5 rounded-lg bg-gray-500 w-full h-fit">
     <client-only>
-      <FullCalendar :key="keybind" :options="calendarOptions">
+      <FullCalendar class="mb-10" :key="keybind" :options="calendarOptions">
         <template #eventContent="arg">
           <el-popover
             placement="bottom"
@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-      keybind: 10,
+      keybind: 1,
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin],
         initialView: "dayGridMonth",
@@ -65,7 +65,7 @@ export default {
       },
     };
   },
-  async mounted() {
+  async created() {
     const events = await this.$store.dispatch("getSchedules");
     events.forEach((item, index, arr) => {
       const condition = (status) => item.backgroundColor === status;
@@ -78,7 +78,7 @@ export default {
     this.calendarOptions.events = events;
     const terv = setInterval(() => {
       this.keybind <= -1 ? clearInterval(terv) : this.keybind--;
-    }, 1000);
+    }, 950);
   },
   methods: {
     select(e) {

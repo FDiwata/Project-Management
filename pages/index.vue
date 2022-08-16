@@ -1,6 +1,6 @@
 <template>
-  <div class="w-11/12 md:w-5/6 m-auto h-full p-1 md:p-10 lg:p-0">
-    <el-tabs type="card" class="bg-slate-900 h-screen">
+  <div class="w-11/12 md:w-5/6 m-auto h-fit p-1 md:p-10 lg:p-0">
+    <el-tabs type="card" class="bg-slate-900 h-fit">
       <el-tab-pane label="Dashboard">
         <span slot="label" class="text-white"><i class="el-icon-s-data"></i> Dashboard</span>
         <div class="w-full pb-5">
@@ -75,7 +75,7 @@ export default {
 </script>
 <style>
 .is-active {
-  background-color: darkgoldenrod !important;
+  background-color: #3a546a;
 }
 @import url("~/assets/output.css");
 </style>

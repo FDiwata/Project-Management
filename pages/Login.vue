@@ -7,15 +7,16 @@
       w-11/12
       md:w-2/3
       lg:w-1/2
-      xl:w-1/4
+      xl:w-2/5
       m-auto
       shadow-lg
       rounded-lg
       flex flex-col
       items-center
       justify-center
-      bg-slate-700
+      bg-gray-700
     "
+    @keypress="keyEnter"
   >
     <h1
       class="
@@ -33,11 +34,11 @@
     >
       Project Master
     </h1>
-    <div class="px-2 w-full m-auto flex flex-col items-center justify-start">
+    <div @submit="userLogin" class="px-2 w-full m-auto flex flex-col items-center justify-start">
       <div
         class="p-1 w-full flex flex-col items-start md:justify-start"
       >
-        <span class="font-semibold w-32 md:w-1/8 text-white md:text-xl"
+        <span class="w-32 md:w-1/8 text-white md:text-md"
           >Username</span
         >
         <el-input
@@ -49,7 +50,7 @@
       <div
         class="p-1 w-full flex flex-col items-start md:justify-start"
       >
-        <span class="font-semibold w-32 md:w-1/8 text-white md:text-xl"
+        <span class="w-32 md:w-1/8 text-white md:text-md"
           >Password</span
         >
         <el-input
@@ -90,6 +91,7 @@
 
 <script>
 export default {
+  layout: "Clean",
   data() {
     return {
       loginForm: {
@@ -104,6 +106,9 @@ export default {
     };
   },
   methods: {
+    keyEnter(e) {
+      e.keyCode === 13 && this.userLogin()
+    },
     userLogin() {
       this.$store.dispatch("userLogin", this.loginForm).then((data) => {
         if (data === undefined) {
