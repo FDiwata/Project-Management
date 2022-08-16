@@ -44,7 +44,7 @@
             >{{ subtask.status }}</el-tag
           ></span>
           </div>
-        <p class="italic text-gray-400">
+        <p class="italic text-gray-400 text-ellipsis mt-3 max-h-20 truncate w-full">
           Description: "{{ subtask.subtask_desc }}"
         </p>
       </div>

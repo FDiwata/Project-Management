@@ -108,7 +108,7 @@
           @drop.prevent
         >
           <div class="flex flex-col items-start justify-center">
-            <nuxt-link :to="`/Subtask?subtask_id=${card.subtask_id}`" class="font-bold text-sm">{{card.subtask_title}}</nuxt-link>
+            <nuxt-link @click.self.stop :to="`/Subtask?subtask_id=${card.subtask_id}`" class="font-bold text-sm">{{card.subtask_title}}</nuxt-link>
             <span class="text-xs">Due date: <span class="text-red-400">{{new Date(card.due_date).toDateString()}}</span></span>
             <el-tag class="my-1 text-xs h-fit">Done</el-tag>
             <p class="text-xs">{{card.subtask_desc}}</p>

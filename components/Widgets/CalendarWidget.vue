@@ -1,7 +1,39 @@
 
 <template>
-<div class="p-5 rounded-lg bg-gray-500">
-  <FullCalendar @eventClick="select" :options="calendarOptions" />
+  <div class="p-5 rounded-lg bg-gray-500 w-full h-screen">
+    <client-only>
+      <FullCalendar :key="keybind" :options="calendarOptions">
+        <template #eventContent="arg">
+          <el-popover
+            placement="bottom"
+            :title="arg.event.title"
+            width="auto"
+            trigger="hover"
+            popper-class="z-auto relative"
+          >
+            <div>
+              <div class="text-ellipsis mt-3 max-h-20 truncate w-full">
+                description:
+                {{ JSON.stringify(arg.event.extendedProps.description) }}
+              </div>
+              <el-button
+                primary
+                class="
+                  font-bold
+                  text-cyan-500
+                  w-auto
+                  mt-3
+                  cursor-pointer
+                "
+                @click="select(arg.event.id)"
+                >Go to this subtask</el-button
+              >
+            </div>
+            <div slot="reference" style="text-align: left">
+              Title: {{ JSON.stringify(arg.event.title)
+              }}<br /></div></el-popover></template
+      ></FullCalendar>
+    </client-only>
   </div>
 </template>
 <script>
@@ -11,47 +43,60 @@ import interactionPlugin from "@fullcalendar/interaction";
 
 export default {
   components: {
-    FullCalendar // make the <FullCalendar> tag available
+    FullCalendar, // make the <FullCalendar> tag available
   },
   data() {
     return {
+      keybind: 10,
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin],
         initialView: "dayGridMonth",
         dayMaxEventRows: true,
         events: [
           {
-            id: 'a',
-            title: 'my event',
-            start: '2022-08-03',
-            end: '2022-08-05',
+            id: "a",
+            title: "my event",
+            start: "2022-08-03",
+            end: "2022-08-05",
             allDay: false,
-            backgroundColor: '#69fcdb'
-          }
+            backgroundColor: "#69fcdb",
+          },
         ],
-        eventClick: this.select
       },
     };
   },
-  async mounted () {
-    const events = await this.$store.dispatch('getSchedules')
-    events.forEach((item, index, arr) => { 
-          const condition = (status) => item.backgroundColor === status
-          events[index].backgroundColor = condition('Todo') ? '#FF6242' :  condition('Doing') ? '#FAA43A' : '#9ACD32'
-    })
-    this.calendarOptions.events = events
-    
+  async mounted() {
+    const events = await this.$store.dispatch("getSchedules");
+    events.forEach((item, index, arr) => {
+      const condition = (status) => item.backgroundColor === status;
+      events[index].backgroundColor = condition("Todo")
+        ? "#FF6242"
+        : condition("Doing")
+        ? "#FAA43A"
+        : "#9ACD32";
+    });
+    this.calendarOptions.events = events;
+    const terv = setInterval(() => {
+      this.keybind <= -1 ? clearInterval(terv) : this.keybind--;
+    }, 1000);
   },
   methods: {
     select(e) {
-      this.$router.push(`/Subtask?subtask_id=${e.event._def.publicId}`)
-    }
-  }
+      this.$router.push(`/Subtask?subtask_id=${e}`);
+    },
+  },
 };
 </script>
 
-<style scoped>
-.fc-popover {
-  color: #303030
+<style>
+.fc-popover-header {
+  color: #303030 !important;
+}
+.fc .fc-popover {
+  z-index: 1001 !important;
+}
+.popover-class {
+  z-index: 9999 !important;
+  position: sticky;
 }
 </style>

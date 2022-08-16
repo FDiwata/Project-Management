@@ -145,7 +145,7 @@
         <el-table-column prop="percentage" label="percentage">
           <template slot-scope="scope">
             <el-progress
-              type="circle"
+              type="line"
               :stroke-width="12"
               :percentage="Math.round(scope.row.percentage)"
             ></el-progress>
@@ -232,7 +232,7 @@ export default {
       return (
         ((100 / this.GET_SELECTED_PLANS.length) * projTotalPercentage) / 100
       );
-    },
+    }
   },
   async created() {
     try {
@@ -273,6 +273,7 @@ export default {
               type: "success",
               message: "Project Deleted.",
             });
+            this.$router.push('/')
           } else {
             await this.$store.dispatch("getProjects");
             this.$message({
@@ -303,7 +304,7 @@ export default {
             message: "Delete canceled",
           });
         });
-    },
+    }
   },
 };
 </script>

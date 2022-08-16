@@ -13,11 +13,11 @@
         to="CreateProject"
         ><el-button
           icon="el-icon-edit"
-          class="hover:font-bold bg-white text-white hidden md:block"
+          class="hover:font-bold text-white hidden md:block"
           >Create a Project</el-button
         ><el-button
           icon="el-icon-edit"
-          class="hover:font-bold bg-white text-white block md:hidden"
+          class="hover:font-bold text-white block md:hidden"
           ></el-button
         ></nuxt-link
       >

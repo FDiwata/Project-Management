@@ -144,6 +144,7 @@ export default {
       )
         .then(() => {
           this.deleteTableData(planID);
+          this.$router.push(`/Project?project_id=${this.breadCrumbObj.project_id}`)
         })
         .catch(() => {
           this.$message({

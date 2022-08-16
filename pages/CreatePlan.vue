@@ -61,7 +61,7 @@
           icon="el-icon-edit"
           >Update Plan</el-button
         >
-        <el-button class="text-white bg-white" @click="$router.go(-1)">Back</el-button>
+        <el-button class="text-white " @click="$router.go(-1)">Back</el-button>
       </el-row>
     </div>
   </div>

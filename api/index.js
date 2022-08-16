@@ -134,7 +134,7 @@ app.get('/getLinks/:type/:id', async function (req, res) {
 })
 
 app.get('/getSchedules', async function (req, res) {
-    const result = await knex.raw('SELECT t_subtasks.subtask_id as id, t_subtasks.subtask_title as title, t_subtasks.start_date as start, t_subtasks.end_date as end, t_subtasks.status as backgroundColor, \'false\' as allDay, \'true\'\ as dayMaxEvents FROM t_subtasks;')
+    const result = await knex.raw('SELECT t_subtasks.subtask_id as id, t_subtasks.subtask_title as title, t_subtasks.subtask_desc as description, t_subtasks.start_date as start, t_subtasks.end_date as end, t_subtasks.status as backgroundColor, \'false\' as allDay, \'true\'\ as dayMaxEvents FROM t_subtasks;')
     res.send(result[0])
 })
 

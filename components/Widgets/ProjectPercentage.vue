@@ -5,40 +5,41 @@
     >
       <span class="text-xl w-full md:w-fit md:text-5xl font-black text-white py-5">Current Projects</span>
       <nuxt-link to="CreateProject" class="w-full md:w-fit">
-        <el-button icon="el-icon-edit" class="bg-white text-white w-full md:w-fit">Create a project</el-button>
+        <el-button icon="el-icon-edit" class="text-white w-full md:w-fit">Create a project</el-button>
       </nuxt-link>
     </div>
     <div
-      class="w-full h-fit grid grid-flow-row gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-5"
+      class="w-full h-fit flex flex-col items-center justify-center space-y-3 my-5"
     >
       <nuxt-link
         :to="`/Project?project_id=${percentage.project_id}`"
-        class="p-3 shadow-lg rounded-lg bg-gray-200 w-full text-gray-800 flex flex-col items-center justify-center text-center"
+        class="scale-95 hover:scale-100 transition-all m-auto p-2 px-5 shadow-lg rounded-lg bg-gray-200 w-full text-gray-800 flex flex-row items-center justify-between text-center space-x-5"
         v-for="percentage in percData"
         :key="percentage.key"
       >
-        <el-progress
-          :width="150"
-          type="dashboard"
-          :stroke-width="15"
-          :percentage="
-            Math.round(
-              (100 / percentage.plan_count) * (percentage.percentage / 100)
-            )
-          "
-          v-if="!isNaN(Math.round(
-              (100 / percentage.plan_count) * (percentage.percentage / 100)
-            ))"
-        />
-        <span class="py-5 text-lg font-semibold hover:underline">
+        <span class="hover:underline w-1/3 text-left">
           {{
           percentage.project_title
           }}
         </span>
+         <el-progress
+        class="w-2/3"
+          type="line"
+          :stroke-width="13"
+          :percentage="!isNaN(Math.round(
+              (100 / percentage.plan_count) * (percentage.percentage / 100)
+            ))?
+            Math.round(
+              (100 / percentage.plan_count) * (percentage.percentage / 100)
+            ) : 0
+          "
+        />
         <el-button
           @click.prevent.stop="castDrawer(percentage.project_id)"
-          class="font-bold bg-cyan-500 text-cyan-500"
+          type="primary"
+          class="font-bold text-cyan-500 w-1/4"
           icon="el-icon-edit"
+          round
         >See Plans</el-button>
       </nuxt-link>
     </div>

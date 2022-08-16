@@ -24,6 +24,7 @@
         GET_SELECTED_SUBTASK.subtask_title
       }}</span>
 
+  <div class="w-1/3 flex flex-row items-center justify-end space-x-2 text-white">
       <nuxt-link
         :to="{
           name: 'CreateSubtask',
@@ -32,6 +33,10 @@
         class="w-full md:w-fit"
         ><el-button icon="el-icon-edit" class="text-white"></el-button
       ></nuxt-link>
+        <el-button @click="deleteAction(GET_SELECTED_SUBTASK.subtask_id, true)" class="font-bold text-white" icon="el-icon-delete"
+        ></el-button
+      >
+      </div>
     </div>
       <el-steps class="bg-slate-900 m-auto"  :space="500" :active=" GET_SELECTED_SUBTASK.status === 'Done'
                 ? 3
@@ -153,13 +158,13 @@
             <div class="flex flex-row">
               <el-button
                 @click="editTaskLog(scope.row.task_logs_id)"
-                class="font-bold text-white bg-white"
+                class="font-bold text-white"
                 icon="el-icon-edit"
                 >Edit</el-button
               >
               <el-button
                 @click="deleteAction(scope.row.task_logs_id)"
-                class="font-bold text-white bg-white"
+                class="font-bold text-white"
                 icon="el-icon-delete"
                 >Delete</el-button
               >
@@ -358,11 +363,11 @@ export default {
       return `${yyyy}-${mm}-${dd}`;
     },
 
-    async deleteTableData(taskLogID) {
+    async deleteTableData(id, isSubtask = false) {
       const requestObject = {
-        id: taskLogID,
-        type: "task_log",
-        column: "task_logs_id",
+        id: id,
+        type: isSubtask ? "subtask" : "task_log",
+        column: isSubtask ? "subtask_id" : "task_logs_id",
       };
       await this.$store
         .dispatch("deleteTableData", requestObject)
@@ -376,15 +381,16 @@ export default {
           } else {
             this.$message({
               type: "success",
-              message: "Task log deleted.",
+              message:isSubtask ? "Subtask deleted." : "Task Log deleted",
             });
+            isSubtask && this.$router.push(`/Plan?plan_id=${this.breadCrumbObj.plan_id}`)
           }
         });
     },
 
-    deleteAction(taskLogID) {
+    deleteAction(id, isSubtask = false) {
       this.$confirm(
-        "This will permanently delete this Task Log. Continue?",
+        isSubtask ? "This will permanently delete this subtask. Continue?" : "This will permanently delete this Task Log. Continue?",
         "Warning",
         {
           confirmButtonText: "Delete",
@@ -393,7 +399,7 @@ export default {
         }
       )
         .then(() => {
-          this.deleteTableData(taskLogID);
+          this.deleteTableData(id, isSubtask);
         })
         .catch(() => {
           this.$message({
@@ -467,7 +473,14 @@ export default {
     },
 
     async fetchLinks () {
+      try {
        this.breadCrumbObj = await this.$store.dispatch('getLinks', this.GET_SELECTED_SUBTASK.subtask_id)
+      } catch(_){
+        this.$message({
+        type: "warning",
+        message: "No logs yet",
+      });
+      }
     }
   },
   created() {
@@ -484,11 +497,15 @@ export default {
   async mounted() {
     try {
       this.taskDialogForm.subtask_id = this.$route.query.subtask_id;
+
+    this.fetchLinks()
       try {
       this.taskDialogForm.task_logs_id = await this.$store.dispatch(
         "generateID",
         "t_task_logs"
       );
+
+     this.fetchLinks()
       } catch (_) {
         this.$message({
         type: "warning",
