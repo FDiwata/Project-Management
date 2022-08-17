@@ -22,7 +22,7 @@
                   font-bold
                   text-cyan-500
                   w-auto
-                  mt-3
+                  mt-3p
                   cursor-pointer
                 "
                 @click="select(arg.event.id)" 

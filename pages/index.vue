@@ -29,7 +29,7 @@
           <project-percentage :perc-data="GET_ALL_PLANS" />
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Subtask schedule" class="text-white">
+      <el-tab-pane :lazy="true" label="Subtask schedule" class="text-white">
         <span slot="label" class="text-white"><i class="el-icon-date"></i> Subtask Schedule</span>
           <calendar-widget />
       </el-tab-pane>
