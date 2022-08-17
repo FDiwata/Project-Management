@@ -9,7 +9,7 @@
             :title="arg.event.title"
             width="auto"
             trigger="hover"
-            popper-class="z-auto relative"
+            popper-class="z-auto relative max-w-md"
           >
             <div>
               <div class="text-ellipsis mt-3 max-h-20 truncate w-full">
@@ -25,11 +25,11 @@
                   mt-3
                   cursor-pointer
                 "
-                @click="select(arg.event.id)"
+                @click="select(arg.event.id)" 
                 >Go to this subtask</el-button
               >
             </div>
-            <div slot="reference" style="text-align: left">
+            <div slot="reference" class="text-ellipsis truncate w-full" style="text-align: left">
               Title: {{ JSON.stringify(arg.event.title)
               }}<br /></div></el-popover></template
       ></FullCalendar>
@@ -41,6 +41,7 @@ import FullCalendar from "@fullcalendar/vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
+let setInt = null;
 export default {
   components: {
     FullCalendar, // make the <FullCalendar> tag available
@@ -65,6 +66,13 @@ export default {
       },
     };
   },
+  watch: {
+    keybind (value) {
+      if (value > 3) {
+        clearInterval(setInt)
+      }
+    }
+  },
   async created() {
     const events = await this.$store.dispatch("getSchedules");
     events.forEach((item, index, arr) => {
@@ -76,9 +84,9 @@ export default {
         : "#9ACD32";
     });
     this.calendarOptions.events = events;
-    const terv = setInterval(() => {
-      this.keybind <= -1 ? clearInterval(terv) : this.keybind--;
-    }, 950);
+    setInt = setInterval(() => {
+      this.keybind++
+    }, 500);
   },
   methods: {
     select(e) {

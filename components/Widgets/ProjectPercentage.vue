@@ -22,6 +22,9 @@
           percentage.project_title
           }}
         </span>
+        <el-tag class="text-xl" primary>
+          {{percentage.month}}
+        </el-tag>
          <el-progress
         class="w-2/3"
           type="line"

@@ -93,13 +93,16 @@ app.get('/getProjectPercentages', async function(req, res) {
 })
 
 app.get('/getAllProjectsPercentage', async function(req, res) {
-    const result = await knex.raw(`SELECT (SELECT t_projects.project_id FROM t_projects WHERE t_projects.project_id = t_plans.project_id) as project_id, (SELECT t_projects.project_title FROM t_projects WHERE t_projects.project_id = t_plans.project_id) as project_title,
+    const result = await knex.raw(`SELECT 
+    (SELECT t_projects.TargetMonth FROM t_projects WHERE t_projects.project_id = t_plans.project_id) as month, 
+    (SELECT t_projects.project_id FROM t_projects WHERE t_projects.project_id = t_plans.project_id) as project_id, 
+    (SELECT t_projects.project_title FROM t_projects WHERE t_projects.project_id = t_plans.project_id) as project_title,
     IF(ISNULL(SUM(100/(SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id) * (SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id AND t_subtasks.status = 'done')) = 1), 0 , SUM(100/(SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id) * (SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id AND t_subtasks.status = 'done'))) as percentage,
     COUNT(100/(SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id) * (SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id AND t_subtasks.status = 'done')) as plan_count
     FROM t_plans GROUP BY t_plans.project_id
     UNION ALL
-    SELECT t_projects.project_id, t_projects.project_title, 0 as percentage, 0 as plan_count FROM
-    t_projects WHERE t_projects.project_id NOT IN (SELECT project_id FROM t_plans, t_subtasks WHERE t_plans.plan_id = t_subtasks.plan_id);`)
+    SELECT t_projects.TargetMonth as month, t_projects.project_id, t_projects.project_title, 0 as percentage, 0 as plan_count FROM
+    t_projects WHERE t_projects.project_id NOT IN (SELECT project_id FROM t_plans, t_subtasks WHERE t_plans.plan_id = t_subtasks.plan_id)`)
     res.send(result)
 })
 

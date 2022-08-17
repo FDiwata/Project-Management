@@ -1,5 +1,6 @@
 <template>
   <div class="w-11/12 md:w-5/6 m-auto h-fit p-1 md:p-10 lg:p-0">
+    <client-only>
     <el-tabs type="card" class="bg-slate-900 h-fit">
       <el-tab-pane label="Dashboard">
         <span slot="label" class="text-white"><i class="el-icon-s-data"></i> Dashboard</span>
@@ -33,6 +34,7 @@
           <calendar-widget />
       </el-tab-pane>
     </el-tabs>
+    </client-only>
   </div>
 </template>
 

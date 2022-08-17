@@ -474,7 +474,7 @@ export default {
 
     async fetchLinks () {
       try {
-       this.breadCrumbObj = await this.$store.dispatch('getLinks', this.GET_SELECTED_SUBTASK.subtask_id)
+       this.breadCrumbObj = await this.$store.dispatch('getLinks', this.$route.query.subtask_id)
       } catch(_){
         this.$message({
         type: "warning",
