@@ -13,8 +13,8 @@
 
       <nuxt-link
         :to="{
-          name: 'CreateProject',
-          query: { project_id: GET_SELECTED_PLAN.plan_id },
+          name: 'CreatePlan',
+          query: { plan_id: GET_SELECTED_PLAN.plan_id },
         }"
         ><el-button class="font-bold text-white" icon="el-icon-edit"
         ></el-button
