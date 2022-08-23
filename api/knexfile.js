@@ -7,11 +7,11 @@ module.exports = {
     development: {
         client: 'mysql',
         connection: {
-            host: 'sql6.freesqldatabase.com',
+            host: 'localhost',
             port: 3306,
-            user: 'sql6513504',
-            password: 'nlFQTQBUXC',
-            database: 'sql6513504'
+            user: 'root',
+            password: '',
+            database: 'project_master'
         },
         pool: {
             min: 2,
