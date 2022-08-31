@@ -1,4 +1,3 @@
-
 <template>
   <div class="p-5 rounded-lg bg-gray-500 w-full h-fit">
     <client-only>
