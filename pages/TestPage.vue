@@ -1,14 +1,13 @@
 <template>
   <div class="ml-20 m-auto w-full h-screen pr-20">
-    <gantt-chart />
+    <chart-widget />
   </div>
 </template>
 
 <script>
-import CalendarWidget from "../components/Widgets/CalendarWidget.vue";
-import GanttChart from "../components/Widgets/GanttChart.vue";
+import ChartWidget from '../components/Widgets/ChartWidget.vue';
 export default {
-  components: { CalendarWidget, GanttChart },
+  components: { ChartWidget },
   layout: "Default",
 };
 </script>

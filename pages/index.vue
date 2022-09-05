@@ -33,9 +33,9 @@
         <span slot="label" class="text-white"><i class="el-icon-date"></i> Subtask Schedule</span>
           <calendar-widget />
       </el-tab-pane>
-      <el-tab-pane :lazy="true" label="Subtask schedule" class="text-white max-h-96 overflow-scroll">
+      <el-tab-pane :lazy="false" label="Subtask schedule" class="text-white h-screen">
         <span slot="label" class="text-white"><i class="el-icon-finished p-2"></i>Gantt (Subtasks)</span>
-          <gantt-chart />
+          <chart-widget />
       </el-tab-pane>
     </el-tabs>
     </client-only>
@@ -49,15 +49,13 @@ import ProjectPercentage from "../components/Widgets/ProjectPercentage.vue";
 import Percentages from "../components/Widgets/Percentages.vue";
 import PieSubtaskWidget from "../components/Widgets/PieSubtaskWidget.vue";
 import CalendarWidget from "../components/Widgets/CalendarWidget.vue";
-import GanttChart from "../components/Widgets/GanttChart.vue";
 export default {
   components: {
     ChartWidget,
     ProjectPercentage,
     Percentages,
     PieSubtaskWidget,
-    CalendarWidget,
-    GanttChart
+    CalendarWidget
 },
   name: "IndexPage",
   layout: "Default",
