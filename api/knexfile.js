@@ -21,5 +21,4 @@ module.exports = {
             tableName: 'knex_migrations'
         }
     }
-
 };

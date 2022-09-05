@@ -33,6 +33,10 @@
         <span slot="label" class="text-white"><i class="el-icon-date"></i> Subtask Schedule</span>
           <calendar-widget />
       </el-tab-pane>
+      <el-tab-pane :lazy="false" label="Subtask schedule" class="text-white h-screen">
+        <span slot="label" class="text-white"><i class="el-icon-finished p-2"></i>Gantt (Subtasks)</span>
+          <chart-widget />
+      </el-tab-pane>
     </el-tabs>
     </client-only>
   </div>
@@ -51,8 +55,8 @@ export default {
     ProjectPercentage,
     Percentages,
     PieSubtaskWidget,
-    CalendarWidget,
-  },
+    CalendarWidget
+},
   name: "IndexPage",
   layout: "Default",
   computed: {

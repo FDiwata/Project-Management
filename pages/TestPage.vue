@@ -1,17 +1,16 @@
 <template>
-  <div class="ml-20 m-auto w-full h-screen">
-    <calendar-widget />
+  <div class="ml-20 m-auto w-full h-screen pr-20">
+    <chart-widget />
   </div>
 </template>
 
 <script>
-import CalendarWidget from '../components/Widgets/CalendarWidget.vue'
+import ChartWidget from '../components/Widgets/ChartWidget.vue';
 export default {
-  components: { CalendarWidget },
-    layout: "Default"
-}
+  components: { ChartWidget },
+  layout: "Default",
+};
 </script>
 
 <style>
-
 </style>

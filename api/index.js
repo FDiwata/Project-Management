@@ -106,7 +106,6 @@ app.get('/getAllProjectsPercentage', async function(req, res) {
     res.send(result)
 })
 
-
 app.get('/getTodoSubtaskPercentage/:project_id/:plan_id', async function(req, res) {
             const projectCondition = req.params.project_id !== 'null' ? ` AND t_projects.project_id = '${req.params.project_id}'` : ''
             const result = await knex.raw(`select count(*) * 100.0 / (select count(*) from t_subtasks, t_plans, t_projects WHERE t_subtasks.plan_id = ${req.params.plan_id !== 'null' ? `'${req.params.plan_id}'` : 't_plans.plan_id'} AND t_plans.project_id = t_projects.project_id${projectCondition}) as percentage 
@@ -141,6 +140,42 @@ app.get('/getSchedules', async function (req, res) {
     res.send(result[0])
 })
 
+app.get('/getPlanDashboard/:plan_id', async function (req, res) {
+    const result = await knex.raw(`SELECT t_subtasks.subtask_id, t_subtasks.subtask_title, t_subtasks.start_date, end_date, MAX(t_task_logs.log_date) AS done_date
+    FROM t_subtasks, t_task_logs
+    WHERE t_subtasks.subtask_id = t_task_logs.subtask_id AND t_subtasks.plan_id = '${req.params.plan_id}'
+    GROUP BY t_subtasks.subtask_id, t_subtasks.subtask_desc, t_subtasks.start_date, end_date`)
+    res.send(result[0])
+})
+
+app.get('/getPlanDashboard', async function (req, res) {
+    const result = await knex.raw(`SELECT t_subtasks.subtask_id, t_subtasks.subtask_title, t_subtasks.start_date, end_date, MAX(t_task_logs.log_date) AS done_date
+    FROM t_subtasks, t_task_logs
+    WHERE t_subtasks.subtask_id = t_task_logs.subtask_id
+    GROUP BY t_subtasks.subtask_id, t_subtasks.subtask_desc, t_subtasks.start_date, end_date`)
+    res.send(result[0])
+})
+
+app.get('/getPath/:key', async function (req, res) {
+    const key = req.params.key
+    const conditions = {
+        subtask: `SELECT t_projects.project_id, t_projects.project_title, t_subtasks.subtask_id, t_subtasks.subtask_title, t_plans.plan_id, t_plans.plan_title FROM t_subtasks, t_plans, t_projects WHERE t_subtasks.subtask_id = '${key}' AND t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id;`,
+        plan: `SELECT t_projects.project_id, t_projects.project_title, t_plans.plan_id, t_plans.plan_title FROM t_plans, t_projects WHERE t_plans.plan_id = '${key}' AND t_plans.project_id = t_projects.project_id;`,
+        project: `SELECT t_projects.project_id FROM t_projects WHERE t_projects.project_id = '${key}'`
+    }
+    const result = await knex.raw(`${conditions[key.split('-')[0]]}`)
+    res.send(result[0])
+})
+
+app.get('/getOverallProjPerc', async function (req, res) {
+    const result = await knex.raw(`SELECT IF(NOT EXISTS (SELECT * FROM t_plans WHERE EXISTS (SELECT * FROM t_subtasks WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id AND t_subtasks.status != 'Done' OR t_projects.project_id NOT IN (SELECT t_plans.project_id FROM t_plans WHERE t_plans.plan_id IN (SELECT t_subtasks.plan_id FROM t_subtasks)))), true, false) as is_done, 
+    t_projects.project_id FROM t_subtasks, t_plans, t_projects 
+    WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id
+    OR t_projects.project_id NOT IN (SELECT t_plans.project_id FROM t_plans WHERE t_plans.plan_id IN (SELECT t_subtasks.plan_id FROM t_subtasks))
+    GROUP BY t_projects.project_id`)
+    res.send(result[0])
+})
+
 app.post('/createProject', async function (req, res) {
     const result = await knex('t_projects').insert(req.body)
     res.send(result)
@@ -167,44 +202,6 @@ app.put('/updateSubtask/:id', async function (req, res) {
     res.send(result)
 })
 
-
-app.get('/getPlanDashboard/:plan_id', async function (req, res) {
-    const result = await knex.raw(`SELECT t_subtasks.subtask_id, t_subtasks.subtask_title, t_subtasks.start_date, end_date, MAX(t_task_logs.log_date) AS done_date
-    FROM t_subtasks, t_task_logs
-    WHERE t_subtasks.subtask_id = t_task_logs.subtask_id AND t_subtasks.plan_id = '${req.params.plan_id}'
-    GROUP BY t_subtasks.subtask_id, t_subtasks.subtask_desc, t_subtasks.start_date, end_date`)
-    res.send(result[0])
-})
-
-app.get('/getPlanDashboard', async function (req, res) {
-    const result = await knex.raw(`SELECT t_subtasks.subtask_id, t_subtasks.subtask_title, t_subtasks.start_date, end_date, MAX(t_task_logs.log_date) AS done_date
-    FROM t_subtasks, t_task_logs
-    WHERE t_subtasks.subtask_id = t_task_logs.subtask_id
-    GROUP BY t_subtasks.subtask_id, t_subtasks.subtask_desc, t_subtasks.start_date, end_date`)
-    res.send(result[0])
-})
-
-
-app.get('/getPath/:key', async function (req, res) {
-    const key = req.params.key
-    const conditions = {
-        subtask: `SELECT t_projects.project_id, t_projects.project_title, t_subtasks.subtask_id, t_subtasks.subtask_title, t_plans.plan_id, t_plans.plan_title FROM t_subtasks, t_plans, t_projects WHERE t_subtasks.subtask_id = '${key}' AND t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id;`,
-        plan: `SELECT t_projects.project_id, t_projects.project_title, t_plans.plan_id, t_plans.plan_title FROM t_plans, t_projects WHERE t_plans.plan_id = '${key}' AND t_plans.project_id = t_projects.project_id;`,
-        project: `SELECT t_projects.project_id FROM t_projects WHERE t_projects.project_id = '${key}'`
-    }
-    const result = await knex.raw(`${conditions[key.split('-')[0]]}`)
-    res.send(result[0])
-})
-
-app.get('/getOverallProjPerc', async function (req, res) {
-    const result = await knex.raw(`SELECT IF(NOT EXISTS (SELECT * FROM t_plans WHERE EXISTS (SELECT * FROM t_subtasks WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id AND t_subtasks.status != 'Done' OR t_projects.project_id NOT IN (SELECT t_plans.project_id FROM t_plans WHERE t_plans.plan_id IN (SELECT t_subtasks.plan_id FROM t_subtasks)))), true, false) as is_done, 
-    t_projects.project_id FROM t_subtasks, t_plans, t_projects 
-    WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id
-    OR t_projects.project_id NOT IN (SELECT t_plans.project_id FROM t_plans WHERE t_plans.plan_id IN (SELECT t_subtasks.plan_id FROM t_subtasks))
-    GROUP BY t_projects.project_id`)
-    res.send(result[0])
-})
-
 app.put('/updateTableData/:id', async function (req, res) {
     const table = `t_${req.body.type}s`
     const whereObject = {
@@ -221,7 +218,6 @@ app.put('/updateTableData/:id', async function (req, res) {
     const result = await knex.select('*').from(table).where(req.body.parent_key ? whereObject3 : whereObject)
     res.send(result)
 })
-
 
 app.post('/delete/:id', async function (req, res) {
     const table = `t_${req.body.type}s`
