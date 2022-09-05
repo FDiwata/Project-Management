@@ -119,7 +119,9 @@ export default {
 
     let metaArray = [];
     metaArray.push(
-      ...this.GET_ALL_SUBTASKS.map((subtask) => {
+      ...this.GET_ALL_SUBTASKS.filter((subtask) => {
+        return subtask.status !== 'Done'
+      }).map((subtask) => {
         return {
           x: `${subtask.subtask_title} ~ ${subtask.subtask_id}`,
           y: [
@@ -128,10 +130,10 @@ export default {
           ],
           fillColor:
             subtask.status === "Todo"
-              ? "#FAA43A"
-              : subtask.status === "Doing"
               ? "#FF6242"
-              : "#9acd32",
+              : subtask.status === "Doing"
+              ? "#FAA43A"
+              : "#9acd32"
         };
       })
     );
