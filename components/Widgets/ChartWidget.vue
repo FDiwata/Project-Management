@@ -115,7 +115,8 @@ export default {
     // },
   },
   async created() {
-    await this.$store.dispatch("getSubtasks");
+    const currentUserName = await this.$store.dispatch("getCurrentUserName", { id: this.$cookies.get('user_id')})
+    await this.$store.dispatch("getGanttData", {username: currentUserName.user_name});
 
     let metaArray = [];
     metaArray.push(

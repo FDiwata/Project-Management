@@ -73,7 +73,9 @@ export default {
     }
   },
   async created() {
-    const events = await this.$store.dispatch("getSchedules");
+    const currentUserName = await this.$store.dispatch("getCurrentUserName", { id: this.$cookies.get('user_id')})
+    console.log(currentUserName)
+    const events = await this.$store.dispatch("getSchedules", { assignee: currentUserName.user_name});
     events.forEach((item, index, arr) => {
       const condition = (status) => item.backgroundColor === status;
       events[index].backgroundColor = condition("Todo")
