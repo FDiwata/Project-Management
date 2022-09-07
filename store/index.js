@@ -46,6 +46,12 @@ export const actions = {
             return result.data
         },
 
+        async getGanttData({ commit }, payload) {
+            const result = await this.$axios.get(`/api/getGanttData/${payload.username}`)
+            commit('SET_ALL_SUBTASKS', result.data[0])
+            return result.data
+        },
+
         async getSubtask({ commit }, payload) {
             const result = await this.$axios.get(`/api/subtask/${payload}`)
             commit('SET_SELECTED_SUBTASK', result.data[0])
@@ -177,13 +183,19 @@ export const actions = {
     },
 
     async getSchedules(_, payload) {
-        const endpoint = `api/getSchedules`
+        const endpoint = `api/getSchedules/${payload.assignee}/${payload.status}`
         const result = await this.$axios.get(endpoint)
         return result.data
     },
 
     async getOverallProjPerc(_, __) {
         const endpoint = `api/getOverallProjPerc`
+        const result = await this.$axios.get(endpoint)
+        return result.data
+    },
+    
+    async getCurrentUserName (_, payload) {
+        const endpoint = `api/getCurrentUserName/${payload.id}`
         const result = await this.$axios.get(endpoint)
         return result.data
     }
