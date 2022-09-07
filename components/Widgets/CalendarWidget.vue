@@ -1,5 +1,42 @@
 <template>
   <div class="p-5 rounded-lg bg-gray-500 w-full h-fit">
+    <div class="w-full flex flex-row items-center justify-end space-x-3 mb-5">
+      
+      <!----User Dropdown-->
+      <div class="flex w-1/4 flex-col items-start justify-start">
+        <span>Select a user</span>
+        <el-select
+          class="w-full transition-all hover:shadow-lg"
+          v-model="username"
+          placeholder="Pick a project"
+        >
+          <el-option
+            v-for="user in users"
+            :key="user.key"
+            :label="user.user_name"
+            :value="user.user_name"
+          />
+        </el-select>
+      </div>
+
+      <!----Status Dropdown-->
+      <div class="flex w-1/4 flex-col items-start justify-start">
+        <span>Select a status</span>
+        <el-select
+          class="w-full transition-all hover:shadow-lg"
+          v-model="status"
+          placeholder="Pick a project"
+        >
+          <el-option
+            v-for="stat in subStatus"
+            :key="stat.key"
+            :label="stat"
+            :value="stat"
+          />
+        </el-select>
+      </div>
+    </div>
+
     <client-only>
       <FullCalendar class="mb-10" :key="keybind" :options="calendarOptions">
         <template #eventContent="arg">
@@ -17,18 +54,16 @@
               </div>
               <el-button
                 primary
-                class="
-                  font-bold
-                  text-cyan-500
-                  w-auto
-                  mt-3p
-                  cursor-pointer
-                "
-                @click="select(arg.event.id)" 
+                class="font-bold text-cyan-500 w-auto mt-3p cursor-pointer"
+                @click="select(arg.event.id)"
                 >Go to this subtask</el-button
               >
             </div>
-            <div slot="reference" class="text-ellipsis truncate w-full" style="text-align: left">
+            <div
+              slot="reference"
+              class="text-ellipsis truncate w-full"
+              style="text-align: left"
+            >
               Title: {{ JSON.stringify(arg.event.title)
               }}<br /></div></el-popover></template
       ></FullCalendar>
@@ -63,35 +98,54 @@ export default {
           },
         ],
       },
+      username: "all",
+      users: [{ user_name: "all" }],
+      status: "All",
+      subStatus: ["All", "Todo", "Doing", "Done"],
     };
   },
   watch: {
-    keybind (value) {
+    keybind(value) {
       if (value > 3) {
-        clearInterval(setInt)
+        clearInterval(setInt);
       }
-    }
+    },
+    username(value) {
+      this.setCalendarEvents(value, this.status);
+    },
+    status(value) {
+      this.setCalendarEvents(this.username, value);
+    },
   },
   async created() {
-    const currentUserName = await this.$store.dispatch("getCurrentUserName", { id: this.$cookies.get('user_id')})
-    console.log(currentUserName)
-    const events = await this.$store.dispatch("getSchedules", { assignee: currentUserName.user_name});
-    events.forEach((item, index, arr) => {
-      const condition = (status) => item.backgroundColor === status;
-      events[index].backgroundColor = condition("Todo")
-        ? "#FF6242"
-        : condition("Doing")
-        ? "#FAA43A"
-        : "#9ACD32";
+    await this.setCalendarEvents();
+    const usersArray = await this.$store.dispatch("getCurrentUserName", {
+      id: "all",
     });
-    this.calendarOptions.events = events;
+    this.users.push(...usersArray);
     setInt = setInterval(() => {
-      this.keybind++
+      this.keybind++;
     }, 500);
   },
   methods: {
     select(e) {
       this.$router.push(`/Subtask?subtask_id=${e}`);
+    },
+
+    async setCalendarEvents(username = "all", status = "All") {
+      const events = await this.$store.dispatch("getSchedules", {
+        assignee: username,
+        status: status,
+      });
+      events.forEach((item, index, arr) => {
+        const condition = (status) => item.backgroundColor === status;
+        events[index].backgroundColor = condition("Todo")
+          ? "#FF6242"
+          : condition("Doing")
+          ? "#FAA43A"
+          : "#9ACD32";
+      });
+      this.calendarOptions.events = events;
     },
   },
 };

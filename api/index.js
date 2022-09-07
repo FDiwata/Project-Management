@@ -135,8 +135,15 @@ app.get('/getLinks/:type/:id', async function (req, res) {
     res.send(result)
 })
 
-app.get('/getSchedules/:assignee', async function (req, res) {
-    const result = await knex.raw(`SELECT t_subtasks.subtask_id as id, t_subtasks.subtask_title as title, t_subtasks.subtask_desc as description, t_subtasks.start_date as start, t_subtasks.end_date as end, t_subtasks.status as backgroundColor, \'false\' as allDay, \'true\'\ as dayMaxEvents FROM t_subtasks, t_plans WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.assignee LIKE '%${req.params.assignee}%';`)
+app.get('/getSchedules/:assignee/:status', async function (req, res) {
+    const result = await knex.raw(`SELECT 
+    t_subtasks.subtask_id as id, t_subtasks.subtask_title as title, 
+    t_subtasks.subtask_desc as description, t_subtasks.start_date as start, 
+    t_subtasks.end_date as end, t_subtasks.status as backgroundColor, 
+    \'false\' as allDay, \'true\'\ as dayMaxEvents FROM t_subtasks, t_plans WHERE
+    t_subtasks.plan_id = t_plans.plan_id 
+    ${ req.params.status !== 'All' ? `AND t_subtasks.status = '${req.params.status}'` : '' }  
+    ${ req.params.assignee === 'all' ? '' : `AND t_plans.assignee LIKE '%${req.params.assignee}%'`} ;`)
     res.send(result[0])
 })
 
@@ -177,7 +184,8 @@ app.get('/getOverallProjPerc', async function (req, res) {
 })
 
 app.get('/getCurrentUserName/:id', async function (req, res) {
-    const result = await knex.raw(`SELECT t_users.user_name FROM t_users WHERE t_users.user_id = '${req.params.id}'`)
+    const result = await knex.raw(`SELECT t_users.user_name FROM t_users 
+    ${ req.params.id === 'all' ? '' : `WHERE t_users.user_id = '${req.params.id}'` }`)
     res.send(result[0])
 })
 

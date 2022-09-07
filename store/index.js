@@ -183,7 +183,7 @@ export const actions = {
     },
 
     async getSchedules(_, payload) {
-        const endpoint = `api/getSchedules/${payload.assignee}`
+        const endpoint = `api/getSchedules/${payload.assignee}/${payload.status}`
         const result = await this.$axios.get(endpoint)
         return result.data
     },
@@ -197,7 +197,7 @@ export const actions = {
     async getCurrentUserName (_, payload) {
         const endpoint = `api/getCurrentUserName/${payload.id}`
         const result = await this.$axios.get(endpoint)
-        return result.data[0]
+        return result.data
     }
 }
 
