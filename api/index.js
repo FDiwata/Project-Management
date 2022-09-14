@@ -184,7 +184,7 @@ app.get('/getOverallProjPerc', async function (req, res) {
 })
 
 app.get('/getCurrentUserName/:id', async function (req, res) {
-    const result = await knex.raw(`SELECT t_users.user_name FROM t_users 
+    const result = await knex.raw(`SELECT t_users.user_id FROM t_users 
     ${ req.params.id === 'all' ? '' : `WHERE t_users.user_id = '${req.params.id}'` }`)
     res.send(result[0])
 })

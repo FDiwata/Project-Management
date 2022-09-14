@@ -20,11 +20,18 @@
         </div>
         <div class="flex flex-col items-start justify-center w-1/2">
           <span class="pb-3 text-sm">Assignee</span>
-          <el-input
-            placeholder="Person in charge"
-            class="transition-all hover:shadow-lg text-black"
-            v-model="formData.assignee"
-          ></el-input>
+          <el-select
+          class="w-full transition-all hover:shadow-lg"
+          v-model="formData.assignee"
+          placeholder="Pick an assignee"
+        >
+          <el-option
+            v-for="user in users"
+            :key="user.key"
+            :label="user.user_id"
+            :value="user.user_id"
+          />
+        </el-select>
         </div>
       </el-row>
       <div
@@ -81,6 +88,7 @@ export default {
         plan_desc: "",
       },
       isUpdateMode: false,
+      users: []
     };
   },
   computed: {
@@ -142,6 +150,10 @@ export default {
   },
 
   async mounted() {
+    const usersArray = await this.$store.dispatch("getCurrentUserName", {
+      id: "all",
+    });
+    this.users.push(...usersArray)
     if (this.$route.query.plan_id !== undefined) {
       this.isUpdateMode = true;
       await this.$store.dispatch("getPlan", this.$route.query.plan_id);
