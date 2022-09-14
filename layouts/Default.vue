@@ -36,23 +36,27 @@
         text-color="#fff"
         active-text-color="#ffd04b"
       >
-        <el-menu-item index="1" class="w-1/3 md:w-full flex flex-row items-center justify-center">
-          <nuxt-link class="w-1/3 md:w-full m-auto md:my-0" to="/">
+        <nuxt-link class="w-1/3 md:w-full flex flex-row items-center justify-center m-auto md:my-0" to="/">
+          <el-menu-item
+            index="1"
+            class="w-full flex flex-row items-center justify-center md:w-full"
+          >
             <i class="el-icon-pie-chart"></i>
-          </nuxt-link>
-        </el-menu-item>
-
-          <el-menu-item index="2"  class="w-1/3 md:w-full flex flex-row items-center justify-center">
-
-        <nuxt-link class="w-1/3 md:w-full m-auto md:my-0" to="/ManageProject">
-            <i class="el-icon-document"></i>
-
-        </nuxt-link>
           </el-menu-item>
+        </nuxt-link>
+
+        <nuxt-link class="w-1/3 md:w-full flex flex-row items-center justify-center m-auto md:my-0" to="/ManageProject">
+          <el-menu-item
+            index="2"
+            class="w-full flex flex-row items-center justify-center md:w-full"
+          >
+            <i class="el-icon-document"></i>
+          </el-menu-item>
+        </nuxt-link>
 
         <el-menu-item
           @click="logOut"
-           class="w-1/3 md:w-full flex flex-row items-center justify-center"
+          class="w-1/3 md:w-full flex flex-row items-center justify-center"
           index="3"
         >
           <i class="el-icon-switch-button"></i>

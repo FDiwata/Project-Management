@@ -13,8 +13,8 @@
           <el-option
             v-for="user in users"
             :key="user.key"
-            :label="user.user_name"
-            :value="user.user_name"
+            :label="user.user_id"
+            :value="user.user_id"
           />
         </el-select>
       </div>
@@ -99,7 +99,7 @@ export default {
         ],
       },
       username: "all",
-      users: [{ user_name: "all" }],
+      users: [{ user_id: "all" }],
       status: "All",
       subStatus: ["All", "Todo", "Doing", "Done"],
     };

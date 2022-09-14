@@ -34,14 +34,21 @@
 
        <div class="flex flex-col items-start justify-center w-full md:w-1/3 px-3 md:px-0">
         <span class="pb-3 text-sm">Person in charge</span>
-        <el-input
-          placeholder="Person in charge"
-          class="transition-all hover:shadow-lg w-full"
+        <el-select
+          class="w-full transition-all hover:shadow-lg"
           v-model="formData.in_charge"
-        ></el-input>
+          placeholder="Pick a person in-charge"
+        >
+          <el-option
+            v-for="user in users"
+            :key="user.key"
+            :label="user.user_id"
+            :value="user.user_id"
+          />
+        </el-select>
        </div>
 
-       <div class="flex flex-col items-start justify-center w-full md:w-1/3 px-3 md:px-0">
+       <div v-show="false" class="flex flex-col items-start justify-center w-full md:w-1/3 px-3 md:px-0">
         <span class="pb-3 text-sm">Percentage</span>
         <el-input
           placeholder="Percentage"
@@ -122,10 +129,11 @@ export default {
         project_desc: "",
         project_type: "",
         in_charge: "",
-        percentage: "",
+        percentage: "0",
         TargetMonth: ""
       },
       isUpdateMode: false,
+      users: []
     };
   },
   computed: {
@@ -188,6 +196,10 @@ export default {
   },
 
   async mounted() {
+    const usersArray = await this.$store.dispatch("getCurrentUserName", {
+      id: "all",
+    });
+    this.users.push(...usersArray)
     if (this.$route.query.project_id === undefined) {
       this.formData.project_id = await this.$store.dispatch(
         "generateID",
