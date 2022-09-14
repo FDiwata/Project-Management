@@ -36,7 +36,8 @@
         <span class="pb-3 text-sm">Person in charge</span>
         <el-select
           class="w-full transition-all hover:shadow-lg"
-          v-model="formData.in_charge"
+          multiple
+          v-model="inChargeArray"
           placeholder="Pick a person in-charge"
         >
           <el-option
@@ -133,7 +134,8 @@ export default {
         TargetMonth: ""
       },
       isUpdateMode: false,
-      users: []
+      users: [],
+      inChargeArray: []
     };
   },
   computed: {
@@ -146,6 +148,11 @@ export default {
         type: 'project',
         updateData: updateData
       }
+    }
+  },
+  watch: {
+    inChargeArray (value) {
+      this.formData.in_charge = value.join()
     }
   },
   methods: {
@@ -209,6 +216,7 @@ export default {
       this.isUpdateMode = true;
       await this.$store.dispatch("getProject", this.$route.query.project_id);
       this.formData = { ...this.GET_SELECTED_PROJECT }
+      this.inChargeArray = this.GET_SELECTED_PROJECT.in_charge.split(',');
     }
   },
 };

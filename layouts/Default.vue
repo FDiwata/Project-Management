@@ -9,7 +9,7 @@
       h-screen
       flex flex-row
       justify-start
-      bg-slate-900
+      bg-neutral-900
       text-white
     "
   >
@@ -32,7 +32,7 @@
         "
         mode="horizontal"
         :collapse="true"
-        background-color="rgb(71 85 105)"
+        background-color="#313131"
         text-color="#fff"
         active-text-color="#ffd04b"
       >
@@ -41,7 +41,7 @@
             index="1"
             class="w-full flex flex-row items-center justify-center md:w-full"
           >
-            <i class="el-icon-pie-chart"></i>
+            <i class="el-icon-pie-chart ml-1 transform hover:scale-125"></i>
           </el-menu-item>
         </nuxt-link>
 
@@ -50,7 +50,7 @@
             index="2"
             class="w-full flex flex-row items-center justify-center md:w-full"
           >
-            <i class="el-icon-document"></i>
+            <i class="el-icon-document ml-1 transform hover:scale-125"></i>
           </el-menu-item>
         </nuxt-link>
 
@@ -59,7 +59,7 @@
           class="w-1/3 md:w-full flex flex-row items-center justify-center"
           index="3"
         >
-          <i class="el-icon-switch-button"></i>
+          <i class="el-icon-switch-button transform hover:scale-125"></i>
         </el-menu-item>
       </el-menu>
     </div>

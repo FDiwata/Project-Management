@@ -1,44 +1,49 @@
 <template>
   <div class="w-11/12 md:w-5/6 m-auto h-fit p-1 md:p-10 lg:p-0">
     <client-only>
-    <el-tabs type="card" class="bg-slate-900 h-fit">
-      <el-tab-pane label="Dashboard">
-        <span slot="label" class="text-white"><i class="el-icon-s-data"></i> Dashboard</span>
-        <div class="w-full pb-5">
-          <span class="text-5xl font-bold text-white">Dashboard</span>
-        </div>
-        <div
-          class="w-full flex flex-col items-center justify-between space-y-5"
-        >
-          <div
-            class="
-              w-full
-              flex flex-row
-              items-center
-              justify-start
-              mt-0
-              space-x-5
-            "
+      <el-tabs type="card" class="bg-neutral-900 h-fit">
+        <el-tab-pane label="Dashboard">
+          <span slot="label" class="text-white"
+            ><i class="el-icon-s-data"></i> Dashboard</span
           >
-            <pie-subtask-widget />
-            <pie-subtask-widget :is-project-mode="true" />
-            <percentages />
+          <div class="w-full pb-5">
+            <span class="text-5xl font-bold text-white">Dashboard</span>
           </div>
-        </div>
-        <div class="py-10 w-full m-auto">
-          <project-percentage :perc-data="GET_ALL_PLANS" />
-        </div>
-      </el-tab-pane>
-      <el-tab-pane :lazy="true" label="Subtask schedule" class="text-white">
-        <span slot="label" class="text-white"><i class="el-icon-date"></i> Subtask Schedule</span>
+          <div
+            class="w-full flex flex-col items-center justify-between space-y-5"
+          >
+            <div
+              class="
+                w-full
+                flex flex-row
+                items-center
+                justify-start
+                mt-0
+                space-x-5
+              "
+            >
+              <pie-subtask-widget />
+              <pie-subtask-widget :is-project-mode="true" />
+              <percentages />
+            </div>
+          </div>
+          <div class="py-10 w-full m-auto">
+            <project-percentage :perc-data="GET_ALL_PLANS" />
+          </div>
+        </el-tab-pane>
+        <el-tab-pane :lazy="true" label="Subtask schedule" class="text-white">
+          <span slot="label" class="text-white"
+            ><i class="el-icon-date"></i> Subtask Schedule</span
+          >
           <calendar-widget />
-      </el-tab-pane>
-      <!-- <el-tab-pane :lazy="false" label="Subtask schedule" class="text-white h-screen">
+        </el-tab-pane>
+        <!-- <el-tab-pane :lazy="false" label="Subtask schedule" class="text-white h-screen">
         <span slot="label" class="text-white"><i class="el-icon-finished p-2"></i>Gantt (Subtasks)</span>
           <chart-widget />
       </el-tab-pane> -->
-    </el-tabs>
+      </el-tabs>
     </client-only>
+    <new-feature :version="$cookies.get('latestVersion')" />
   </div>
 </template>
 
@@ -49,13 +54,15 @@ import ProjectPercentage from "../components/Widgets/ProjectPercentage.vue";
 import Percentages from "../components/Widgets/Percentages.vue";
 import PieSubtaskWidget from "../components/Widgets/PieSubtaskWidget.vue";
 import CalendarWidget from "../components/Widgets/CalendarWidget.vue";
+import NewFeature from "../components/Elements/NewFeature.vue";
 export default {
   components: {
     ChartWidget,
     ProjectPercentage,
     Percentages,
     PieSubtaskWidget,
-    CalendarWidget
+    CalendarWidget,
+    NewFeature
 },
   name: "IndexPage",
   layout: "Default",
@@ -74,7 +81,7 @@ export default {
   },
   data() {
     return {
-      drawer: false,
+      drawer: false
     };
   },
 };

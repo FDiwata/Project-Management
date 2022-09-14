@@ -22,7 +22,8 @@
           <span class="pb-3 text-sm">Assignee</span>
           <el-select
           class="w-full transition-all hover:shadow-lg"
-          v-model="formData.assignee"
+          multiple
+          v-model="inChargeArray"
           placeholder="Pick an assignee"
         >
           <el-option
@@ -88,7 +89,8 @@ export default {
         plan_desc: "",
       },
       isUpdateMode: false,
-      users: []
+      users: [],
+      inChargeArray: []
     };
   },
   computed: {
@@ -102,6 +104,11 @@ export default {
         updateData: updateData,
       };
     },
+  },
+  watch: {
+    inChargeArray (value) {
+      this.formData.assignee = value.join()
+    }
   },
   methods: {
     createPlan() {
@@ -157,7 +164,8 @@ export default {
     if (this.$route.query.plan_id !== undefined) {
       this.isUpdateMode = true;
       await this.$store.dispatch("getPlan", this.$route.query.plan_id);
-      this.formData = { ...this.GET_SELECTED_PLAN };
+      this.formData = { ...this.GET_SELECTED_PLAN }
+      this.inChargeArray = this.GET_SELECTED_PLAN.assignee.split(',');
     } else if (this.$route.query.project_id === undefined) {
       this.$router.push("ManageProject?redir=true");
     } else {

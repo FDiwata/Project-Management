@@ -43,7 +43,7 @@ export default {
           color: '#FFFFFF'
         },
         backgroundColor: {
-          fill: "#46596f",
+          fill: "#202020",
           opacity: 100,
         },
         title: !this.isProjectMode ? "Overall subtask composition" : "Overall project percentage",

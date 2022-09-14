@@ -13,7 +13,7 @@
     >
       <nuxt-link
         :to="`/Project?project_id=${percentage.project_id}`"
-        class="scale-95 hover:scale-100 transition-all m-auto p-2 px-5 shadow-lg rounded-lg bg-gray-200 w-full text-gray-800 flex flex-row items-center justify-between text-center space-x-5"
+        class="scale-95 hover:scale-100 transition-all m-auto p-2 px-5 shadow-lg rounded-lg bg-neutral-800 w-full text-white flex flex-row items-center justify-between text-center space-x-5"
         v-for="percentage in percData"
         :key="percentage.key"
       >
@@ -51,7 +51,7 @@
       :visible.sync="drawer"
       :size="widthCheck() < 768 ? '100%' : '50%'"
     >
-      <div class="h-full w-full p-5">
+      <div class="h-full w-full p-5 bg-neutral-800 text-white">
         <el-table
           :header-cell-style="{ background: '#545c64', text: 'white' }"
           :cell-style="{ background: '#545c64' }"

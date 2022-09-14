@@ -1,5 +1,5 @@
 <template>
-  <div class="p-5 rounded-lg bg-gray-500 w-full h-fit">
+  <div class="p-5 rounded-lg bg-neutral-800 w-full h-fit">
     <div class="w-full flex flex-row items-center justify-end space-x-3 mb-5">
       
       <!----User Dropdown-->

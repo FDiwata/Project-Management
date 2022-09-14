@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full p-5 mt-5 lg:mt-0 rounded bg-slate-200 shadow-lg text-gray-800"
+    class="w-full p-5 mt-5 lg:mt-0 rounded bg-neutral-800 shadow-lg text-white"
   >
     <div
       class="
@@ -25,7 +25,7 @@
         "
       >
         <div class="flex flex-col items-start justify-center w-full lg:w-1/2">
-          <span class="pb-1 text-sm">Select Project</span>
+          <span class="pb-3 text-sm">Pick a Project</span>
           <el-select
             class="w-full transition-all hover:shadow-lg"
             v-model="selectedProjectID"
@@ -41,7 +41,7 @@
           </el-select>
         </div>
         <div class="flex flex-col items-start justify-center w-full lg:w-1/2">
-          <span class="pb-1 text-sm">Select Plan</span>
+          <span class="pb-3 text-sm">Pick a Plan</span>
           <el-select
             class="w-full transition-all hover:shadow-lg"
             v-model="selectedPlanID"
@@ -58,14 +58,13 @@
         </div>
       </div>
     </div>
-    <hr class="my-3" />
     <div
       v-for="(status) in widgetData"
       :key="status.key"
-      class="min-h-80"
+      class="min-h-80 flex flex-row items-center justify-center my-5"
     >
-      <span class="font-light text-sm"
-        >Percentage of subtasks {{ subStatus[status.status === 'Todo' ? 0 : status.status === 'Doing' ? 1 : 2] }}</span
+      <span class="font-light text-lg mx-5 w-1/6"
+        >{{ subStatus[status.status === 'Todo' ? 0 : status.status === 'Doing' ? 1 : 2] }}</span
       >
       <el-progress
         :stroke-width="25"
