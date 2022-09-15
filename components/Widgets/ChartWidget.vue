@@ -39,11 +39,7 @@ export default {
         plan: "",
       },
       seriesData: [],
-      metaSeries: [[]],
-      seriesIndex: {
-        current: 0,
-        limit: 0,
-      },
+      metaSeries: [[]]
     };
   },
   computed: {
@@ -140,8 +136,6 @@ export default {
     );
 
     this.arrayChunkify(JSON.parse(JSON.stringify(metaArray)), 10);
-
-    this.seriesIndex.limit = Math.ceil(this.metaSeries.length / 10);
     this.seriesData = this.metaSeries[0];
   },
 

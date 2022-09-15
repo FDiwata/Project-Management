@@ -38,15 +38,6 @@
       >
       </div>
     </div>
-      <el-steps class="bg-slate-900 m-auto"  :space="500" :active=" GET_SELECTED_SUBTASK.status === 'Done'
-                ? 3
-                : GET_SELECTED_SUBTASK.status === 'Todo'
-                ? 1
-                : 2">
-        <el-step title="Todo" icon="el-icon-edit bg-slate-900 w-full"></el-step>
-        <el-step title="Doing" icon="el-icon-setting bg-slate-900 w-full"></el-step>
-        <el-step title="Done" icon="el-icon-circle-check bg-slate-900 w-full"></el-step>
-      </el-steps>
     <div
       class="w-full py-3 flex flex-row items-center justify-between space-x-3"
     >
@@ -85,6 +76,16 @@
         </div>
       </div>
     </div>
+
+    <el-steps class="bg-neutral-900 m-auto w-full"  :space="500" :active=" GET_SELECTED_SUBTASK.status === 'Done'
+                ? 3
+                : GET_SELECTED_SUBTASK.status === 'Todo'
+                ? 1
+                : 2">
+        <el-step title="Todo" icon="el-icon-edit bg-slate-900 w-full"></el-step>
+        <el-step title="Doing" icon="el-icon-setting bg-slate-900 w-full"></el-step>
+        <el-step title="Done" icon="el-icon-circle-check bg-slate-900 w-full"></el-step>
+      </el-steps>
     <div class="flex flex-col items-start justify-center py-10">
       <span class="font-thin text-sm">Project Description:</span>
       <p class="font-italic font-normal mt-3">
@@ -102,12 +103,12 @@
         >
       </div>
       <el-table
-        :header-cell-style="{ background: '#545c64', text: 'white' }"
-        :cell-style="{ background: '#545c64' }"
+      :header-cell-style="{ background: '#272727', text: 'white' }"
+        :cell-style="{ background: '#272727' }"
         :data="[...GET_SELECTED_TASK_LOGS]"
-        class="w-full rounded-lg text-white break-words"
+        class="w-full text-white break-words"
       >
-        <el-table-column prop="task_logs_id" label="Task Log ID">
+        <el-table-column class="hidden" prop="task_logs_id" label="Task Log ID">
           <template slot-scope="scope">
             <el-popover
               class="rounded-lg break-words"
@@ -122,7 +123,7 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="miscellaneous" label="Miscellaneous">
+        <el-table-column class="hidden" prop="miscellaneous" label="Miscellaneous">
           <template slot-scope="scope">
             <el-tag
               :type="scope.row.miscellaneous === true ? 'info' : 'success'"
