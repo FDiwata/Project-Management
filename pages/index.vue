@@ -7,7 +7,7 @@
             ><i class="el-icon-s-data"></i> Dashboard</span
           >
           <div class="w-full pb-5">
-            <span class="text-5xl font-bold text-white">Dashboard</span>
+            <span class="text-3xl font-bold text-white">Dashboard</span>
           </div>
           <div
             class="w-full flex flex-col items-center justify-between space-y-5"
@@ -27,7 +27,7 @@
               <percentages />
             </div>
           </div>
-          <div class="py-10 w-full m-auto">
+          <div class="py-5 w-full m-auto">
             <project-percentage :perc-data="GET_ALL_PLANS" />
           </div>
         </el-tab-pane>

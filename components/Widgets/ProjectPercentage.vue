@@ -1,9 +1,9 @@
 <template>
   <div class="w-full">
     <div
-      class="w-full flex flex-col md:flex-row items-center justify-start md:justify-between space-x-0 md:space-x-5"
+      class="w-full m-auto flex flex-col md:flex-row items-center justify-start md:justify-between space-x-0 md:space-x-5"
     >
-      <span class="text-xl w-full md:w-fit md:text-5xl font-black text-white py-5">Current Projects</span>
+      <span class="text-xl w-full md:w-fit md:text-3xl font-bold text-white">Current Projects</span>
       <nuxt-link to="CreateProject" class="w-full md:w-fit">
         <el-button icon="el-icon-edit" class="text-white w-full md:w-fit">Create a project</el-button>
       </nuxt-link>
@@ -13,7 +13,7 @@
     >
       <nuxt-link
         :to="`/Project?project_id=${percentage.project_id}`"
-        class="scale-95 hover:scale-100 transition-all m-auto p-2 px-5 shadow-lg rounded-lg bg-neutral-800 w-full text-white flex flex-row items-center justify-between text-center space-x-5"
+        class="hover:bg-neutral-700 transition-all m-auto p-2 px-5 shadow-lg rounded-lg bg-neutral-800 w-full text-white flex flex-row items-center justify-between text-center space-x-5"
         v-for="percentage in percData"
         :key="percentage.key"
       >
@@ -22,7 +22,7 @@
           percentage.project_title
           }}
         </span>
-        <el-tag class="text-xl" primary>
+        <el-tag class="text-lg" primary>
           {{percentage.month}}
         </el-tag>
          <el-progress
@@ -46,6 +46,21 @@
         >See Plans</el-button>
       </nuxt-link>
     </div>
+    
+
+
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :hide-on-single-page="metaData.length === 1"
+      :page-size="5"
+      :current-page.sync="currentPage"
+      @current-change="pageChange"
+      :total="metaData.flat().length">
+    </el-pagination>
+
+    
+
     <el-drawer
       :title="`List of plans for ${GET_SELECTED_PROJECT.project_title}`"
       :visible.sync="drawer"
@@ -53,10 +68,10 @@
     >
       <div class="h-full w-full p-5 bg-neutral-800 text-white">
         <el-table
-          :header-cell-style="{ background: '#545c64', text: 'white' }"
-          :cell-style="{ background: '#545c64' }"
+          :header-cell-style="{ background: '#272727', text: 'white' }"
+          :cell-style="{ background: '#272727' }"
           :data="GET_SELECTED_PLANS"
-          class="w-full text-white rounded-lg"
+          class="w-full text-white border-none"
         >
           <el-table-column prop="plan_id" label="Plan ID"></el-table-column>
           <el-table-column prop="plan_title" label="Plan Title">
@@ -88,7 +103,14 @@ export default {
   data() {
     return {
       percData: [],
-      drawer: false
+      metaData: [[]],
+      drawer: false,
+      currentPage: 1,
+      seriesIndex: {
+        current: 0,
+        limit: 0,
+      }
+      
     };
   },
   computed: {
@@ -101,10 +123,13 @@ export default {
           (100 / project.plan_count) * (project.percentage / 100);
       });
       return (100 / numberOfProjects) * (totalPercentage / 100);
-    }
+    },
   },
   async mounted() {
-    this.percData = await this.$store.dispatch("getAllProjectsPercentage");
+    const metaArray = await this.$store.dispatch("getAllProjectsPercentage");
+    this.arrayChunkify(JSON.parse(JSON.stringify(metaArray)), 5);
+    this.seriesIndex.limit = Math.ceil(this.metaData.length / 5);
+    this.percData = this.metaData[0];
   },
   methods: {
     async getProjectPlan(project_id) {
@@ -117,6 +142,24 @@ export default {
     },
     widthCheck() {
       return process.client ? window.outerWidth : 0;
+    },
+    arrayChunkify(metaArray, chunkSize) {
+      let pushLimit = 0;
+      let subCount = 0;
+      metaArray.forEach((project) => {
+        this.metaData[subCount].push(project);
+        if (pushLimit <= chunkSize - 2) {
+          pushLimit += 1;
+        } else {
+          this.metaData.push([]);
+          pushLimit = 0;
+          subCount++;
+        }
+      });
+    },
+    pageChange (currentPage) {
+      this.percData = this.metaData[currentPage - 1];
+      this.key = currentPage;
     }
   }
 };

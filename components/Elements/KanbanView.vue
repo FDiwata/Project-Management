@@ -8,7 +8,7 @@
       m-auto
       flex flex-row
       justify-center
-      bg-gray-100
+      bg-neutral-800
       rounded-lg
       space-x-3
       p-3
@@ -33,14 +33,14 @@
             shadow-md
             rounded-lg
             h-40
-            text-start text-gray-600
-            bg-gray-300
+            text-start text-white
+            bg-neutral-700
           "
           :draggable="true"
           @dragstart="onDrag"
           @drop.prevent
         >
-          <div class="flex flex-col items-start justify-center">
+          <div class="flex flex-col items-start justify-center space-y-2">
             <nuxt-link :to="`/Subtask?subtask_id=${card.subtask_id}`" class="font-bold text-sm">{{card.subtask_title}}</nuxt-link>
             <span class="text-xs">Due date: <span class="text-red-400">{{new Date(card.due_date).toDateString()}}</span></span>
             <el-tag class="my-1 text-xs h-fit" type="warning">Todo</el-tag>
@@ -67,14 +67,14 @@
             shadow-md
             rounded-lg
             h-40
-            text-start text-gray-600
-            bg-gray-300
+            text-start text-white
+            bg-neutral-700
           "
           :draggable="true"
           @dragstart="onDrag"
            @drop.prevent
         >
-          <div class="flex flex-col items-start justify-center">
+          <div class="flex flex-col items-start justify-center space-y-2">
             <nuxt-link :to="`/Subtask?subtask_id=${card.subtask_id}`" class="font-bold text-sm">{{card.subtask_title}}</nuxt-link>
             <span class="text-xs">Due date: <span class="text-red-400">{{new Date(card.due_date).toDateString()}}</span></span>
             <el-tag class="my-1 text-xs h-fit" type="success">Doing</el-tag>
@@ -100,14 +100,14 @@
             shadow-md
             rounded-lg
             h-40
-            text-start text-gray-600
-            bg-gray-300
+            text-start text-white
+            bg-neutral-700
           "
           :draggable="true"
           @dragstart="onDrag"
           @drop.prevent
         >
-          <div class="flex flex-col items-start justify-center">
+          <div class="flex flex-col items-start justify-center space-y-2">
             <nuxt-link @click.self.stop :to="`/Subtask?subtask_id=${card.subtask_id}`" class="font-bold text-sm">{{card.subtask_title}}</nuxt-link>
             <span class="text-xs">Due date: <span class="text-red-400">{{new Date(card.due_date).toDateString()}}</span></span>
             <el-tag class="my-1 text-xs h-fit">Done</el-tag>

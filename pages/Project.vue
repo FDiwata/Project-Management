@@ -94,42 +94,10 @@
           ></nuxt-link
         >
       </div>
-      <el-table :data="GET_SELECTED_PLANS" class="w-full rounded-lg hidden md:block">
-        <el-table-column type="expand">
-          <template slot-scope="scope">
-            <div
-              v-if="scope.row.subtasks.length < 1"
-              class="w-full text-center py-10"
-            >
-              <span>This needs to be planned out. 🤔</span>
-            </div>
-            <div v-else class="w-full px-3 pt-3 bg-gray-300">
-              <span class="text-lg text-gray-800"
-                >Subtasks for
-                <span class="font-bold">{{ scope.row.plan_title }}</span></span
-              >
-            </div>
-            <div
-              v-if="scope.row.subtasks.length >= 1"
-              class="
-                w-full
-                p-3
-                bg-gray-300
-                grid grid-flow-row
-                gap-5
-                grid-cols-1
-                md:grid-cols-2
-                xl:grid-cols-3
-              "
-            >
-              <subtask-doc
-                v-for="item in scope.row.subtasks"
-                :key="item.key"
-                :subtask="item"
-              />
-            </div>
-          </template>
-        </el-table-column>
+      <el-table 
+      :header-cell-style="{ background: '#272727', text: 'white' }"
+        :cell-style="{ background: '#272727' }"
+      :data="GET_SELECTED_PLANS" class="w-full text-white border-none hidden md:block">
         <el-table-column prop="plan_id" label="Plan ID"> </el-table-column>
         <el-table-column prop="plan_title" label="Plan Title">
           <template slot-scope="scope">

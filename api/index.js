@@ -2,7 +2,16 @@
 const express = require('express')
 const knexConfig = require('./knexfile.js');
 var SHA256 = require("crypto-js/sha256");
-const knex = require('knex')(knexConfig[process.env.NODE_ENV])
+const knex = require('knex')({
+    client: 'mysql',
+    connection: {
+        host: 'localhost',
+        port: 3306,
+        user: 'root',
+        password: '',
+        database: 'project_master'
+    }
+})
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
