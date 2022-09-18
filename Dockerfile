@@ -1,32 +1,16 @@
 FROM node:14.19.3 AS base
-# Create app directory
-RUN mkdir -p /usr/src/app/.nuxt
-WORKDIR /usr/src/app
-# Install app dependencies
-COPY package.json /usr/src/app/
-COPY package-lock.json /usr/src/app/
-# BUILD STAGE
-FROM base AS BUILD
-# Install all dependencies
-RUN npm i
-# Set environment variables
-ENV NODE_ENV production
-ENV NUXT_HOST 0.0.0.0
-ENV NUXT_PORT 3000
-# Bundle app source
-COPY . /usr/src/app
-# Build command
+# create destination directory
+RUN mkdir -p /usr/src/nuxt-app
+WORKDIR /usr/src/nuxt-app
+
+# copy the app, note .dockerignore
+COPY . /usr/src/nuxt-app/
+RUN npm install
 RUN npm run build
-# PRODUCTION STAGE
-FROM base AS PROD
-COPY --from=BUILD /usr/src/app/.nuxt/ /usr/src/app/.nuxt/
-# Set environment variables again to ensure
-ENV NUXT_HOST 0.0.0.0
-ENV NUXT_PORT 3000
-# Bundle app source
-COPY . /usr/src/app
-# Installing needed packages only and clearing cache
-RUN npm install --only=production && \
-    npm cache clean --force
+
 EXPOSE 3000
+
+ENV NUXT_HOST=0.0.0.0
+ENV NUXT_PORT=3000
+
 CMD [ "npm", "start" ]
