@@ -15,11 +15,14 @@
             <div
               class="
                 w-full
-                flex flex-row
+                flex flex-col lg:flex-row
                 items-center
                 justify-start
                 mt-0
-                space-x-5
+                space-y-5
+                space-x-0
+                lg:space-y-0
+                lg:space-x-5
               "
             >
               <pie-subtask-widget />

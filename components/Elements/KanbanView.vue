@@ -6,16 +6,19 @@
       min-h-max
       shadow-lg
       m-auto
-      flex flex-row
+      flex flex-col md:flex-row
       justify-center
       bg-neutral-800
       rounded-lg
-      space-x-3
+      space-y-3
+      space-x-0
+      md:space-y-0
+      md:space-x-3
       p-3
     "
   >
-    <div class="w-1/3" @dragover="allowDrop">
-      <div class="p-3"><span class="font-bold text-amber-600">Todo</span></div>
+    <div class="w-full md:w-1/3" style="min-height: 200px;" @dragover="allowDrop">
+      <div class="p-3"><span class="font-bold text-red-500">Todo</span></div>
       <div
         id="todo"
         class="flex flex-col items-center justify-start h-full"
@@ -34,7 +37,7 @@
             rounded-lg
             h-40
             text-start text-white
-            bg-neutral-700
+            bg-red-800
           "
           :draggable="true"
           @dragstart="onDrag"
@@ -49,8 +52,8 @@
         </div>
       </div>
     </div>
-    <div class="w-1/3" @dragover="allowDrop">
-      <div class="p-3"><span class="font-bold text-green-400">Doing</span></div>
+    <div class="w-full md:w-1/3" style="min-height: 200px;" @dragover="allowDrop">
+      <div class="p-3"><span class="font-bold text-amber-600">Doing</span></div>
       <div
         id="doing"
         class="flex flex-col items-center justify-start h-full"
@@ -68,7 +71,7 @@
             rounded-lg
             h-40
             text-start text-white
-            bg-neutral-700
+            bg-amber-800
           "
           :draggable="true"
           @dragstart="onDrag"
@@ -83,8 +86,8 @@
         </div>
       </div>
     </div>
-    <div class="w-1/3" @dragover="allowDrop">
-      <div class="p-3"><span class="font-bold text-blue-400">Done</span></div>
+    <div class="w-full md:w-1/3" style="min-height: 200px;" @dragover="allowDrop">
+      <div class="p-3"><span class="font-bold text-lime-500">Done</span></div>
       <div
         id="done"
         class="flex flex-col items-center justify-start h-full"
@@ -101,7 +104,7 @@
             rounded-lg
             h-40
             text-start text-white
-            bg-neutral-700
+            bg-lime-700
           "
           :draggable="true"
           @dragstart="onDrag"

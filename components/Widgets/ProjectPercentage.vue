@@ -1,9 +1,9 @@
 <template>
-  <div class="w-full">
+  <div class="w-full mb-16">
     <div
       class="w-full m-auto flex flex-col md:flex-row items-center justify-start md:justify-between space-x-0 md:space-x-5"
     >
-      <span class="text-xl w-full md:w-fit md:text-3xl font-bold text-white">Current Projects</span>
+      <span class="text-xl w-full mb-3 md:w-fit md:text-3xl font-bold text-white">Current Projects</span>
       <nuxt-link to="CreateProject" class="w-full md:w-fit">
         <el-button icon="el-icon-edit" class="text-white w-full md:w-fit">Create a project</el-button>
       </nuxt-link>
@@ -17,7 +17,7 @@
         v-for="percentage in percData"
         :key="percentage.key"
       >
-        <span class="hover:underline w-1/3 text-left">
+        <span class="hover:underline w-full md:w-1/3 text-left">
           {{
           percentage.project_title
           }}
@@ -26,7 +26,7 @@
           {{percentage.month}}
         </el-tag>
          <el-progress
-        class="w-2/3"
+        class="w-2/3 hidden md:block"
           type="line"
           :stroke-width="13"
           :percentage="!isNaN(Math.round(
@@ -40,7 +40,7 @@
         <el-button
           @click.prevent.stop="castDrawer(percentage.project_id)"
           type="primary"
-          class="font-bold text-cyan-500 w-1/4"
+          class="font-bold text-cyan-500 w-1/4 hidden md:block"
           icon="el-icon-edit"
           round
         >See Plans</el-button>

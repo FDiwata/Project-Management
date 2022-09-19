@@ -1,9 +1,9 @@
 <template>
-  <div
+  <div class="grid place-items-center h-screen w-full">
+    <div
     class="
       p-2
       md:p-5
-      mt-52
       w-11/12
       md:w-2/3
       lg:w-1/2
@@ -89,6 +89,8 @@
       >
     </div>
   </div>
+  </div>
+
 </template>
 
 <script>

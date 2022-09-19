@@ -1,8 +1,8 @@
 <template>
-  <div class="py-5 w-full md:w-2/3 m-auto h-screen">
-    <div class="w-full py-2 md:py-5 px-3 md:px-0">
-      <span v-if="!isUpdateMode" class="text-5xl font-bold text-white">Create Project</span>
-      <span v-else class="text-5xl font-bold text-white">Update Project</span>
+  <div class="py-5 w-full md:w-2/3 m-auto h-screen p-3">
+    <div class="w-full py-2 pb-5 md:py-5 px-3 md:px-0">
+      <span v-if="!isUpdateMode" class="text-2xl md:text-5xl font-bold text-white">Create Project</span>
+      <span v-else class="text-2xl md:text-5xl font-bold text-white">Update Project</span>
     </div>
     <div>
       <el-row
@@ -97,7 +97,7 @@
       </div>
       </div>
       <el-row
-        class="w-full flex flex-row items-center justify-end space-x-3 py-3 pb-20"
+        class="w-full flex flex-row items-center justify-end space-x-3 py-3 pb-20 px-5"
       >
         <el-button
           v-if="!isUpdateMode"
