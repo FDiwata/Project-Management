@@ -1,12 +1,26 @@
 <template>
   <div class="p-5 w-full md:w-5/6 m-auto h-screen">
     <div class="w-full py-5 flex flex-row items-center justify-between">
-      <span v-if="!$route.query.redir" class="text-xl md:text-3xl font-bold text-white"
+      <span
+        v-if="!$route.query.redir"
+        class="text-xl md:text-3xl font-bold text-white"
         >Manage Projects</span
       >
       <span v-else class="text-5xl font-bold text-white"
         >Create a Plan from:</span
       >
+      <div class="w-1/2 flex flex-row items-end justify-end space-x-5">
+        <el-pagination
+      background
+      class="right-0"
+      layout="prev, pager, next"
+      :hide-on-single-page="metaData.length === 1"
+      :page-size="6"
+      :current-page.sync="currentPage"
+      @current-change="pageChange"
+      :total="metaData.flat().length"
+    >
+    </el-pagination>
       <nuxt-link
         v-if="!$route.query.redir"
         class="font-black"
@@ -18,45 +32,64 @@
         ><el-button
           icon="el-icon-edit"
           class="hover:font-bold text-white block md:hidden"
-          ></el-button
-        ></nuxt-link
-      >
-    </div>
-    <div class="mt-5">
-      <div class="w-full flex flex-col space-y-5 md:space-y-0 md:grid grid-flow-row gap:2 md:gap-5 grid-cols-2 lg:grid-cols-3">
-      <project-doc class="col-span-1 w-full" v-for="project in [...GET_ALL_PROJECTS].filter(
-            (data) =>
-              !filterValue ||
-              data[filterColumn]
-                .toLowerCase()
-                .includes(filterValue.toLowerCase())
-          )" :key="project.key" :projData="project"  @delAction="deleteAction(project.project_id)"
-          @editAction="$router.push(`CreateProject?project_id=${project.project_id}`)"/>
+        ></el-button
+      ></nuxt-link>
       </div>
+   
+    </div>
+    <div class="mt-5" style="min-height: 50%;">
+      <div
+        class="
+          w-full
+          flex flex-col
+          space-y-5
+          md:space-y-0 md:grid
+          grid-flow-row
+          gap:2
+          md:gap-5
+          grid-cols-2
+          lg:grid-cols-3
+        "
+      >
+        <project-doc
+          class="col-span-1 w-full"
+          v-for="project in percData"
+          :key="project.key"
+          :projData="project"
+          @delAction="deleteAction(project.project_id)"
+          @editAction="
+            $router.push(`CreateProject?project_id=${project.project_id}`)
+          "
+        />
+      </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import ProjectDoc from '../components/Elements/ProjectDoc.vue';
+import ProjectDoc from "../components/Elements/ProjectDoc.vue";
 export default {
   components: { ProjectDoc },
   layout: "Default",
   data() {
     return {
+      percData: [],
+      metaData: [[]],
+      currentPage: 1,
       filterColumn: "",
       filterValue: "",
     };
   },
   computed: {
     ...mapGetters(["GET_ALL_PROJECTS"]),
-    filterObject () {
-        const returnObject = Object.keys(this.GET_ALL_PROJECTS[0] || [])
-        returnObject.splice(2,1)
-        this.filterColumn = returnObject[0]
-        return returnObject
-      }
+    filterObject() {
+      const returnObject = Object.keys(this.GET_ALL_PROJECTS[0] || []);
+      returnObject.splice(2, 1);
+      this.filterColumn = returnObject[0];
+      return returnObject;
+    },
   },
   methods: {
     async deleteTableData(projectID) {
@@ -105,9 +138,32 @@ export default {
           });
         });
     },
+
+    arrayChunkify(metaArray, chunkSize) {
+      let pushLimit = 0;
+      let subCount = 0;
+      metaArray.forEach((project) => {
+        
+        this.metaData[subCount].push(project);
+        if (pushLimit <= chunkSize - 2) {
+          pushLimit += 1;
+        } else {
+          this.metaData.push([]);
+          pushLimit = 0;
+          subCount++;
+        }
+      });
+    },
+    pageChange(currentPage) {
+      this.percData = this.metaData[currentPage - 1];
+      this.key = currentPage;
+    },
   },
   async mounted() {
     await this.$store.dispatch("getProjects");
+    const metaArray = this.GET_ALL_PROJECTS;
+    this.arrayChunkify(JSON.parse(JSON.stringify(metaArray)), 6);
+    this.percData = this.metaData[0];
   },
 };
 </script>
