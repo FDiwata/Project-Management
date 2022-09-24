@@ -84,6 +84,18 @@
     <div class="p-3 pb-20 md:pb-1">
       <div class="w-full flex flex-row justify-between items-center py-2">
         <span class="font-bold">Project plans list:</span>
+
+      <el-pagination
+      background
+      layout="prev, pager, next"
+      :hide-on-single-page="metaData.length === 1"
+      :page-size="5"
+      :current-page.sync="currentPage"
+      @current-change="pageChange"
+      :total="metaData.flat().length"
+    >
+    </el-pagination>
+
         <nuxt-link
           :to="{
             name: 'CreatePlan',
@@ -97,7 +109,7 @@
       <el-table 
       :header-cell-style="{ background: '#272727', text: 'white' }"
         :cell-style="{ background: '#272727' }"
-      :data="GET_SELECTED_PLANS" class="w-full text-white border-none hidden md:block">
+      :data="percData" class="w-full text-white border-none hidden md:block">
         <el-table-column prop="plan_id" label="Plan ID"> </el-table-column>
         <el-table-column prop="plan_title" label="Plan Title">
           <template slot-scope="scope">
@@ -122,7 +134,7 @@
       </el-table>
 
       <el-table  :header-cell-style="{ background: '#272727', text: 'white' }"
-        :cell-style="{ background: '#272727' }" :data="GET_SELECTED_PLANS" class="w-full text-white border-none mt-5 block md:hidden">
+        :cell-style="{ background: '#272727' }" :data="percData" class="w-full text-white border-none mt-5 block md:hidden">
         <el-table-column prop="plan_title" label="Plan Title">
           <template slot-scope="scope">
             <nuxt-link
@@ -153,7 +165,11 @@ export default {
   components: { SubtaskDoc },
   layout: "Default",
   data() {
-    return {};
+    return {
+      percData: [],
+      metaData: [[]],
+      currentPage: 1,
+    };
   },
   computed: {
     ...mapGetters(["GET_SELECTED_PROJECT", "GET_SELECTED_PLANS"]),
@@ -165,7 +181,8 @@ export default {
       return (
         ((100 / this.GET_SELECTED_PLANS.length) * projTotalPercentage) / 100
       );
-    }
+    },
+
   },
   async created() {
     try {
@@ -178,6 +195,10 @@ export default {
         this.GET_SELECTED_PLANS[index].subtasks =
           await this.getSpecificSubtasks(plan.plan_id);
       });
+
+      const metaArray = this.GET_SELECTED_PLANS;
+    this.arrayChunkify(JSON.parse(JSON.stringify(metaArray)), 5);
+    this.percData = this.metaData[0];
     } catch (_) {
       this.$message({
         type: "error",
@@ -237,7 +258,27 @@ export default {
             message: "Delete canceled",
           });
         });
-    }
+    },
+
+    arrayChunkify(metaArray, chunkSize) {
+      let pushLimit = 0;
+      let subCount = 0;
+      metaArray.forEach((project) => {
+        
+        this.metaData[subCount].push(project);
+        if (pushLimit <= chunkSize - 2) {
+          pushLimit += 1;
+        } else {
+          this.metaData.push([]);
+          pushLimit = 0;
+          subCount++;
+        }
+      });
+    },
+    pageChange(currentPage) {
+      this.percData = this.metaData[currentPage - 1];
+      this.key = currentPage;
+    },
   },
 };
 </script>

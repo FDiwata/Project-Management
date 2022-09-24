@@ -46,48 +46,47 @@
       </el-tab-pane> -->
       </el-tabs>
     </client-only>
-    <new-feature :version="$cookies.get('latestVersion')" />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import ChartWidget from "../components/Widgets/ChartWidget.vue";
-import ProjectPercentage from "../components/Widgets/ProjectPercentage.vue";
-import Percentages from "../components/Widgets/Percentages.vue";
-import PieSubtaskWidget from "../components/Widgets/PieSubtaskWidget.vue";
-import CalendarWidget from "../components/Widgets/CalendarWidget.vue";
-import NewFeature from "../components/Elements/NewFeature.vue";
-export default {
-  components: {
-    ChartWidget,
-    ProjectPercentage,
-    Percentages,
-    PieSubtaskWidget,
-    CalendarWidget,
-    NewFeature
-},
-  name: "IndexPage",
-  layout: "Default",
-  computed: {
-    ...mapGetters(["GET_SELECTED_PLANS", "GET_ALL_PROJECTS", "GET_ALL_PLANS"]),
+  import { mapGetters } from "vuex";
+  import ChartWidget from "../components/Widgets/ChartWidget.vue";
+  import ProjectPercentage from "../components/Widgets/ProjectPercentage.vue";
+  import Percentages from "../components/Widgets/Percentages.vue";
+  import PieSubtaskWidget from "../components/Widgets/PieSubtaskWidget.vue";
+  import CalendarWidget from "../components/Widgets/CalendarWidget.vue";
+  import NewFeature from "../components/Elements/NewFeature.vue";
+  export default {
+    components: {
+      ChartWidget,
+      ProjectPercentage,
+      Percentages,
+      PieSubtaskWidget,
+      CalendarWidget,
+      NewFeature
   },
-  methods: {
-    async getProjectPlan(project_id) {
-      await this.$store.dispatch("getPlans", project_id);
+    name: "IndexPage",
+    layout: "Default",
+    computed: {
+      ...mapGetters(["GET_SELECTED_PLANS", "GET_ALL_PROJECTS", "GET_ALL_PLANS"]),
     },
-  },
-  async created() {
-    await this.$store.dispatch("getProjects");
-    await this.$store.dispatch("getPlans");
-    await this.$store.dispatch("getPlanDashboard");
-  },
-  data() {
-    return {
-      drawer: false
-    };
-  },
-};
+    methods: {
+      async getProjectPlan(project_id) {
+        await this.$store.dispatch("getPlans", project_id);
+      },
+    },
+    async created() {
+      await this.$store.dispatch("getProjects");
+      await this.$store.dispatch("getPlans");
+      await this.$store.dispatch("getPlanDashboard");
+    },
+    data() {
+      return {
+        drawer: false
+      };
+    },
+  };
 </script>
 <style>
 .is-active {

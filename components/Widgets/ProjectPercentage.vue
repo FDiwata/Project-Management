@@ -20,7 +20,7 @@
       <div class="w-full md:w-1/2 flex flex-row items-end justify-end space-x-5">
         <el-pagination
           background
-          class="w-1/2"
+          class="w-auto"
           layout="prev, pager, next"
           :hide-on-single-page="metaData.length === 1"
           :page-size="5"

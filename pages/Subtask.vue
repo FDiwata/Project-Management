@@ -2,9 +2,27 @@
   <div class="p-5 m-auto md:ml-20 lg:m-auto lg:p-5 w-full lg:w-2/3 h-screen">
     <div class="w-full">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: `/Project?project_id=${breadCrumbObj.project_id}`  }"><span class="text-white font-thin hover:underline hover:cursor-pointer">{{breadCrumbObj.project_title}}</span></el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: `/Plan?plan_id=${breadCrumbObj.plan_id}`  }"><span class="text-white font-thin hover:underline hover:cursor-pointer">{{breadCrumbObj.plan_id}}</span></el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: `/Subtask?subtask_id=${breadCrumbObj.subtask_id}` }"><span class="text-white font-bold hover:underline hover:cursor-pointer">{{breadCrumbObj.subtask_id}}</span></el-breadcrumb-item>
+        <el-breadcrumb-item
+          :to="{ path: `/Project?project_id=${breadCrumbObj.project_id}` }"
+          ><span
+            class="text-white font-thin hover:underline hover:cursor-pointer"
+            >{{ breadCrumbObj.project_title }}</span
+          ></el-breadcrumb-item
+        >
+        <el-breadcrumb-item
+          :to="{ path: `/Plan?plan_id=${breadCrumbObj.plan_id}` }"
+          ><span
+            class="text-white font-thin hover:underline hover:cursor-pointer"
+            >{{ breadCrumbObj.plan_id }}</span
+          ></el-breadcrumb-item
+        >
+        <el-breadcrumb-item
+          :to="{ path: `/Subtask?subtask_id=${breadCrumbObj.subtask_id}` }"
+          ><span
+            class="text-white font-bold hover:underline hover:cursor-pointer"
+            >{{ breadCrumbObj.subtask_id }}</span
+          ></el-breadcrumb-item
+        >
       </el-breadcrumb>
     </div>
     <div
@@ -24,18 +42,29 @@
         GET_SELECTED_SUBTASK.subtask_title
       }}</span>
 
-  <div class="w-1/3 flex flex-row items-center justify-end space-x-2 text-white">
-      <nuxt-link
-        :to="{
-          name: 'CreateSubtask',
-          query: { subtask_id: GET_SELECTED_SUBTASK.subtask_id },
-        }"
-        class="w-full md:w-fit"
-        ><el-button icon="el-icon-edit" class="text-white"></el-button
-      ></nuxt-link>
-        <el-button @click="deleteAction(GET_SELECTED_SUBTASK.subtask_id, true)" class="font-bold text-white" icon="el-icon-delete"
-        ></el-button
+      <div
+        class="
+          w-1/3
+          flex flex-row
+          items-center
+          justify-end
+          space-x-2
+          text-white
+        "
       >
+        <nuxt-link
+          :to="{
+            name: 'CreateSubtask',
+            query: { subtask_id: GET_SELECTED_SUBTASK.subtask_id },
+          }"
+          class="w-full md:w-fit"
+          ><el-button icon="el-icon-edit" class="text-white"></el-button
+        ></nuxt-link>
+        <el-button
+          @click="deleteAction(GET_SELECTED_SUBTASK.subtask_id, true)"
+          class="font-bold text-white"
+          icon="el-icon-delete"
+        ></el-button>
       </div>
     </div>
     <div
@@ -77,15 +106,27 @@
       </div>
     </div>
 
-    <el-steps class="bg-neutral-900 m-auto w-full"  :space="500" :active=" GET_SELECTED_SUBTASK.status === 'Done'
-                ? 3
-                : GET_SELECTED_SUBTASK.status === 'Todo'
-                ? 1
-                : 2">
-        <el-step title="Todo" icon="el-icon-edit bg-slate-900 w-full"></el-step>
-        <el-step title="Doing" icon="el-icon-setting bg-slate-900 w-full"></el-step>
-        <el-step title="Done" icon="el-icon-circle-check bg-slate-900 w-full"></el-step>
-      </el-steps>
+    <el-steps
+      class="bg-neutral-900 m-auto w-full"
+      :space="500"
+      :active="
+        GET_SELECTED_SUBTASK.status === 'Done'
+          ? 3
+          : GET_SELECTED_SUBTASK.status === 'Todo'
+          ? 1
+          : 2
+      "
+    >
+      <el-step title="Todo" icon="el-icon-edit bg-slate-900 w-full"></el-step>
+      <el-step
+        title="Doing"
+        icon="el-icon-setting bg-slate-900 w-full"
+      ></el-step>
+      <el-step
+        title="Done"
+        icon="el-icon-circle-check bg-slate-900 w-full"
+      ></el-step>
+    </el-steps>
     <div class="flex flex-col items-start justify-center py-10">
       <span class="font-thin text-sm">Project Description:</span>
       <p class="font-italic font-normal mt-3">
@@ -95,18 +136,32 @@
     <div class="py-3 pb-20">
       <div class="w-full flex flex-row justify-between items-center py-5">
         <span class="font-bold">Task Logs:</span>
-        <el-button
-          class="text-white"
-          @click="dialogFormVisible = true"
-          icon="el-icon-edit"
-          >Log a task</el-button
-        >
+        <div class="flex flex-row items-center justify-end space-x-3">
+          <el-pagination
+            background
+            class="m-auto"
+            layout="prev, pager, next"
+            :hide-on-single-page="metaData.length === 1"
+            :page-size="5"
+            :current-page.sync="currentPage"
+            @current-change="pageChange"
+            :total="metaData.flat().length"
+          >
+          </el-pagination>
+          <el-button
+            class="text-white"
+            @click="dialogFormVisible = true"
+            icon="el-icon-edit"
+            >Log a task</el-button
+          >
+        </div>
       </div>
+
       <el-table
-      :header-cell-style="{ background: '#272727', text: 'white' }"
+        :header-cell-style="{ background: '#272727', text: 'white' }"
         :cell-style="{ background: '#272727' }"
-        :data="[...GET_SELECTED_TASK_LOGS]"
-        class="w-full text-white break-words"
+        :data="percData"
+        class="w-full text-white break-words hidden md:block"
       >
         <el-table-column class="hidden" prop="task_logs_id" label="Task Log ID">
           <template slot-scope="scope">
@@ -123,7 +178,11 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column class="hidden" prop="miscellaneous" label="Miscellaneous">
+        <el-table-column
+          class="hidden"
+          prop="miscellaneous"
+          label="Miscellaneous"
+        >
           <template slot-scope="scope">
             <el-tag
               :type="scope.row.miscellaneous === true ? 'info' : 'success'"
@@ -150,6 +209,39 @@
               disable-transitions
               >{{ scope.row.status }}</el-tag
             >
+          </template>
+        </el-table-column>
+        <el-table-column prop="work_hours" label="Work Hours">
+        </el-table-column>
+        <el-table-column width="240">
+          <template slot-scope="scope">
+            <div class="flex flex-row">
+              <el-button
+                @click="editTaskLog(scope.row.task_logs_id)"
+                class="font-bold text-white"
+                icon="el-icon-edit"
+                >Edit</el-button
+              >
+              <el-button
+                @click="deleteAction(scope.row.task_logs_id)"
+                class="font-bold text-white"
+                icon="el-icon-delete"
+                >Delete</el-button
+              >
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-table
+        :header-cell-style="{ background: '#272727', text: 'white' }"
+        :cell-style="{ background: '#272727' }"
+        :data="percData"
+        class="w-full text-white break-words block md:hidden"
+      >
+        <el-table-column prop="log_date" label="Log Date">
+          <template slot-scope="scope">
+            {{ new Date(scope.row.log_date).toLocaleString().split(",")[0] }}
           </template>
         </el-table-column>
         <el-table-column prop="work_hours" label="Work Hours">
@@ -268,7 +360,11 @@ export default {
       },
       filterColumn: "",
       filterValue: "",
-      breadCrumbObj : {}
+      breadCrumbObj: {},
+
+      percData: [],
+      metaData: [[]],
+      currentPage: 1,
     };
   },
   computed: {
@@ -314,6 +410,11 @@ export default {
         };
       }
     },
+    GET_SELECTED_TASK_LOGS(value) {
+      const metaArray = value;
+      this.arrayChunkify(JSON.parse(JSON.stringify(metaArray)), 5);
+      this.percData = this.metaData[0];
+    },
   },
 
   methods: {
@@ -336,6 +437,7 @@ export default {
                 type: "success",
                 message: "Successfully logged your work!.",
               });
+              this.metaData = [[]];
               this.$store
                 .dispatch("getSubtask", this.$route.query.subtask_id)
                 .then(() => {
@@ -382,16 +484,19 @@ export default {
           } else {
             this.$message({
               type: "success",
-              message:isSubtask ? "Subtask deleted." : "Task Log deleted",
+              message: isSubtask ? "Subtask deleted." : "Task Log deleted",
             });
-            isSubtask && this.$router.push(`/Plan?plan_id=${this.breadCrumbObj.plan_id}`)
+            isSubtask &&
+              this.$router.push(`/Plan?plan_id=${this.breadCrumbObj.plan_id}`);
           }
         });
     },
 
     deleteAction(id, isSubtask = false) {
       this.$confirm(
-        isSubtask ? "This will permanently delete this subtask. Continue?" : "This will permanently delete this Task Log. Continue?",
+        isSubtask
+          ? "This will permanently delete this subtask. Continue?"
+          : "This will permanently delete this Task Log. Continue?",
         "Warning",
         {
           confirmButtonText: "Delete",
@@ -473,16 +578,39 @@ export default {
       }
     },
 
-    async fetchLinks () {
+    async fetchLinks() {
       try {
-       this.breadCrumbObj = await this.$store.dispatch('getLinks', this.$route.query.subtask_id)
-      } catch(_){
+        this.breadCrumbObj = await this.$store.dispatch(
+          "getLinks",
+          this.$route.query.subtask_id
+        );
+      } catch (_) {
         this.$message({
-        type: "warning",
-        message: "No logs yet",
-      });
+          type: "warning",
+          message: "No logs yet",
+        });
       }
-    }
+    },
+    arrayChunkify(metaArray, chunkSize) {
+      let pushLimit = 0;
+      let subCount = 0;
+      this.metaData = [[]];
+      metaArray.forEach((project) => {
+        this.metaData[subCount].push(project);
+        if (pushLimit <= chunkSize - 2) {
+          pushLimit += 1;
+        } else {
+          this.metaData.push([]);
+          pushLimit = 0;
+          subCount++;
+        }
+      });
+    },
+    pageChange(currentPage) {
+      this.percData = this.metaData[currentPage - 1];
+      this.currentPage = currentPage;
+      this.key = currentPage;
+    },
   },
   created() {
     this.$store
@@ -499,19 +627,19 @@ export default {
     try {
       this.taskDialogForm.subtask_id = this.$route.query.subtask_id;
 
-    this.fetchLinks()
+      this.fetchLinks();
       try {
-      this.taskDialogForm.task_logs_id = await this.$store.dispatch(
-        "generateID",
-        "t_task_logs"
-      );
+        this.taskDialogForm.task_logs_id = await this.$store.dispatch(
+          "generateID",
+          "t_task_logs"
+        );
 
-     this.fetchLinks()
+        this.fetchLinks();
       } catch (_) {
         this.$message({
-        type: "warning",
-        message: "No logs yet",
-      });
+          type: "warning",
+          message: "No logs yet",
+        });
       }
     } catch (_) {
       this.$message({
@@ -520,7 +648,7 @@ export default {
       });
       this.$router.push("/ManageSubtask");
     }
-    this.fetchLinks()
+    this.fetchLinks();
   },
 };
 </script>
