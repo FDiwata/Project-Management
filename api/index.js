@@ -4,7 +4,7 @@ const express = require('express')
 const knex = require('knex')({
     client: 'mysql',
     connection: {
-        host: "localhost",
+        host: process.env.DB_HOST || 'localhost',
         port: 3306,
         user: 'root',
         password: '',
@@ -268,6 +268,19 @@ app.post('/register', async function (req, res) {
 app.post('/login', async function (req, res) {
     const result = await knex.select('*').from('t_users').where({ user_name: req.body.user_name, user_pass: req.body.user_pass })
     res.send(result)
+})
+
+
+app.get('/getEMProject', async function (req, res) {
+    const result = await knex.raw(`
+    SELECT t_projects.project_id, t_projects.project_title, t_projects.project_type, MAX(t_subtasks.end_date) as "end_date"
+    FROM t_projects, t_plans, t_subtasks 
+    WHERE t_projects.project_id = t_plans.project_id 
+    AND t_plans.plan_id = t_subtasks.plan_id 
+    GROUP BY t_projects.project_id 
+    ORDER BY DATEDIFF(CURDATE(), MAX(t_subtasks.end_date));
+    `)
+    res.send(result[0])
 })
 
 export default {

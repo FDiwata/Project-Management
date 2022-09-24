@@ -198,6 +198,12 @@ export const actions = {
         const endpoint = `api/getCurrentUserName/${payload.id}`
         const result = await this.$axios.get(endpoint)
         return result.data
+    },
+    
+    async getEMatrixProject () {
+        const endpoint = `api/getEMProject`
+        const result = await this.$axios.get(endpoint)
+        return result.data
     }
 }
 

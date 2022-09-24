@@ -12,7 +12,7 @@
         lg:space-y-0
       "
     >
-      <span class="text-2xl font-bold w-full mb-3">Subtask composition</span>
+      <span class="text-lg font-bold w-full mb-3">Subtask composition</span>
       <div
         class="
           w-full

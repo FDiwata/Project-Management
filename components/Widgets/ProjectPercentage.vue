@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full mb-16 md:mb-0" style="min-height: 400px">
+  <div class="w-full h-full mb-16 md:mb-0 my-5" style="min-height: 400px">
     <div
       class="
         w-full
@@ -14,7 +14,7 @@
       "
     >
       <span
-        class="text-xl w-full mb-3 md:w-fit md:text-3xl font-bold text-white"
+        class="text-lg w-full mb-3 md:w-fit font-bold text-white"
         >Current Projects</span
       >
       <div class="w-full md:w-1/2 flex flex-row items-end justify-end space-x-5">
@@ -23,7 +23,7 @@
           class="w-auto"
           layout="prev, pager, next"
           :hide-on-single-page="metaData.length === 1"
-          :page-size="5"
+          :page-size="8"
           :current-page.sync="currentPage"
           @current-change="pageChange"
           :total="metaData.flat().length"
@@ -76,7 +76,7 @@
           {{ percentage.month }}
         </el-tag>
         <el-progress
-          class="w-2/3 hidden md:block"
+          class="w-2/3 hidden"
           type="line"
           :stroke-width="13"
           :percentage="
@@ -168,8 +168,8 @@ export default {
   },
   async mounted() {
     const metaArray = await this.$store.dispatch("getAllProjectsPercentage");
-    this.arrayChunkify(JSON.parse(JSON.stringify(metaArray)), 5);
-    this.seriesIndex.limit = Math.ceil(this.metaData.length / 5);
+    this.arrayChunkify(JSON.parse(JSON.stringify(metaArray)), 8);
+    this.seriesIndex.limit = Math.ceil(this.metaData.length / 8);
     this.percData = this.metaData[0];
   },
   methods: {
