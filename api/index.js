@@ -276,7 +276,7 @@ app.get('/getEMProject', async function (req, res) {
     SELECT t_projects.project_id, t_projects.project_title, t_projects.project_type, MAX(t_subtasks.end_date) as "end_date"
     FROM t_projects, t_plans, t_subtasks 
     WHERE t_projects.project_id = t_plans.project_id 
-    AND t_plans.plan_id = t_subtasks.plan_id 
+    AND t_plans.plan_id = t_subtasks.plan_id AND DATEDIFF(t_subtasks.end_date, CURDATE()) > 0
     GROUP BY t_projects.project_id 
     ORDER BY DATEDIFF(CURDATE(), MAX(t_subtasks.end_date));
     `)

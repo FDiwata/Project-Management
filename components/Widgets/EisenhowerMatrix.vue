@@ -85,7 +85,7 @@
                 :to="`/Project?project_id=${item.project_id}`"
                 class="bg-amber-700 p-1 rounded-lg shadow my-1 text-sm px-2"
                 :key="item.key"
-                v-for="item in matrixData.urgentNotImportant"
+                v-for="item in matrixData.ImportantNotUrgent"
                 >{{ item.project_title }}</nuxt-link
               >
             </div>
@@ -109,7 +109,7 @@
               :to="`/Project?project_id=${item.project_id}`"
               class="bg-orange-600 p-1 rounded-lg shadow my-1 text-sm px-2"
               :key="item.key"
-              v-for="item in matrixData.ImportantNotUrgent"
+              v-for="item in matrixData.urgentNotImportant"
               >{{ item.project_title }}</nuxt-link
             >
           </div>
@@ -168,16 +168,16 @@ export default {
       const perInstanceCondition = (item) => {
         return {
           urgentImportant:
-            item.project_type === "unplanned" &&
+            item.project_type === "planned" &&
             new Date(item.end_date).getMonth() === new Date().getMonth(),
           urgentNotImportant:
-            item.project_type === "planned" &&
+            item.project_type === "unplanned" &&
             new Date(item.end_date).getMonth() === new Date().getMonth(),
           ImportantNotUrgent:
-            item.project_type === "unplanned" &&
+            item.project_type === "planned" &&
             new Date(item.end_date).getMonth() !== new Date().getMonth(),
           notUrgentNotImportant:
-            item.project_type === "planned" &&
+            item.project_type === "unplanned" &&
             new Date(item.end_date).getMonth() !== new Date().getMonth(),
         };
       };
