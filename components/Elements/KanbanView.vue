@@ -17,7 +17,7 @@
       p-3
     "
   >
-    <div class="w-full md:w-1/3" style="min-height: 200px;" @dragover="allowDrop">
+    <div class="w-full md:w-1/3"  @dragover="allowDrop">
       <div class="p-3"><span class="font-bold text-red-500">Todo</span></div>
       <div
         id="todo"
@@ -35,7 +35,7 @@
             m-2
             shadow-md
             rounded-lg
-            h-40
+            h-auto
             text-start text-white
             bg-red-800
           "
@@ -47,12 +47,12 @@
             <nuxt-link :to="`/Subtask?subtask_id=${card.subtask_id}`" class="font-bold text-sm">{{card.subtask_title}}</nuxt-link>
             <span class="text-xs">Due date: <span class="text-red-400">{{new Date(card.due_date).toDateString()}}</span></span>
             <el-tag class="my-1 text-xs h-fit" type="warning">Todo</el-tag>
-            <p class="text-xs">{{card.subtask_desc}}</p>
+            
           </div>
         </div>
       </div>
     </div>
-    <div class="w-full md:w-1/3" style="min-height: 200px;" @dragover="allowDrop">
+    <div class="w-full md:w-1/3"  @dragover="allowDrop">
       <div class="p-3"><span class="font-bold text-amber-600">Doing</span></div>
       <div
         id="doing"
@@ -69,7 +69,7 @@
             m-2
             shadow-md
             rounded-lg
-            h-40
+            h-auto
             text-start text-white
             bg-amber-800
           "
@@ -81,16 +81,16 @@
             <nuxt-link :to="`/Subtask?subtask_id=${card.subtask_id}`" class="font-bold text-sm">{{card.subtask_title}}</nuxt-link>
             <span class="text-xs">Due date: <span class="text-red-400">{{new Date(card.due_date).toDateString()}}</span></span>
             <el-tag class="my-1 text-xs h-fit" type="success">Doing</el-tag>
-            <p class="text-xs">{{card.subtask_desc}}</p>
+            
           </div>
         </div>
       </div>
     </div>
-    <div class="w-full md:w-1/3" style="min-height: 200px;" @dragover="allowDrop">
+    <div class="w-full md:w-1/3"  @dragover="allowDrop">
       <div class="p-3"><span class="font-bold text-lime-500">Done</span></div>
       <div
         id="done"
-        class="flex flex-col items-center justify-start h-full"
+        class="flex flex-col items-center justify-start"
         @dragover="allowDrop"
         @drop.prevent="(e) => onDrop(e, 'Done')"
       >
@@ -102,7 +102,7 @@
             m-2
             shadow-md
             rounded-lg
-            h-40
+            h-auto
             text-start text-white
             bg-lime-700
           "
@@ -114,7 +114,7 @@
             <nuxt-link @click.self.stop :to="`/Subtask?subtask_id=${card.subtask_id}`" class="font-bold text-sm">{{card.subtask_title}}</nuxt-link>
             <span class="text-xs">Due date: <span class="text-red-400">{{new Date(card.due_date).toDateString()}}</span></span>
             <el-tag class="my-1 text-xs h-fit">Done</el-tag>
-            <p class="text-xs">{{card.subtask_desc}}</p>
+            
           </div>
         </div>
       </div>
