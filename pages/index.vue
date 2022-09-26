@@ -3,26 +3,19 @@
     <client-only>
       <el-tabs type="card" class="bg-neutral-900 h-fit">
         <el-tab-pane label="Dashboard">
-          <span slot="label" class="text-white"
-            ><i class="el-icon-s-data"></i> Dashboard</span
-          >
-          <div class="w-full pb-5">
-            <span class="text-3xl font-bold text-white">Dashboard</span>
-          </div>
           <div
             class="w-full flex flex-col items-center justify-between space-y-5"
           >
             <div
               class="
                 w-full
-                flex flex-col lg:flex-row
+                flex flex-col
+                lg:flex-row
                 items-center
                 justify-start
                 mt-0
-                space-y-5
-                space-x-0
-                lg:space-y-0
-                lg:space-x-5
+                space-y-5 space-x-0
+                lg:space-y-0 lg:space-x-5
               "
             >
               <pie-subtask-widget />
@@ -30,8 +23,9 @@
               <percentages />
             </div>
           </div>
-          <div class="py-5 w-full m-auto">
-            <project-percentage :perc-data="GET_ALL_PLANS" />
+          <div class="py-5 w-full m-auto flex flex-col md:flex-row items-center justify-center space-x-10 ">
+            <project-percentage class="w-full md:w-1/2" :perc-data="GET_ALL_PLANS" />
+            <eisenhower-matrix class="w-full md:w-1/2"/>
           </div>
         </el-tab-pane>
         <el-tab-pane :lazy="true" label="Subtask schedule" class="text-white">
@@ -50,43 +44,45 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
-  import ChartWidget from "../components/Widgets/ChartWidget.vue";
-  import ProjectPercentage from "../components/Widgets/ProjectPercentage.vue";
-  import Percentages from "../components/Widgets/Percentages.vue";
-  import PieSubtaskWidget from "../components/Widgets/PieSubtaskWidget.vue";
-  import CalendarWidget from "../components/Widgets/CalendarWidget.vue";
-  import NewFeature from "../components/Elements/NewFeature.vue";
-  export default {
-    components: {
-      ChartWidget,
-      ProjectPercentage,
-      Percentages,
-      PieSubtaskWidget,
-      CalendarWidget,
-      NewFeature
+import { mapGetters } from "vuex";
+import ChartWidget from "../components/Widgets/ChartWidget.vue";
+import ProjectPercentage from "../components/Widgets/ProjectPercentage.vue";
+import Percentages from "../components/Widgets/Percentages.vue";
+import PieSubtaskWidget from "../components/Widgets/PieSubtaskWidget.vue";
+import CalendarWidget from "../components/Widgets/CalendarWidget.vue";
+import NewFeature from "../components/Elements/NewFeature.vue";
+import EisenhowerMatrix from "../components/Widgets/EisenhowerMatrix.vue";
+export default {
+  components: {
+    ChartWidget,
+    ProjectPercentage,
+    Percentages,
+    PieSubtaskWidget,
+    CalendarWidget,
+    NewFeature,
+    EisenhowerMatrix,
   },
-    name: "IndexPage",
-    layout: "Default",
-    computed: {
-      ...mapGetters(["GET_SELECTED_PLANS", "GET_ALL_PROJECTS", "GET_ALL_PLANS"]),
+  name: "IndexPage",
+  layout: "Default",
+  computed: {
+    ...mapGetters(["GET_SELECTED_PLANS", "GET_ALL_PROJECTS", "GET_ALL_PLANS"]),
+  },
+  methods: {
+    async getProjectPlan(project_id) {
+      await this.$store.dispatch("getPlans", project_id);
     },
-    methods: {
-      async getProjectPlan(project_id) {
-        await this.$store.dispatch("getPlans", project_id);
-      },
-    },
-    async created() {
-      await this.$store.dispatch("getProjects");
-      await this.$store.dispatch("getPlans");
-      await this.$store.dispatch("getPlanDashboard");
-    },
-    data() {
-      return {
-        drawer: false
-      };
-    },
-  };
+  },
+  async created() {
+    await this.$store.dispatch("getProjects");
+    await this.$store.dispatch("getPlans");
+    await this.$store.dispatch("getPlanDashboard");
+  },
+  data() {
+    return {
+      drawer: false,
+    };
+  },
+};
 </script>
 <style>
 .is-active {
