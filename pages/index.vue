@@ -6,6 +6,7 @@
           <div
             class="w-full flex flex-col items-center justify-between space-y-5"
           >
+          <entity-stats />
             <div
               class="
                 w-full
@@ -52,6 +53,7 @@ import PieSubtaskWidget from "../components/Widgets/PieSubtaskWidget.vue";
 import CalendarWidget from "../components/Widgets/CalendarWidget.vue";
 import NewFeature from "../components/Elements/NewFeature.vue";
 import EisenhowerMatrix from "../components/Widgets/EisenhowerMatrix.vue";
+import EntityStats from "../components/Widgets/EntityStats.vue";
 export default {
   components: {
     ChartWidget,
@@ -61,7 +63,8 @@ export default {
     CalendarWidget,
     NewFeature,
     EisenhowerMatrix,
-  },
+    EntityStats
+},
   name: "IndexPage",
   layout: "Default",
   computed: {
