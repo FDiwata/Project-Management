@@ -20,8 +20,8 @@ export default {
   props: {
     isProjectMode: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -38,28 +38,43 @@ export default {
       return {
         height: 320,
         width: "100%",
-        titleTextStyle: {color: '#FFFFFF'},
+        titleTextStyle: { color: !this.isDarkMode ? "#202020" : "#FFFFFF" },
         legendTextStyle: {
-          color: '#FFFFFF'
+          color:  !this.isDarkMode ? "#202020" : "#FFFFFF",
         },
         backgroundColor: {
-          fill: "#202020",
+          fill: this.isDarkMode ? "#202020" : "#FFFFFF",
           opacity: 100,
         },
-        title: !this.isProjectMode ? "Overall subtask composition" : "Overall project percentage",
+        title: !this.isProjectMode
+          ? "Overall subtask composition"
+          : "Overall project percentage",
         slices: {
-          0: { color: '#FF6242' },
-          ...(!this.isProjectMode && { 1: { color: '#FAA43A' }}),
-          [this.isProjectMode ?1 :2]: { color: '#9ACD32' },
-        }
-      }
+          0: { color: "#FF6242" },
+          ...(!this.isProjectMode && { 1: { color: "#FAA43A" } }),
+          [this.isProjectMode ? 1 : 2]: { color: "#9ACD32" },
+        },
+      };
     },
     subStatus() {
-      return !this.isProjectMode? ["todo", "doing", "done"] : ['Ongoing', 'Done']
+      return !this.isProjectMode
+        ? ["todo", "doing", "done"]
+        : ["Ongoing", "Done"];
     },
     subColor() {
-      return !this.isProjectMode?  ["#FF6242", "#FAA43A", "#9ACD32"] : ["#FF6242", "#9ACD32"]
-    }
+      return !this.isProjectMode
+        ? ["#FF6242", "#FAA43A", "#9ACD32"]
+        : ["#FF6242", "#9ACD32"];
+    },
+    isDarkMode() {
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        return true;
+      }
+      return false;
+    },
   },
   watch: {
     async selectedProjectID(value) {
@@ -111,50 +126,55 @@ export default {
     widgetData(value) {
       this.chartData = [["Year", "Sales"]];
       value.forEach((item, index) => {
-        this.chartData.push([this.subStatus[index], Math.round(item.percentage)]);
+        this.chartData.push([
+          this.subStatus[index],
+          Math.round(item.percentage),
+        ]);
       });
     },
   },
   async mounted() {
     if (!this.isProjectMode) {
-    this.$store.dispatch("getProjects");
-    this.widgetData.push(
-      await this.$store.dispatch("getTodoPercentage", {
-        project_id: null,
-        plan_id: null,
-      })
-    );
-    this.widgetData.push(
-      await this.$store.dispatch("getDoingPercentage", {
-        project_id: null,
-        plan_id: null,
-      })
-    );
-    this.widgetData.push(
-      await this.$store.dispatch("getDonePercentage", {
-        project_id: null,
-        plan_id: null,
-      })
-    );
+      this.$store.dispatch("getProjects");
+      this.widgetData.push(
+        await this.$store.dispatch("getTodoPercentage", {
+          project_id: null,
+          plan_id: null,
+        })
+      );
+      this.widgetData.push(
+        await this.$store.dispatch("getDoingPercentage", {
+          project_id: null,
+          plan_id: null,
+        })
+      );
+      this.widgetData.push(
+        await this.$store.dispatch("getDonePercentage", {
+          project_id: null,
+          plan_id: null,
+        })
+      );
     } else {
-      const projObj = await this.$store.dispatch("getOverallProjPerc")
-      const perProjPercent = 100/projObj.length
-      const percDone = projObj.filter((proj) => {
-          return proj.is_done === 1
-      }).length * perProjPercent
+      const projObj = await this.$store.dispatch("getOverallProjPerc");
+      const perProjPercent = 100 / projObj.length;
+      const percDone =
+        projObj.filter((proj) => {
+          return proj.is_done === 1;
+        }).length * perProjPercent;
 
-      const percOngoing = projObj.filter((proj) => {
-          return proj.is_done === 0
-      }).length * perProjPercent
+      const percOngoing =
+        projObj.filter((proj) => {
+          return proj.is_done === 0;
+        }).length * perProjPercent;
 
-      console.log(typeof percDone, typeof percOngoing)
- 
+      console.log(typeof percDone, typeof percOngoing);
+
       this.widgetData.push({
-          percentage: percOngoing
-      })
+        percentage: percOngoing,
+      });
       this.widgetData.push({
-          percentage: percDone
-      })
+        percentage: percDone,
+      });
     }
   },
 };

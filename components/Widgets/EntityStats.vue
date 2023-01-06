@@ -2,8 +2,9 @@
   <div
     class="
       w-full
+      bg-neutral-200
+      dark:bg-neutral-900
       m-auto
-      shadow
       rounded
       flex flex-row
       items-center
@@ -28,10 +29,14 @@
           border border-t-0 border-l-0 border-b-0 border-r-3
         "
       >
-        <span class="font-bold text-5xl text-neutral-300 my-3">
+        <span
+          class="font-bold text-5xl text-neutral-900 dark:text-neutral-300 my-3"
+        >
           {{ generateProjectEntityValues }}
         </span>
-        <span class="text-xs md:text-sm">Projects completed</span>
+        <span class="text-xs md:text-sm text-neutral-900 dark:text-neutral-300"
+          >Projects completed</span
+        >
       </div>
     </el-tooltip>
     <el-tooltip
@@ -40,34 +45,42 @@
       :content="`Plans fulfilled out of ${GET_ALL_PLANS.length} in total`"
       placement="bottom"
     >
-    <div class="w-1/3 h-40 flex flex-col items-center justify-center">
-      <span class="font-bold text-5xl text-neutral-300 my-3">
-        {{ generatePlanEntityValues }}</span
-      >
-      <span class="text-xs md:text-sm">Plans fulfilled</span>
-    </div>
+      <div class="w-1/3 h-40 flex flex-col items-center justify-center">
+        <span
+          class="font-bold text-5xl text-neutral-900 dark:text-neutral-300 my-3"
+        >
+          {{ generatePlanEntityValues }}</span
+        >
+        <span class="text-xs md:text-sm text-neutral-900 dark:text-neutral-300"
+          >Plans fulfilled</span
+        >
+      </div>
     </el-tooltip>
     <el-tooltip
       class="item"
       effect="light"
-      :content="`Plans fulfilled out of ${GET_ALL_SUBTASKS.length} in total`"
+      :content="`Subtasks done out of ${GET_ALL_SUBTASKS.length} in total`"
       placement="bottom"
     >
-    <div
-      class="
-        w-1/3
-        h-40
-        flex flex-col
-        items-center
-        justify-center
-        border border-t-0 border-r-0 border-b-0 border-l-3
-      "
-    >
-      <span class="font-bold text-5xl text-neutral-300 my-3">
-        {{ generateSubtaskEntityValues }}
-      </span>
-      <span class="text-xs md:text-sm">Subtasks done</span>
-    </div>
+      <div
+        class="
+          w-1/3
+          h-40
+          flex flex-col
+          items-center
+          justify-center
+          border border-t-0 border-r-0 border-b-0 border-l-3
+        "
+      >
+        <span
+          class="font-bold text-5xl text-neutral-900 dark:text-neutral-300 my-3"
+        >
+          {{ generateSubtaskEntityValues }}
+        </span>
+        <span class="text-xs md:text-sm text-neutral-900 dark:text-neutral-300"
+          >Subtasks done</span
+        >
+      </div>
     </el-tooltip>
   </div>
 </template>

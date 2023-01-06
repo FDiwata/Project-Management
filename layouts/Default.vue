@@ -53,14 +53,24 @@
             <i class="el-icon-document ml-1 transform hover:scale-125"></i>
           </el-menu-item>
         </nuxt-link>
+        <nuxt-link class="w-1/3 md:w-full flex flex-row items-center justify-center m-auto md:my-0" to="/ManageUsers">
+          <el-menu-item
+            index="3"
+            class="w-full flex flex-row items-center justify-center md:w-full"
+          >
+            <i class="el-icon-user ml-1 transform hover:scale-125"></i>
+          </el-menu-item>
+        </nuxt-link>
 
         <el-menu-item
           @click="logOut"
           class="w-1/3 md:w-full flex flex-row items-center justify-center"
-          index="3"
+          index="4"
         >
           <i class="el-icon-switch-button transform hover:scale-125"></i>
         </el-menu-item>
+
+      
       </el-menu>
     </div>
     <Nuxt />

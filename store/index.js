@@ -182,6 +182,12 @@ export const actions = {
         return result.data[0]
     },
 
+    async userRegister(_, payload) {
+        const endpoint = `api/register`
+        const result = await this.$axios.post(endpoint, payload)
+        return result.data[0]
+    },
+
     async getSchedules(_, payload) {
         const endpoint = `api/getSchedules/${payload.assignee}/${payload.status}`
         const result = await this.$axios.get(endpoint)
