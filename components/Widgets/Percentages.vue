@@ -33,7 +33,7 @@
           >
             <el-option label="All projects" :value="null" />
             <el-option
-              v-for="project in GET_ALL_PROJECTS"
+              v-for="project in FilteredProjects"
               :key="project.key"
               :label="project.project_title"
               :value="project.project_id"
@@ -49,7 +49,7 @@
           >
             <el-option label="All plans" :value="null" />
             <el-option
-              v-for="plan in GET_SELECTED_PLANS"
+              v-for="plan in FilteredPlans"
               :key="plan.key"
               :label="plan.plan_title"
               :value="plan.plan_id"
@@ -59,16 +59,22 @@
       </div>
     </div>
     <div
-      v-for="(status) in widgetData"
+      v-for="status in widgetData"
       :key="status.key"
       class="min-h-80 flex flex-row items-center justify-center my-5"
     >
-      <span class="font-light text-lg mx-5 w-1/6"
-        >{{ subStatus[status.status === 'Todo' ? 0 : status.status === 'Doing' ? 1 : 2] }}</span
-      >
+      <span class="font-light text-lg mx-5 w-1/6">{{
+        subStatus[
+          status.status === "Todo" ? 0 : status.status === "Doing" ? 1 : 2
+        ]
+      }}</span>
       <el-progress
         :stroke-width="25"
-        :color="subColor[status.status === 'Todo' ? 0 : status.status === 'Doing' ? 1 : 2] || '#808080'"
+        :color="
+          subColor[
+            status.status === 'Todo' ? 0 : status.status === 'Doing' ? 1 : 2
+          ] || '#808080'
+        "
         class="w-full"
         :text-inside="true"
         :percentage="Math.round(status.value.percentage)"
@@ -81,7 +87,22 @@
 import { mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["GET_ALL_PROJECTS", "GET_SELECTED_PLANS"]),
+    ...mapGetters([
+      "GET_ALL_PROJECTS",
+      "GET_SELECTED_PLANS",
+      "GET_FISCAL_YEAR",
+    ]),
+    FilteredProjects () {
+      return this.GET_ALL_PROJECTS.filter((project) => {
+        return new Date(project.TargetMonth).getFullYear() === this.$cookies.get('fyear')
+      })
+    },
+
+    FilteredPlans () {
+      return this.GET_SELECTED_PLANS.filter((plan) => {
+        return this.FilteredProjects.map((proj) => proj.project_id).includes(plan.project_id)
+      })
+    }
   },
   data() {
     return {
@@ -101,28 +122,31 @@ export default {
       ];
 
       this.widgetData.push({
-          status: categories[0].replace("get", "").replace("Percentage", ""),
-          value: await this.$store.dispatch(categories[0], {
-            project_id: project_id,
-            plan_id: plan_id,
-          }),
-        });
+        status: categories[0].replace("get", "").replace("Percentage", ""),
+        value: await this.$store.dispatch(categories[0], {
+          project_id: project_id,
+          plan_id: plan_id,
+          year: this.$cookies.get("fyear"),
+        }),
+      });
 
-        this.widgetData.push({
-          status: categories[1].replace("get", "").replace("Percentage", ""),
-          value: await this.$store.dispatch(categories[1], {
-            project_id: project_id,
-            plan_id: plan_id,
-          }),
-        });
+      this.widgetData.push({
+        status: categories[1].replace("get", "").replace("Percentage", ""),
+        value: await this.$store.dispatch(categories[1], {
+          project_id: project_id,
+          plan_id: plan_id,
+          year: this.$cookies.get("fyear"),
+        }),
+      });
 
-        this.widgetData.push({
-          status: categories[2].replace("get", "").replace("Percentage", ""),
-          value: await this.$store.dispatch(categories[2], {
-            project_id: project_id,
-            plan_id: plan_id,
-          }),
-        });
+      this.widgetData.push({
+        status: categories[2].replace("get", "").replace("Percentage", ""),
+        value: await this.$store.dispatch(categories[2], {
+          project_id: project_id,
+          plan_id: plan_id,
+          year: this.$cookies.get("fyear"),
+        }),
+      });
     },
   },
   watch: {
@@ -137,6 +161,15 @@ export default {
     async selectedPlanID(value) {
       this.widgetData = [];
       await this.getPercentages(this.selectedProjectID, value);
+    },
+    async GET_FISCAL_YEAR(newVal, oldVal) {
+      if (oldVal !== "") {
+        this.widgetData = [];
+        this.selectedProjectID = null;
+        this.selectedPlanID = null;
+        this.$store.dispatch("getProjects");
+        await this.getPercentages(null, null);
+      }
     },
   },
   async mounted() {

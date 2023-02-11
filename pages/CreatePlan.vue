@@ -21,18 +21,18 @@
         <div class="flex flex-col items-start justify-center w-1/2">
           <span class="pb-3 text-sm">Assignee</span>
           <el-select
-          class="w-full transition-all hover:shadow-lg"
-          multiple
-          v-model="inChargeArray"
-          placeholder="Pick an assignee"
-        >
-          <el-option
-            v-for="user in users"
-            :key="user.key"
-            :label="user.user_id"
-            :value="user.user_id"
-          />
-        </el-select>
+            class="w-full transition-all hover:shadow-lg"
+            multiple
+            v-model="inChargeArray"
+            placeholder="Pick an assignee"
+          >
+            <el-option
+              v-for="user in users"
+              :key="user.key"
+              :label="user.user_id"
+              :value="user.user_id"
+            />
+          </el-select>
         </div>
       </el-row>
       <div
@@ -69,7 +69,7 @@
           icon="el-icon-edit"
           >Update Plan</el-button
         >
-        <el-button class="text-white " @click="$router.go(-1)">Back</el-button>
+        <el-button class="text-white" @click="$router.go(-1)">Back</el-button>
       </el-row>
     </div>
   </div>
@@ -90,7 +90,7 @@ export default {
       },
       isUpdateMode: false,
       users: [],
-      inChargeArray: []
+      inChargeArray: [],
     };
   },
   computed: {
@@ -106,9 +106,9 @@ export default {
     },
   },
   watch: {
-    inChargeArray (value) {
-      this.formData.assignee = value.join()
-    }
+    inChargeArray(value) {
+      this.formData.assignee = value.join();
+    },
   },
   methods: {
     createPlan() {
@@ -132,9 +132,9 @@ export default {
       if (!Object.values(this.formData).includes("")) {
         this.$store.dispatch("updateTableData", this.updatePayload).then(() => {
           this.$message({
-          type: "success",
-          message: "Successfully updated a plan!",
-        });
+            type: "success",
+            message: "Successfully updated a plan!",
+          });
           this.$router.push(`Plan?plan_id=${this.formData.plan_id}`);
         });
       } else {
@@ -160,12 +160,12 @@ export default {
     const usersArray = await this.$store.dispatch("getCurrentUserName", {
       id: "all",
     });
-    this.users.push(...usersArray)
+    this.users.push(...usersArray);
     if (this.$route.query.plan_id !== undefined) {
       this.isUpdateMode = true;
       await this.$store.dispatch("getPlan", this.$route.query.plan_id);
-      this.formData = { ...this.GET_SELECTED_PLAN }
-      this.inChargeArray = this.GET_SELECTED_PLAN.assignee.split(',');
+      this.formData = { ...this.GET_SELECTED_PLAN };
+      this.inChargeArray = this.GET_SELECTED_PLAN.assignee.split(",");
     } else if (this.$route.query.project_id === undefined) {
       this.$router.push("ManageProject?redir=true");
     } else {

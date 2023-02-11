@@ -1,43 +1,42 @@
 <template>
   <div class="p-5 w-full md:w-5/6 m-auto h-screen">
     <div class="w-full py-5 flex flex-row items-center justify-between">
-      <span
-        v-if="!$route.query.redir"
+      <div class="w-fit flex flex-col items-start justify-start space-y-3">
+        <span
         class="text-xl md:text-3xl font-bold text-white"
         >Manage Projects</span
       >
-      <span v-else class="text-5xl font-bold text-white"
-        >Create a Plan from:</span
-      >
+      <fiscal-year-selector />
+      </div>
+      
       <div class="w-1/2 flex flex-row items-end justify-end space-x-5">
         <el-pagination
-      background
-      class="right-0"
-      layout="prev, pager, next"
-      :hide-on-single-page="metaData.length === 1"
-      :page-size="6"
-      :current-page.sync="currentPage"
-      @current-change="pageChange"
-      :total="metaData.flat().length"
-    >
-    </el-pagination>
-      <nuxt-link
-        v-if="!$route.query.redir"
-        class="font-black"
-        to="CreateProject"
-        ><el-button
-          icon="el-icon-edit"
-          class="hover:font-bold text-white hidden md:block"
-          >Create a Project</el-button
-        ><el-button
-          icon="el-icon-edit"
-          class="hover:font-bold text-white block md:hidden"
-        ></el-button
-      ></nuxt-link>
+          background
+          class="right-0"
+          layout="prev, pager, next"
+          :hide-on-single-page="metaData.length === 1"
+          :page-size="6"
+          :current-page.sync="currentPage"
+          @current-change="pageChange"
+          :total="metaData.flat().length"
+        >
+        </el-pagination>
+        <nuxt-link
+          v-if="!$route.query.redir"
+          class="font-black"
+          to="CreateProject"
+          ><el-button
+            icon="el-icon-edit"
+            class="hover:font-bold text-white hidden md:block"
+            >Create a Project</el-button
+          ><el-button
+            icon="el-icon-edit"
+            class="hover:font-bold text-white block md:hidden"
+          ></el-button
+        ></nuxt-link>
       </div>
-   
     </div>
-    <div class="mt-5" style="min-height: 50%;">
+    <div class="mt-5" style="min-height: 50%">
       <div
         class="
           w-full
@@ -62,7 +61,6 @@
           "
         />
       </div>
-
     </div>
   </div>
 </template>
@@ -70,8 +68,9 @@
 <script>
 import { mapGetters } from "vuex";
 import ProjectDoc from "../components/Elements/ProjectDoc.vue";
+import FiscalYearSelector from "../components/Widgets/FiscalYearSelector.vue";
 export default {
-  components: { ProjectDoc },
+  components: { ProjectDoc, FiscalYearSelector },
   layout: "Default",
   data() {
     return {
@@ -83,7 +82,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["GET_ALL_PROJECTS"]),
+    ...mapGetters(["GET_ALL_PROJECTS", "GET_FISCAL_YEAR"]),
     filterObject() {
       const returnObject = Object.keys(this.GET_ALL_PROJECTS[0] || []);
       returnObject.splice(2, 1);
@@ -92,6 +91,14 @@ export default {
     },
   },
   methods: {
+    yearFilter(metaData) {
+      return metaData.filter((project) => {
+        return (
+          new Date(project.month).getFullYear().toString() ===
+          this.$cookies.get("fyear")
+        );
+      });
+    },
     async deleteTableData(projectID) {
       const requestObject = {
         id: projectID,
@@ -143,14 +150,17 @@ export default {
       let pushLimit = 0;
       let subCount = 0;
       metaArray.forEach((project) => {
-        
-        this.metaData[subCount].push(project);
-        if (pushLimit <= chunkSize - 2) {
-          pushLimit += 1;
-        } else {
-          this.metaData.push([]);
-          pushLimit = 0;
-          subCount++;
+        if (
+          new Date(project.TargetMonth).getFullYear() === this.$cookies.get("fyear")
+        ) {
+          this.metaData[subCount].push(project);
+          if (pushLimit <= chunkSize - 2) {
+            pushLimit += 1;
+          } else {
+            this.metaData.push([]);
+            pushLimit = 0;
+            subCount++;
+          }
         }
       });
     },
@@ -164,6 +174,22 @@ export default {
     const metaArray = this.GET_ALL_PROJECTS;
     this.arrayChunkify(JSON.parse(JSON.stringify(metaArray)), 6);
     this.percData = this.metaData[0];
+  },
+
+  watch: {
+    async GET_FISCAL_YEAR(newVal, oldVal) {
+      if (oldVal !== "") {
+        this.percData = [];
+        this.metaData = [[]];
+        this.currentPage = 1;
+        this.filterColumn = "";
+        this.filterValue = "";
+        await this.$store.dispatch("getProjects");
+        const metaArray = this.GET_ALL_PROJECTS;
+        this.arrayChunkify(JSON.parse(JSON.stringify(metaArray)), 6);
+        this.percData = this.metaData[0];
+      }
+    },
   },
 };
 </script>

@@ -397,11 +397,14 @@ export default {
   },
 
   watch: {
-    dialogFormVisible(value) {
+    async dialogFormVisible(value) {
       if (!value) {
         this.taskDialogForm = {
-          task_logs_id: "",
-          subtask_id: "",
+          task_logs_id: await this.$store.dispatch(
+                  "generateID",
+                  "t_task_logs"
+                ),
+          subtask_id: this.$route.query.subtask_id,
           miscellaneous: false,
           log_date: new Date(),
           status: "",

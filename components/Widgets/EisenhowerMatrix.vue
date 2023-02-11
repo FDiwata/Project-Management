@@ -141,6 +141,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -158,27 +159,29 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters(["GET_FISCAL_YEAR"]),
+  },
+
   async mounted() {
-    this.metaData.projects = await this.$store.dispatch("getEMatrixProject");
-    this.setMatrixDataOptimized();
+    await this.initializeComponent();
   },
 
   methods: {
+    async initializeComponent() {
+      this.metaData.projects = await this.$store.dispatch(
+        "getEMatrixProject",
+        this.$cookies.get("fyear")
+      );
+      this.setMatrixDataOptimized();
+    },
     setMatrixDataOptimized() {
       const perInstanceCondition = (item) => {
         return {
-          urgentImportant:
-            item.project_type === "planned" &&
-            new Date(item.end_date).getMonth() === new Date().getMonth(),
-          urgentNotImportant:
-            item.project_type === "unplanned" &&
-            new Date(item.end_date).getMonth() === new Date().getMonth(),
-          ImportantNotUrgent:
-            item.project_type === "planned" &&
-            new Date(item.end_date).getMonth() !== new Date().getMonth(),
-          notUrgentNotImportant:
-            item.project_type === "unplanned" &&
-            new Date(item.end_date).getMonth() !== new Date().getMonth(),
+          urgentImportant: item.category === 1,
+          urgentNotImportant: item.category === 3,
+          ImportantNotUrgent: item.category === 2,
+          notUrgentNotImportant: item.category === 4,
         };
       };
       Object.keys(this.matrixData).forEach((item) => {
@@ -186,6 +189,25 @@ export default {
           return perInstanceCondition(data)[item];
         });
       });
+    },
+  },
+
+  watch: {
+    async GET_FISCAL_YEAR(newVal, oldVal) {
+      if (oldVal !== "") {
+        this.metaData = {
+          projects: [],
+          plans: [],
+          subtasks: [],
+        };
+        this.matrixData = {
+          urgentImportant: [],
+          urgentNotImportant: [],
+          ImportantNotUrgent: [],
+          notUrgentNotImportant: [],
+        };
+        await this.initializeComponent();
+      }
     },
   },
 };

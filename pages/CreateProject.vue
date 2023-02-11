@@ -65,18 +65,18 @@
           v-model="formData.TargetMonth"
           placeholder="Pick a month"
         >
-          <el-option label="January" value="Jan"></el-option>
-          <el-option label="February" value="Feb"></el-option>
-          <el-option label="March" value="Mar"></el-option>
-          <el-option label="April" value="Apr"></el-option>
-          <el-option label="May" value="May"></el-option>
-          <el-option label="June" value="Jun"></el-option>
-          <el-option label="July" value="Jul"></el-option>
-          <el-option label="August" value="Aug"></el-option>
-          <el-option label="September" value="Sep"></el-option>
-          <el-option label="October" value="Oct"></el-option>
-          <el-option label="November" value="Nov"></el-option>
-          <el-option label="December" value="Dec"></el-option>
+          <el-option label="January" :value="`01/01/${new Date().getFullYear().toString()}`"></el-option>
+          <el-option label="February" :value="`02/01/${new Date().getFullYear().toString()}`"></el-option>
+          <el-option label="March" :value="`03/01/${new Date().getFullYear().toString()}`"></el-option>
+          <el-option label="April" :value="`04/01/${new Date().getFullYear().toString()}`"></el-option>
+          <el-option label="May" :value="`05/01/${new Date().getFullYear().toString()}`"></el-option>
+          <el-option label="June" :value="`06/01/${new Date().getFullYear().toString()}`"></el-option>
+          <el-option label="July" :value="`07/01/${new Date().getFullYear().toString()}`"></el-option>
+          <el-option label="August" :value="`08/01/${new Date().getFullYear().toString()}`"></el-option>
+          <el-option label="September" :value="`09/01/${new Date().getFullYear().toString()}`"></el-option>
+          <el-option label="October" :value="`10/01/${new Date().getFullYear().toString()}`"></el-option>
+          <el-option label="November" :value="`11/01/${new Date().getFullYear().toString()}`"></el-option>
+          <el-option label="December" :value="`12/01/${new Date().getFullYear().toString()}`"></el-option>
         </el-select>
        </div>
       </div>

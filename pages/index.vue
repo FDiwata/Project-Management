@@ -1,12 +1,18 @@
 <template>
   <div class="w-11/12 md:w-5/6 m-auto h-fit p-1 md:p-10 lg:p-0">
     <client-only>
+      <div class="w-full flex flex-row items-center justify-between space-y-3 my-3">
+        <span class="text-xl md:text-5xl font-bold text-white"
+          >Dashboard</span
+        >
+        <fiscal-year-selector />
+      </div>
       <el-tabs type="card" class="bg-neutral-900 h-fit">
         <el-tab-pane label="Dashboard">
           <div
             class="w-full flex flex-col items-center justify-between space-y-5"
           >
-          <entity-stats />
+            <entity-stats />
             <div
               class="
                 w-full
@@ -24,9 +30,23 @@
               <percentages />
             </div>
           </div>
-          <div class="py-5 w-full m-auto flex flex-col md:flex-row items-center justify-center space-x-10 ">
-            <project-percentage class="w-full md:w-1/2" :perc-data="GET_ALL_PLANS" />
-            <eisenhower-matrix class="w-full md:w-1/2"/>
+          <div
+            class="
+              py-5
+              w-full
+              m-auto
+              flex flex-col
+              md:flex-row
+              items-center
+              justify-center
+              space-x-10
+            "
+          >
+            <project-percentage
+              class="w-full md:w-1/2"
+              :perc-data="GET_ALL_PLANS"
+            />
+            <eisenhower-matrix class="w-full md:w-1/2" />
           </div>
         </el-tab-pane>
         <el-tab-pane :lazy="true" label="Subtask schedule" class="text-white">
@@ -54,6 +74,7 @@ import CalendarWidget from "../components/Widgets/CalendarWidget.vue";
 import NewFeature from "../components/Elements/NewFeature.vue";
 import EisenhowerMatrix from "../components/Widgets/EisenhowerMatrix.vue";
 import EntityStats from "../components/Widgets/EntityStats.vue";
+import FiscalYearSelector from "../components/Widgets/FiscalYearSelector.vue";
 export default {
   components: {
     ChartWidget,
@@ -63,8 +84,9 @@ export default {
     CalendarWidget,
     NewFeature,
     EisenhowerMatrix,
-    EntityStats
-},
+    EntityStats,
+    FiscalYearSelector,
+  },
   name: "IndexPage",
   layout: "Default",
   computed: {

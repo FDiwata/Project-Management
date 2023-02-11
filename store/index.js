@@ -14,104 +14,107 @@ export const state = () => ({
     selectedTaskLogs: [],
     selectedTaskLogs: {},
     dashboardData: {},
-    currentPath: {}
+    currentPath: {},
+    fyear: ''
 })
 
 export const actions = {
-        async getProjects({ commit }) {
-            const result = await this.$axios.get('/api/projects')
-            commit('SET_ALL_PROJECTS', result.data)
-        },
+    setFiscalYear({ commit }, payload) {
+        commit('SET_FISCAL_YEAR', payload)
+    },
+    async getProjects({ commit }) {
+        const result = await this.$axios.get('/api/projects')
+        commit('SET_ALL_PROJECTS', result.data)
+    },
 
-        async getProject({ commit }, payload) {
-            const result = await this.$axios.get(`/api/project/${payload}`)
-            commit('SET_SELECTED_PROJECT', result.data[0])
-        },
+    async getProject({ commit }, payload) {
+        const result = await this.$axios.get(`/api/project/${payload}`)
+        commit('SET_SELECTED_PROJECT', result.data[0])
+    },
 
-        async getPlans({ commit }, payload = null) {
-            const getAll = payload === null
-            const result = await this.$axios.get(getAll ? '/api/plans' : `/api/plans/${payload}`)
-            commit(getAll ? 'SET_ALL_PLANS' : 'SET_SELECTED_PLANS', result.data[0])
-        },
+    async getPlans({ commit }, payload = null) {
+        const getAll = payload === null
+        const result = await this.$axios.get(getAll ? '/api/plans' : `/api/plans/${payload}`)
+        commit(getAll ? 'SET_ALL_PLANS' : 'SET_SELECTED_PLANS', result.data[0])
+    },
 
-        async getPlan({ commit }, payload) {
-            const result = await this.$axios.get(`/api/plan/${payload}`)
-            commit('SET_SELECTED_PLAN', result.data[0])
-        },
+    async getPlan({ commit }, payload) {
+        const result = await this.$axios.get(`/api/plan/${payload}`)
+        commit('SET_SELECTED_PLAN', result.data[0])
+    },
 
-        async getSubtasks({ commit }, payload = null) {
-            const getAll = payload === null
-            const result = await this.$axios.get(getAll ? '/api/subtasks' : `/api/subtasks/${payload}`)
-            commit(getAll ? 'SET_ALL_SUBTASKS' : 'SET_SELECTED_SUBTASKS', result.data)
-            return result.data
-        },
+    async getSubtasks({ commit }, payload = null) {
+        const getAll = payload === null
+        const result = await this.$axios.get(getAll ? '/api/subtasks' : `/api/subtasks/${payload}`)
+        commit(getAll ? 'SET_ALL_SUBTASKS' : 'SET_SELECTED_SUBTASKS', result.data)
+        return result.data
+    },
 
-        async getGanttData({ commit }, payload) {
-            const result = await this.$axios.get(`/api/getGanttData/${payload.username}`)
-            commit('SET_ALL_SUBTASKS', result.data[0])
-            return result.data
-        },
+    async getGanttData({ commit }, payload) {
+        const result = await this.$axios.get(`/api/getGanttData/${payload.username}`)
+        commit('SET_ALL_SUBTASKS', result.data[0])
+        return result.data
+    },
 
-        async getSubtask({ commit }, payload) {
-            const result = await this.$axios.get(`/api/subtask/${payload}`)
-            commit('SET_SELECTED_SUBTASK', result.data[0])
-        },
+    async getSubtask({ commit }, payload) {
+        const result = await this.$axios.get(`/api/subtask/${payload}`)
+        commit('SET_SELECTED_SUBTASK', result.data[0])
+    },
 
-        async getTaskLogs({ commit }, payload = null) {
-            const result = await this.$axios.get(`/api/taskLogs/${payload}`)
-            commit('SET_SELECTED_TASK_LOGS', result.data)
-        },
+    async getTaskLogs({ commit }, payload = null) {
+        const result = await this.$axios.get(`/api/taskLogs/${payload}`)
+        commit('SET_SELECTED_TASK_LOGS', result.data)
+    },
 
-        async getTaskLog({ commit }, payload) {
-            const result = await this.$axios.get(`/api/taskLog/${payload}`)
-            commit('SET_SELECTED_TASK_LOGS', result.data)
-        },
+    async getTaskLog({ commit }, payload) {
+        const result = await this.$axios.get(`/api/taskLog/${payload}`)
+        commit('SET_SELECTED_TASK_LOGS', result.data)
+    },
 
-        async getPath({ commit }, payload) {
-            const result = await this.$axios.get(`/api/getPath/${payload}`)
-            commit('SET_CURRENT_PATH', result.data)
-        },
+    async getPath({ commit }, payload) {
+        const result = await this.$axios.get(`/api/getPath/${payload}`)
+        commit('SET_CURRENT_PATH', result.data)
+    },
 
-        async getPlanPercentage(_, payload) {
-            const result = await this.$axios.get(`/api/getPlanPercentage/${payload}`)
-            return result.data[0][0].plan_percentage
-        },
+    async getPlanPercentage(_, payload) {
+        const result = await this.$axios.get(`/api/getPlanPercentage/${payload}`)
+        return result.data[0][0].plan_percentage
+    },
 
-        async getProjectPercentage() {
-            const result = await this.$axios.get('/api/getProjectPercentages')
-            return result.data[0]
-        },
+    async getProjectPercentage() {
+        const result = await this.$axios.get('/api/getProjectPercentages')
+        return result.data[0]
+    },
 
-        async getAllProjectsPercentage() {
-            const result = await this.$axios.get('/api/getAllProjectsPercentage')
-            return result.data[0]
-        },
+    async getAllProjectsPercentage() {
+        const result = await this.$axios.get('/api/getAllProjectsPercentage')
+        return result.data[0]
+    },
 
-        async getTodoPercentage(_, payload) {
-            const result = await this.$axios.get(`/api/getTodoSubtaskPercentage/${payload.project_id}/${payload.plan_id}`)
-            return result.data[0][0]
-        },
+    async getTodoPercentage(_, payload) {
+        const result = await this.$axios.get(`/api/getTodoSubtaskPercentage/${payload.project_id}/${payload.plan_id}/${payload.year}`)
+        return result.data[0][0]
+    },
 
-        async getDoingPercentage(_, payload) {
-            const result = await this.$axios.get(`/api/getDoingSubtaskPercentage/${payload.project_id}/${payload.plan_id}`)
-            return result.data[0][0]
-        },
+    async getDoingPercentage(_, payload) {
+        const result = await this.$axios.get(`/api/getDoingSubtaskPercentage/${payload.project_id}/${payload.plan_id}/${payload.year}`)
+        return result.data[0][0]
+    },
 
-        async getDonePercentage(_, payload) {
-            const result = await this.$axios.get(`/api/getDoneSubtaskPercentage/${payload.project_id}/${payload.plan_id}`)
-            return result.data[0][0]
-        },
+    async getDonePercentage(_, payload) {
+        const result = await this.$axios.get(`/api/getDoneSubtaskPercentage/${payload.project_id}/${payload.plan_id}/${payload.year}`)
+        return result.data[0][0]
+    },
 
-        async getLinks(_, payload) {
-            const result = await this.$axios.get(`/api/getPath/${payload}`)
-            return result.data[0]
-        },
+    async getLinks(_, payload) {
+        const result = await this.$axios.get(`/api/getPath/${payload}`)
+        return result.data[0]
+    },
 
-        async generateID(_, payload) {
-            const result = await this.$axios.get(`/api/generateID/${payload}`)
-            const prefix = payload === 't_projects' ? 'project-' : payload === 't_plans' ? 'plan-' : payload === 't_subtasks' ? 'subtask-' : 'task_log-'
-            const count = parseInt(result.data[0][0].count) + 1
-            return `${prefix}${count.toString().length === 1 ? `0${count}` : `${count}`}`
+    async generateID(_, payload) {
+        const prefix = payload === 't_projects' ? 'project' : payload === 't_plans' ? 'plan' : payload === 't_subtasks' ? 'subtask' : 'task_log'
+        const result = await this.$axios.get(`/api/genID/${prefix}`)
+        return result.data.id
     },
 
     async createProject({ commit }, payload) {
@@ -182,12 +185,6 @@ export const actions = {
         return result.data[0]
     },
 
-    async userRegister(_, payload) {
-        const endpoint = `api/register`
-        const result = await this.$axios.post(endpoint, payload)
-        return result.data[0]
-    },
-
     async getSchedules(_, payload) {
         const endpoint = `api/getSchedules/${payload.assignee}/${payload.status}`
         const result = await this.$axios.get(endpoint)
@@ -199,21 +196,29 @@ export const actions = {
         const result = await this.$axios.get(endpoint)
         return result.data
     },
-    
-    async getCurrentUserName (_, payload) {
+
+    async getCurrentUserName(_, payload) {
         const endpoint = `api/getCurrentUserName/${payload.id}`
         const result = await this.$axios.get(endpoint)
         return result.data
     },
-    
-    async getEMatrixProject () {
-        const endpoint = `api/getEMProject`
+
+    async getEMatrixProject(_, payload) {
+        const endpoint = `api/getEMProject/${payload}`
+        const result = await this.$axios.get(endpoint)
+        return result.data
+    },
+    async getYearRange() {
+        const endpoint = `api/yearRanges`
         const result = await this.$axios.get(endpoint)
         return result.data
     }
 }
 
 export const mutations = {
+    SET_FISCAL_YEAR(state, payload) {
+        state.fyear = payload
+    },
     SET_SELECTED_PROJECT(state, payload) {
         state.selectedProject = payload
     },
@@ -263,6 +268,9 @@ export const mutations = {
 }
 
 export const getters = {
+    GET_FISCAL_YEAR(state) {
+        return state.fyear
+    },
     GET_ALL_PROJECTS(state) {
         return state.allProjects
     },

@@ -13,11 +13,12 @@
         md:space-x-5
       "
     >
-      <span
-        class="text-lg w-full mb-3 md:w-fit font-bold text-white"
+      <span class="text-lg w-full mb-3 md:w-fit font-bold text-white"
         >Current Projects</span
       >
-      <div class="w-full md:w-1/2 flex flex-row items-end justify-end space-x-5">
+      <div
+        class="w-full md:w-1/2 flex flex-row items-end justify-end space-x-5"
+      >
         <el-pagination
           background
           class="w-auto"
@@ -155,7 +156,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["GET_SELECTED_PLANS", "GET_SELECTED_PROJECT"]),
+    ...mapGetters([
+      "GET_SELECTED_PLANS",
+      "GET_SELECTED_PROJECT",
+      "GET_FISCAL_YEAR",
+    ]),
     overAllProgress() {
       let numberOfProjects = this.percData.length;
       let totalPercentage = 0;
@@ -173,6 +178,14 @@ export default {
     this.percData = this.metaData[0];
   },
   methods: {
+    yearFilter(metaData) {
+      return metaData.filter((project) => {
+        return (
+          new Date(project.month).getFullYear().toString() ===
+          this.$cookies.get("fyear")
+        );
+      });
+    },
     async getProjectPlan(project_id) {
       await this.$store.dispatch("getPlans", project_id);
     },
@@ -188,19 +201,43 @@ export default {
       let pushLimit = 0;
       let subCount = 0;
       metaArray.forEach((project) => {
-        this.metaData[subCount].push(project);
-        if (pushLimit <= chunkSize - 2) {
-          pushLimit += 1;
-        } else {
-          this.metaData.push([]);
-          pushLimit = 0;
-          subCount++;
+        if (
+          new Date(project.month).getFullYear() === this.$cookies.get("fyear")
+        ) {
+          this.metaData[subCount].push(project);
+          if (pushLimit <= chunkSize - 2) {
+            pushLimit += 1;
+          } else {
+            this.metaData.push([]);
+            pushLimit = 0;
+            subCount++;
+          }
         }
       });
     },
     pageChange(currentPage) {
       this.percData = this.metaData[currentPage - 1];
       this.key = currentPage;
+    },
+  },
+  watch: {
+    async GET_FISCAL_YEAR(newVal, oldVal) {
+      if (oldVal !== "") {
+        this.percData = [];
+        this.metaData = [[]];
+        this.drawer = false;
+        this.currentPage = 1;
+        this.seriesIndex = {
+          current: 0,
+          limit: 0,
+        };
+        const metaArray = await this.$store.dispatch(
+          "getAllProjectsPercentage"
+        );
+        this.arrayChunkify(JSON.parse(JSON.stringify(metaArray)), 8);
+        this.seriesIndex.limit = Math.ceil(this.metaData.length / 8);
+        this.percData = this.metaData[0];
+      }
     },
   },
 };

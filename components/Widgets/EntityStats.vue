@@ -13,12 +13,6 @@
       text-center
     "
   >
-    <el-tooltip
-      class="item"
-      effect="light"
-      :content="`Projects completed out of ${projectArray.length} in total`"
-      placement="bottom"
-    >
       <div
         class="
           w-1/3
@@ -32,36 +26,22 @@
         <span
           class="font-bold text-5xl text-neutral-900 dark:text-neutral-300 my-3"
         >
-          {{ generateProjectEntityValues }}
+          {{ generateProjectEntityValues.length }}/{{ totalProjectPerYear.length }}
         </span>
         <span class="text-xs md:text-sm text-neutral-900 dark:text-neutral-300"
           >Projects completed</span
         >
       </div>
-    </el-tooltip>
-    <el-tooltip
-      class="item"
-      effect="light"
-      :content="`Plans fulfilled out of ${GET_ALL_PLANS.length} in total`"
-      placement="bottom"
-    >
       <div class="w-1/3 h-40 flex flex-col items-center justify-center">
         <span
           class="font-bold text-5xl text-neutral-900 dark:text-neutral-300 my-3"
         >
-          {{ generatePlanEntityValues }}</span
+          {{ generatePlanEntityValues.length }}/{{ totalPlanPerYear.length }}</span
         >
         <span class="text-xs md:text-sm text-neutral-900 dark:text-neutral-300"
           >Plans fulfilled</span
         >
       </div>
-    </el-tooltip>
-    <el-tooltip
-      class="item"
-      effect="light"
-      :content="`Subtasks done out of ${GET_ALL_SUBTASKS.length} in total`"
-      placement="bottom"
-    >
       <div
         class="
           w-1/3
@@ -75,7 +55,7 @@
         <span
           class="font-bold text-5xl text-neutral-900 dark:text-neutral-300 my-3"
         >
-          {{ generateSubtaskEntityValues }}
+          {{ generateSubtaskEntityValues.length }}/{{ totalSubtaskPerYear.length }}
         </span>
         <span class="text-xs md:text-sm text-neutral-900 dark:text-neutral-300"
           >Subtasks done</span
@@ -101,24 +81,66 @@ export default {
   computed: {
     generateProjectEntityValues() {
       return this.projectArray.filter((project) => {
-        return this.checkStats(project.plan_count, project.percentage) === 100;
-      }).length;
+        return (
+          this.checkStats(project.plan_count, project.percentage) === 100 &&
+          new Date(project.month).getFullYear() === this.GET_FISCAL_YEAR
+        );
+      });
     },
 
-    ...mapGetters(["GET_ALL_PLANS", "GET_ALL_SUBTASKS"]),
+    totalProjectPerYear() {
+      return this.projectArray.filter((project) => {
+        return new Date(project.month).getFullYear() === this.GET_FISCAL_YEAR;
+      });
+    },
+
+    ...mapGetters(["GET_ALL_PLANS", "GET_ALL_SUBTASKS", "GET_FISCAL_YEAR"]),
 
     generatePlanEntityValues() {
       return this.GET_ALL_PLANS.filter((plan) => {
-        return plan.percentage === 100;
-      }).length;
+        return (
+          this.generateProjectEntityValues
+            .map((proj) => proj.project_id)
+            .includes(plan.project_id) && plan.percentage === 100
+        );
+      });
     },
+
+    totalPlanPerYear() {
+      return this.GET_ALL_PLANS.filter((plan) => {
+        return this.totalProjectPerYear
+          .map((proj) => proj.project_id)
+          .includes(plan.project_id);
+      });
+    },
+
     generateSubtaskEntityValues() {
       return this.GET_ALL_SUBTASKS.filter((subtask) => {
-        return subtask.status === "Done";
-      }).length;
+        return (
+          this.generatePlanEntityValues
+            .map((plan) => plan.plan_id)
+            .includes(subtask.plan_id) && subtask.status === "Done"
+        );
+      });
+    },
+
+    totalSubtaskPerYear() {
+      return this.GET_ALL_SUBTASKS.filter((subtask) => {
+        return this.totalPlanPerYear
+          .map((plan) => plan.plan_id)
+          .includes(subtask.plan_id);
+      });
     },
   },
   methods: {
+    yearFilter(metaData) {
+      return metaData.filter((project) => {
+        return (
+          new Date(project.month).getFullYear().toString() ===
+          this.$cookies.get("fyear")
+        );
+      });
+    },
     checkStats(plan_count, percentage) {
       if (!isNaN(Math.round((100 / plan_count) * (percentage / 100)))) {
         return Math.round((100 / plan_count) * (percentage / 100));
