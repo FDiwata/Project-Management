@@ -69,7 +69,7 @@
         </div>
 
         <div class="flex flex-row items-center justify-center py-1 space-x-5">
-          <span class="text-sm font-thin">Target Month:</span>
+          <span class="text-sm font-thin">Target Date:</span>
           <span class="font-bold">{{ GET_SELECTED_PROJECT.TargetMonth }}</span>
         </div>
       </div>

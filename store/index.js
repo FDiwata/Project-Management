@@ -119,21 +119,26 @@ export const actions = {
 
     async createProject({ commit }, payload) {
         const result = await this.$axios.post('/api/createProject', payload)
-        commit('SET_SELECTED_PROJECT', result.data[0])
+        commit('SET_SELECTED_PROJECT', result.data)
+        return result.data
     },
 
     async createPlan({ commit }, payload) {
         const result = await this.$axios.post('/api/createPlan', payload)
-        commit('SET_SELECTED_PLAN', result.data[0])
+        commit('SET_SELECTED_PLAN', result.data)
+        return result.data
     },
 
     async createSubtask({ commit }, payload) {
         const result = await this.$axios.post('/api/createSubtask', payload)
-        commit('SET_SELECTED_SUBTASK', result.data.slice(-1).pop())
+        commit('SET_SELECTED_SUBTASK', result.data)
+        return result.data
     },
 
     async createTaskLog({ commit }, payload) {
-        await this.$axios.post('/api/createTaskLog', payload)
+        const result = await this.$axios.post('/api/createTaskLog', payload)
+        commit('SET_SELECTED_TASK_LOGS', result.data)
+        return result.data
     },
 
     async updateSubtask(_, payload) {

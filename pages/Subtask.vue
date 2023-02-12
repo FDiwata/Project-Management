@@ -400,7 +400,7 @@ export default {
     async dialogFormVisible(value) {
       if (!value) {
         this.taskDialogForm = {
-          task_logs_id: await this.$store.dispatch("generateID", "t_task_logs"),
+          task_logs_id: null,
           subtask_id: this.$route.query.subtask_id,
           miscellaneous: false,
           log_date: new Date(),
@@ -412,6 +412,7 @@ export default {
     },
     GET_SELECTED_TASK_LOGS(value) {
       const metaArray = value;
+      console.log(metaArray)
       this.arrayChunkify(JSON.parse(JSON.stringify(metaArray)), 5);
       this.percData = this.metaData[0];
     },
@@ -629,10 +630,7 @@ export default {
 
       this.fetchLinks();
       try {
-        this.taskDialogForm.task_logs_id = await this.$store.dispatch(
-          "generateID",
-          "t_task_logs"
-        );
+        this.taskDialogForm.task_logs_id = null
 
         this.fetchLinks();
       } catch (_) {

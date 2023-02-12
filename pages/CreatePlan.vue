@@ -113,12 +113,13 @@ export default {
   methods: {
     createPlan() {
       if (!Object.values(this.formData).includes("")) {
-        this.$store.dispatch("createPlan", this.formData).then(() => {
+        this.$store.dispatch("createPlan", this.formData).then((res) => {
           this.$message({
             type: "success",
             message: "Successfully created a plan!",
           });
-          this.$router.push(`Plan?plan_id=${this.formData.plan_id}`);
+
+        this.$router.push(`Plan?plan_id=${res.plan_id}`);
         });
       } else {
         this.$message({
@@ -170,10 +171,7 @@ export default {
       this.$router.push("ManageProject?redir=true");
     } else {
       this.formData.project_id = this.$route.query.project_id;
-      this.formData.plan_id = await this.$store.dispatch(
-        "generateID",
-        "t_plans"
-      );
+      this.formData.plan_id = null
     }
   },
 };

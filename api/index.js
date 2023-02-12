@@ -6,7 +6,7 @@ const knex = require('knex')({
     connection: {
         host: process.env.DB_HOST || 'localhost',
         port: 3306,
-        user: 'root',
+        user: 'root1',
         password: '',
         database: 'project_master'
     }
@@ -17,6 +17,31 @@ let GLOBAL_YEAR
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+
+const UtilFunctions = {
+        generateID: async(type) => {
+                const result = await knex.raw(`SELECT DISTINCT TargetMonth from t_projects`)
+
+                const dateRange = result[0].map((date) => {
+                    return new Date(date.TargetMonth)
+                })
+
+                const maxDate = dateRange.reduce(function(a, b) { return a > b ? a : b; });
+                const digits = '0000'
+                const year = new Date().getFullYear().toString().substring(4, 2)
+                const str = `${type}-${year}-${digits}`
+
+                const cut = str.split('-')[2]
+                let current = cut[cut.length - 1]
+                const diff = cut.length - current.toString().length
+                digits.substring(0, 1)
+                const curVal = await knex.raw('SELECT id_ref FROM t_users WHERE id_ref LIMIT 1')
+                const isCurrentYear = new Date().getFullYear() === maxDate.getFullYear()
+                const setVal = !isCurrentYear ? 1 : parseInt(`${curVal[0][0].id_ref + 1}`)
+
+                return { id: `${type}-${year}-${digits.substring(0, diff).toString() + setVal}`, updateQuery: `UPDATE t_users SET id_ref =${!isCurrentYear ? setVal: `${curVal[0][0].id_ref + 1}`}` }
+    }
+}
 
 
 app.get('/project/:id', async function(req, res) {
@@ -210,25 +235,47 @@ app.get('/getGanttData/:id', async function (req, res) {
     const result = await knex.raw(`SELECT * FROM t_subtasks, t_plans WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.assignee LIKE '${req.params.id}'`)
     res.send(result)
 })
-
+/**
+ * Creation of records
+ */
 app.post('/createProject', async function (req, res) {
+    const requestBody = req.body
+    const { id, updateQuery } = await UtilFunctions.generateID('project')
+    requestBody.project_id = id
     const result = await knex('t_projects').insert(req.body)
-    res.send(result)
+    await knex.raw(updateQuery)
+    const returnData = await knex.select('*').from('t_projects').where({project_id: id})
+    res.send(returnData[0])
 })
 
 app.post('/createPlan', async function (req, res) {
+    const requestBody = req.body
+    const { id, updateQuery } = await UtilFunctions.generateID('plan')
+    requestBody.plan_id = id
     const result = await knex('t_plans').insert(req.body)
-    res.send(result)
+    await knex.raw(updateQuery)
+    const returnData = await knex.select('*').from('t_plans').where({plan_id: id})
+    res.send(returnData[0])
 })
 
 app.post('/createSubtask', async function (req, res) {
+    const requestBody = req.body
+    const { id, updateQuery } = await UtilFunctions.generateID('subtask')
+    requestBody.subtask_id = id
     const result = await knex('t_subtasks').insert(req.body)
-    res.send(result)
+    await knex.raw(updateQuery)
+    const returnData = await knex.select('*').from('t_subtasks').where({subtask_id: id})
+    res.send(returnData[0])
 })
 
 app.post('/createTaskLog', async function (req, res) {
+    const requestBody = req.body
+    const { id, updateQuery } = await UtilFunctions.generateID('task_log')
+    requestBody.task_logs_id = id
     const result = await knex('t_task_logs').insert(req.body)
-    res.send(result)
+    await knex.raw(updateQuery)
+    const returnData = await knex.select('*').from('t_task_logs').where({subtask_id: requestBody.subtask_id})
+    res.send(returnData)
 })
 
 app.put('/updateSubtask/:id', async function (req, res) {
@@ -344,31 +391,6 @@ app.get('/yearRanges', async function (req, res) {
 })
 
 
-app.get('/genID/:type', async function (req, res) {
-
-    const result = await knex.raw(`SELECT DISTINCT TargetMonth from t_projects`)
-   
-    const dateRange = result[0].map((date) => {
-        return new Date(date.TargetMonth)
-    })
-
-    const maxDate = dateRange.reduce(function (a, b) { return a > b ? a : b; });
-    const digits = '0000'
-    const year = new Date().getFullYear().toString().substring(4, 2)
-    const str = `${req.params.type}-${year}-${digits}`
-    
-    const cut = str.split('-')[2]
-    let current = cut[cut.length - 1]
-    const diff = cut.length - current.toString().length
-    digits.substring(0, 1)
-    const curVal = await knex.raw('SELECT id_ref FROM t_users WHERE id_ref LIMIT 1')
-    const isCurrentYear = new Date().getFullYear() === maxDate.getFullYear()
-    const setVal = !isCurrentYear ? 1 : parseInt(`${curVal[0][0].id_ref + 1}`)
-
-    await knex.raw(`UPDATE t_users SET id_ref =${!isCurrentYear ? setVal: `${curVal[0][0].id_ref + 1}`}`)
-
-    res.send({ id: `${req.params.type}-${year}-${digits.substring(0, diff).toString() + setVal}`, current: setVal })
-})
 
 export default {
     path: '/api',

@@ -160,12 +160,12 @@ export default {
         this.formData.start_date = this.formatDate(this.formData.start_date);
         this.formData.end_date = this.formatDate(this.formData.end_date);
         this.formData.due_date = this.formatDate(this.formData.due_date);
-        this.$store.dispatch("createSubtask", this.formData).then(() => {
+        this.$store.dispatch("createSubtask", this.formData).then((res) => {
           this.$message({
           type: "success",
           message: "Successfully created a Subtask!",
         });
-          this.$router.push(`Subtask?subtask_id=${this.formData.subtask_id}`);
+          this.$router.push(`Subtask?subtask_id=${res.subtask_id}`);
         });
       } else {
         this.$message({
@@ -227,10 +227,7 @@ export default {
       this.$router.push("ManagePlan?redir=true");
     } else {
       this.formData.plan_id = this.$route.query.plan_id;
-      this.formData.subtask_id = await this.$store.dispatch(
-        "generateID",
-        "t_subtasks"
-      );
+      this.formData.subtask_id = null
     }
   },
 };
