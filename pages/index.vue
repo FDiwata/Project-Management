@@ -1,14 +1,14 @@
 <template>
   <div class="w-11/12 md:w-5/6 m-auto h-fit p-1 md:p-10 lg:p-0">
     <client-only>
-      <div class="w-full flex flex-row items-center justify-between space-y-3 my-3">
-        <span class="text-xl md:text-5xl font-bold text-white"
-          >Dashboard</span
-        >
+      <div
+        class="w-full flex flex-row items-center justify-between space-y-3 my-3"
+      >
+        <span class="text-xl md:text-5xl font-bold text-white">Dashboard</span>
         <fiscal-year-selector />
       </div>
       <el-tabs type="card" class="bg-neutral-900 h-fit">
-        <el-tab-pane label="Dashboard">
+        <el-tab-pane label="Dashboard" class="text-white">
           <div
             class="w-full flex flex-col items-center justify-between space-y-5"
           >
@@ -110,8 +110,8 @@ export default {
 };
 </script>
 <style>
+@import url("~/assets/output.css");
 .is-active {
   background-color: #3a546a;
 }
-@import url("~/assets/output.css");
 </style>

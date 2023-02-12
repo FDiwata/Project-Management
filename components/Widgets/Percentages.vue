@@ -87,22 +87,27 @@
 import { mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapGetters([
-      "GET_ALL_PROJECTS",
-      "GET_SELECTED_PLANS",
-      "GET_FISCAL_YEAR",
-    ]),
-    FilteredProjects () {
+    ...mapGetters(["GET_ALL_PROJECTS", "GET_ALL_PLANS", "GET_FISCAL_YEAR"]),
+    FilteredProjects() {
       return this.GET_ALL_PROJECTS.filter((project) => {
-        return new Date(project.TargetMonth).getFullYear() === this.$cookies.get('fyear')
-      })
+        return (
+          new Date(project.TargetMonth).getFullYear() ===
+          this.$cookies.get("fyear")
+        );
+      });
     },
 
-    FilteredPlans () {
-      return this.GET_SELECTED_PLANS.filter((plan) => {
-        return this.FilteredProjects.map((proj) => proj.project_id).includes(plan.project_id)
-      })
-    }
+    FilteredPlans() {
+      return this.GET_ALL_PLANS.filter((plan) => {
+        return this.FilteredProjects.filter(
+          (project) =>
+            new Date(project.TargetMonth).getFullYear() ===
+            this.$cookies.get("fyear")
+        )
+          .map((proj) => proj.project_id)
+          .includes(plan.project_id);
+      });
+    },
   },
   data() {
     return {
@@ -115,12 +120,13 @@ export default {
   },
   methods: {
     async getPercentages(project_id, plan_id) {
+      this.widgetData = [];
       const categories = [
         "getTodoPercentage",
         "getDoingPercentage",
         "getDonePercentage",
       ];
-
+      this.widgetData.length = 0;
       this.widgetData.push({
         status: categories[0].replace("get", "").replace("Percentage", ""),
         value: await this.$store.dispatch(categories[0], {
@@ -152,28 +158,25 @@ export default {
   watch: {
     async selectedProjectID(value) {
       value === null && this.$store.commit("SET_SELECTED_PLANS", []);
-      await this.$store.dispatch("getPlans", value);
-      this.widgetData = [];
       await this.getPercentages(value, this.selectedPlanID);
       this.selectedPlanID = null;
     },
 
     async selectedPlanID(value) {
-      this.widgetData = [];
       await this.getPercentages(this.selectedProjectID, value);
     },
     async GET_FISCAL_YEAR(newVal, oldVal) {
       if (oldVal !== "") {
-        this.widgetData = [];
-        this.selectedProjectID = null;
-        this.selectedPlanID = null;
         this.$store.dispatch("getProjects");
         await this.getPercentages(null, null);
+
+        this.selectedProjectID = null;
       }
     },
   },
   async mounted() {
-    this.$store.dispatch("getProjects");
+    await this.$store.dispatch("getProjects");
+    await this.$store.dispatch("getPlans");
     await this.getPercentages(null, null);
   },
 };

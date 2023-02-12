@@ -316,7 +316,6 @@ let retArray = result[0].map(async (project) => {
         (100/(SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id) * (SELECT COUNT(*) FROM t_subtasks, t_projects WHERE t_subtasks.plan_id = t_plans.plan_id AND t_plans.project_id = t_projects.project_id AND t_subtasks.status = 'Done' ${dateCond})) as percentage
         FROM t_plans WHERE t_plans.project_id = '${project.project_id}'`)
         const percentage = getProjectPercentage(res2[0])
-        console.log(project.project_id, percentage)
         const retObj = {
             project_id: project.project_id,
             project_title: project.project_title,
@@ -367,7 +366,6 @@ app.get('/genID/:type', async function (req, res) {
     const setVal = !isCurrentYear ? 1 : parseInt(`${curVal[0][0].id_ref + 1}`)
 
     await knex.raw(`UPDATE t_users SET id_ref =${!isCurrentYear ? setVal: `${curVal[0][0].id_ref + 1}`}`)
-    console.log(new Date().getFullYear(), maxDate.getFullYear(), current)
 
     res.send({ id: `${req.params.type}-${year}-${digits.substring(0, diff).toString() + setVal}`, current: setVal })
 })

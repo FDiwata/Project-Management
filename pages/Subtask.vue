@@ -400,10 +400,7 @@ export default {
     async dialogFormVisible(value) {
       if (!value) {
         this.taskDialogForm = {
-          task_logs_id: await this.$store.dispatch(
-                  "generateID",
-                  "t_task_logs"
-                ),
+          task_logs_id: await this.$store.dispatch("generateID", "t_task_logs"),
           subtask_id: this.$route.query.subtask_id,
           miscellaneous: false,
           log_date: new Date(),
@@ -478,13 +475,13 @@ export default {
       await this.$store
         .dispatch("deleteTableData", requestObject)
         .then(async (data) => {
-          await this.$store.dispatch("getTaskLogs");
           if (!data) {
             this.$message({
               type: "error",
               message: "Failed to delete this Log",
             });
           } else {
+            await this.$store.dispatch("getTaskLogs", this.GET_SELECTED_SUBTASK.subtask_id);
             this.$message({
               type: "success",
               message: isSubtask ? "Subtask deleted." : "Task Log deleted",

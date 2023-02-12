@@ -3,7 +3,7 @@
       <span class="w-1/2">Select year</span>
       <el-select class="w-3/2" v-model="selectedYear" placeholder="Select">
         <el-option
-          v-for="year in yearRange"
+          v-for="year in yearRange.filter((i) => i !== null)"
           :key="year.value"
           :label="year.label"
           :value="year.value"
@@ -23,11 +23,14 @@
     },
     methods: {
       processYearRange(rangeObject) {
-        this.yearRange = rangeObject.map((item) => {
+        this.yearRange = rangeObject.map((item, index) => {
+          if (new Date(item).getFullYear() !== new Date(rangeObject[index - 1]).getFullYear()) {
           return {
             value: new Date(item).getFullYear().toString(),
             label: `F.Y. ${new Date(item).getFullYear()}`,
           };
+          
+        } else return null
         });
       },
     },
