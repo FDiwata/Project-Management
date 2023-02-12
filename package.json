@@ -20,7 +20,6 @@
         "cookie-universal-nuxt": "^2.2.1",
         "core-js": "^3.19.3",
         "crypto-js": "^4.1.1",
-        "daisyui": "^2.50.0",
         "dhtmlx-gantt": "^7.1.12",
         "element-ui": "^2.15.6",
         "express": "^4.17.3",
