@@ -6,7 +6,7 @@ const knex = require('knex')({
     connection: {
         host: process.env.DB_HOST || 'localhost',
         port: 3306,
-        user: 'root1',
+        user: 'root',
         password: '',
         database: 'project_master'
     }
