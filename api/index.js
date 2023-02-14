@@ -8,7 +8,7 @@ const knex = require('knex')({
         port: 3306,
         user: 'angelito',
         password: 'geloboii',
-        database: 'project_managemen'
+        database: 'project_mangemen'
     }
 })
 
