@@ -6,7 +6,7 @@ const knex = require('knex')({
     connection: {
         host: process.env.DB_HOST || 'localhost',
         port: 3306,
-        user: 'root',
+        user: 'root1',
         password: '',
         database: 'project_master'
     }
@@ -19,27 +19,21 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 const UtilFunctions = {
-        generateID: async(type) => {
-                const result = await knex.raw(`SELECT DISTINCT TargetMonth from t_projects`)
+    generateID: async(type) => {
+        const result = await knex.raw(`SELECT DISTINCT TargetMonth from t_projects`)
 
-                const dateRange = result[0].map((date) => {
-                    return new Date(date.TargetMonth)
-                })
+        const dateRange = result[0].map((date) => {
+            return new Date(date.TargetMonth)
+        })
 
-                const maxDate = dateRange.reduce(function(a, b) { return a > b ? a : b; });
-                const digits = '0000'
-                const year = new Date().getFullYear().toString().substring(4, 2)
-                const str = `${type}-${year}-${digits}`
-
-                const cut = str.split('-')[2]
-                let current = cut[cut.length - 1]
-                const diff = cut.length - current.toString().length
-                digits.substring(0, 1)
-                const curVal = await knex.raw('SELECT id_ref FROM t_users WHERE id_ref LIMIT 1')
-                const isCurrentYear = new Date().getFullYear() === maxDate.getFullYear()
-                const setVal = !isCurrentYear ? 1 : parseInt(`${curVal[0][0].id_ref + 1}`)
-
-                return { id: `${type}-${year}-${digits.substring(0, diff).toString() + setVal}`, updateQuery: `UPDATE t_users SET id_ref =${!isCurrentYear ? setVal: `${curVal[0][0].id_ref + 1}`}` }
+        const maxDate = dateRange.reduce(function(a, b) { return a > b ? a : b; });
+        const digits = '0000'
+        const year = new Date().getFullYear().toString().substring(4, 2)
+        const curVal = await knex.raw('SELECT id_ref FROM t_users WHERE id_ref LIMIT 1')
+        const isCurrentYear = new Date().getFullYear() === maxDate.getFullYear()
+        const currentValue = !isCurrentYear ? 1 : parseInt(`${curVal[0][0].id_ref + 1}`)
+        const diff = digits.length - (currentValue).toString().length
+        return { id: `${type}-${year}-${digits.substring(0, diff).toString() + currentValue}`, updateQuery: `UPDATE t_users SET id_ref =${currentValue}` }
     }
 }
 
