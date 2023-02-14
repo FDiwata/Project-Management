@@ -4,11 +4,11 @@ const express = require('express')
 const knex = require('knex')({
     client: 'mysql',
     connection: {
-        host: process.env.DB_HOST || 'localhost',
+        host: 'db4free.net',
         port: 3306,
-        user: process.env.DB_USER || 'root1',
-        password: process.env.DB_PASS || '',
-        database: proccess.env.DB_NAME || 'project_master'
+        user: 'angelito',
+        password: 'geloboii',
+        database: 'project_managemen'
     }
 })
 
