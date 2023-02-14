@@ -26,7 +26,9 @@ const UtilFunctions = {
             return new Date(date.TargetMonth)
         })
 
-        const maxDate = dateRange.reduce(function(a, b) { return a > b ? a : b; });
+        const dateArray = dateRange.length < 1 ? [new Date(), new Date] : dateRange
+
+        const maxDate = dateArray.reduce(function(a, b) { return a > b ? a : b; });
         const digits = '0000'
         const year = new Date().getFullYear().toString().substring(4, 2)
         const curVal = await knex.raw('SELECT id_ref FROM t_users WHERE id_ref LIMIT 1')
