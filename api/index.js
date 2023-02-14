@@ -25,8 +25,8 @@ const UtilFunctions = {
         const dateRange = result[0].map((date) => {
             return new Date(date.TargetMonth)
         })
-
-        const dateArray = dateRange.length < 1 ? [new Date(), new Date] : dateRange
+        const prevYear = new Date((new Date().getFullYear() - 1).toString())
+        const dateArray = dateRange.length < 1 ? [prevYear, prevYear] : dateRange
 
         const maxDate = dateArray.reduce(function(a, b) { return a > b ? a : b; });
         const digits = '0000'
