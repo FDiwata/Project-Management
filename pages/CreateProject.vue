@@ -252,6 +252,9 @@ export default {
 
     updateProject() {
       if (!Object.values(this.formData).includes("")) {
+        this.formData.TargetMonth = new Date(
+        this.formData.TargetMonth
+      ).toLocaleString("en-US").split(',')[0];
         this.$store.dispatch("updateTableData", this.updatePayload).then(() => {
           this.$message({
             type: "success",
