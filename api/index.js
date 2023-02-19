@@ -6,9 +6,9 @@ const knex = require('knex')({
     connection: {
         host: 'db4free.net',
         port: 3306,
-        user: 'angelito',
-        password: 'geloboii',
-        database: 'project_mangemen'
+        user: 'francis',
+        password: 'FrancisD1w4t4',
+        database: 'project_master'
     }
 })
 

@@ -178,10 +178,10 @@ export default {
     setMatrixDataOptimized() {
       const perInstanceCondition = (item) => {
         return {
-          urgentImportant: item.category === 1,
-          urgentNotImportant: item.category === 3,
-          ImportantNotUrgent: item.category === 2,
-          notUrgentNotImportant: item.category === 4,
+          urgentImportant: item.category === 1 && item.precentage !== 100,
+          urgentNotImportant: item.category === 3 && item.precentage !== 100,
+          ImportantNotUrgent: item.category === 2 && item.precentage !== 100,
+          notUrgentNotImportant: item.category === 4 && item.precentage !== 100,
         };
       };
       Object.keys(this.matrixData).forEach((item) => {
