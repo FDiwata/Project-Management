@@ -347,10 +347,12 @@ app.get('/getEMProject/:year', async function (req, res) {
             return 1
         } else if (type === 'planned' && perc < 50) {
             return 2
-        } else if (type === 'unplanned' && perc < 100) {
+        } else if (type === 'unplanned' && perc >= 50 && perc < 100) {
             return 3
-        } else if (perc === 100) {
+        } else if (type === 'unplanned' && perc < 50) {
             return 4          
+        } else {
+            return 0
         }
     }
 
